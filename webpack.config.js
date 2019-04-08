@@ -64,7 +64,9 @@ const defaultConfigs = {
 module.exports = [
   merge({}, defaultConfigs, {
     name: 'dev',
+    entry: './src/test-run.ts',
     output: {
+      filename: 'test-run.js',
       path: path.resolve(__dirname, '__tmp__/dist')
     },
     optimization: {
