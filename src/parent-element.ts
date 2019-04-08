@@ -270,7 +270,7 @@ export class Group
     let delta = maxWidth - wantWidth
     delta = this.growRound(map, delta, Math.floor)
     if (delta > 0) {
-      delta = this.growRound(map, delta, Math.round)
+      delta = this.growRound(map, delta, Math.ceil)
     }
   }
 
