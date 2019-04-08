@@ -29,6 +29,7 @@ import * as FlexBar from '.'
 
 const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
+  symbols: [ '.', ':', '=', '#' ],
   flex: 1,
   postProcess:
     overArgs(
@@ -36,13 +37,17 @@ const bar1 = new FlexBar.Bar({
     , chalk.green, chalk.yellow, chalk.gray)
 })
 const bar2 = new FlexBar.Bar({
-  flex: 1,
+  flex: 2,
   postProcess:
     overArgs(
       flip((...i: string[]) => i.join(''))
     , chalk.green, chalk.yellow, chalk.gray)
 })
-const message = new FlexBar.Text({ text: 'Hello World!', postProcess: chalk.green })
+const message = new FlexBar.Text({
+  flex: 1,
+  text: 'Hello World!',
+  postProcess: chalk.green
+})
 
 out.append(
   2
@@ -53,7 +58,7 @@ out.append(
 , new FlexBar.Spinner({ postProcess: chalk.cyan })
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.yellow })
-, 4 , '⸨' , bar1 , '⸩' , 1
+, 1 , '[' , bar1 , ']', 1
 , new FlexBar.Spinner({ postProcess: chalk.magenta })
 , 1 , '⸨' , bar2 , '⸩'
 )
