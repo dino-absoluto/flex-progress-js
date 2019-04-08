@@ -106,7 +106,6 @@ export class Group
   /* data */
   readonly children: ChildElement[] = []
   private flexGrowSum: number = 0
-  private flexShrinkSum: number = 0
   private growable = new SortedObjects<ChildElement, 'flexGrow'>('flexGrow')
   private shrinkable = new SortedObjects<ChildElement, 'flexShrink'>('flexShrink')
 
@@ -114,12 +113,13 @@ export class Group
     return this.flexGrowSum && this.growable.length
   }
   get flexShrink () {
-    return this.flexShrinkSum && this.shrinkable.length / this.children.length
+    return this.shrinkable.length / this.children.length
   }
 
   private $added (item: ChildElement) {
     item.parent = this
     if (item.flexGrow > 0) {
+      this.flexGrowSum += item.flexGrow
       this.growable.add(item)
     }
     if (item.flexShrink > 0) {
@@ -130,6 +130,7 @@ export class Group
   private $removed (item: ChildElement) {
     item.parent = undefined
     if (item.flexGrow > 0) {
+      this.flexGrowSum -= item.flexGrow
       this.growable.remove(item)
     }
     if (item.flexShrink > 0) {
@@ -219,7 +220,7 @@ export class Group
   , delta: number
   , method: typeof Math.ceil) {
     const { growable } = this
-    let perFlex = delta / this.flexGrow
+    let perFlex = delta / this.flexGrowSum
     for (const item of growable.valuesRight()) {
       const adjust = clamp(method(item.flexGrow * perFlex), 0, delta)
       const state = map.get(item) as FlexState
