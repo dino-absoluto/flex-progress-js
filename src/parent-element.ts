@@ -59,7 +59,6 @@ class SortedObjects<T, K extends keyof T> {
   remove (item: T) {
     const { $data, $identity } = this
     const index = sortedIndexOfBy($data, item, $identity)
-    console.log(index, item)
     if (index >= 0) {
       $data.splice(index, 1)
       return item
