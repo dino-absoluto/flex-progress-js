@@ -28,7 +28,7 @@ import * as FlexBar from '.'
 /* exports */
 
 const out = new FlexBar.Output()
-const bar = new FlexBar.Bar({
+const bar1 = new FlexBar.Bar({
   flex: 1,
   postProcess:
     overArgs(
@@ -42,36 +42,27 @@ const bar2 = new FlexBar.Bar({
       flip((...i: string[]) => i.join(''))
     , chalk.green, chalk.yellow, chalk.gray)
 })
-const msg = new FlexBar.Text({ text: 'Hello World!', postProcess: chalk.green })
+const message = new FlexBar.Text({ text: 'Hello World!', postProcess: chalk.green })
 
 out.append(
-  new FlexBar.Space({ width: 2 })
+  2
 , new FlexBar.Spinner({ postProcess: chalk.yellow })
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.cyan })
-, new FlexBar.Space()
-, msg
-, new FlexBar.Space()
+, 1 , message , 1
 , new FlexBar.Spinner({ postProcess: chalk.cyan })
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.yellow })
-, new FlexBar.Space({ width: 4 })
-, new FlexBar.Text('⸨')
-, bar
-, new FlexBar.Text('⸩')
-, new FlexBar.Space()
+, 4 , '⸨' , bar1 , '⸩' , 1
 , new FlexBar.Spinner({ postProcess: chalk.magenta })
-, new FlexBar.Space()
-, new FlexBar.Text('⸨')
-, bar2
-, new FlexBar.Text('⸩')
+, 1 , '⸨' , bar2 , '⸩'
 )
 
 let count = 0
 const int = setInterval(async () => {
   count++
-  msg.text = 'Hello World! ' + count
-  bar.ratio = (count % 100) / 100
+  message.text = 'Hello World! ' + count
+  bar1.ratio = (count % 100) / 100
   bar2.ratio = (count * 2 / 3 % 100) / 100
 }, 20)
 

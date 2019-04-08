@@ -23,6 +23,8 @@ import clamp from 'lodash-es/clamp'
 import throttle from 'lodash-es/throttle'
 import sortedIndexBy from 'lodash-es/sortedIndexBy'
 import sortedLastIndexBy from 'lodash-es/sortedLastIndexBy'
+import { Text } from './text'
+import { Space } from './space'
 import { Item } from './child-element'
 import { ChildElement
   , ParentElement
@@ -95,6 +97,8 @@ interface FlexState {
   basis: number
 }
 
+type FlexChild = ChildElement | string | number
+
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
@@ -140,7 +144,18 @@ export class Group
     }
   }
 
-  add (item: ChildElement, atIndex?: number) {
+  private static $castChild (item: FlexChild): ChildElement {
+    if (typeof item === 'string') {
+      item = new Text(item)
+    }
+    if (typeof item === 'number') {
+      item = new Space({ width: item })
+    }
+    return item
+  }
+
+  add (item: FlexChild, atIndex?: number) {
+    item = Group.$castChild(item)
     const { children } = this
     if (atIndex != null && Number.isInteger(atIndex) && Math.abs(atIndex) < children.length) {
       children.splice(atIndex, 0, item)
@@ -163,9 +178,10 @@ export class Group
     return item
   }
 
-  append (...items: ChildElement[]) {
-    for (const item of items) {
-      const { children } = this
+  append (...items: FlexChild[]) {
+    const { children } = this
+    for (let item of items) {
+      item = Group.$castChild(item)
       children.push(item)
       this.$added(item)
     }
