@@ -20,25 +20,15 @@
  */
 /* imports */
 import { Item, ItemOptions } from './child-element'
+import stringWidth from './string-width'
 import defaults from 'lodash-es/defaults'
 import clamp from 'lodash-es/clamp'
-import stringWidth = require('string-width')
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-
-const getLength = (() => {
-  try {
-    const getLength: typeof stringWidth = require('string-width')
-    return getLength
-  } catch {
-    return (text: string) => text.length
-  }
-})()
-
 export enum TextAlignment {
   Left = 'left',
   Center = 'center',
@@ -68,9 +58,8 @@ export class Text extends Item {
     this._text = value
     this.update()
   }
-  get length () { return getLength(this.text) }
+  get length () { return stringWidth(this.text) }
   handleCalculateWidth () {
-    console.log(this.minWidth, this.maxWidth)
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
 
