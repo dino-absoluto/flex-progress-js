@@ -113,6 +113,9 @@ export class Text extends Item {
     const { $more } = this
     const length = stringWidth($more)
     if (width <= length) {
+      if (width > 0) {
+        return ' '.repeat(width)
+      }
       return ''
     }
     return this.text.substr(0, width - stringWidth($more)) + $more
