@@ -61,25 +61,30 @@ const defaultConfigs = {
   ]
 }
 
-module.exports = [
-  merge({}, defaultConfigs, {
-    name: 'dev',
-    entry: './src/test-run.ts',
-    output: {
-      filename: 'test-run.js',
-      path: path.resolve(__dirname, '__tmp__/dist')
-    },
-    optimization: {
-      removeAvailableModules: false,
-      removeEmptyChunks: false,
-      splitChunks: false,
-    }
-  }),
-  merge({}, defaultConfigs, {
-    name: 'minify',
-    mode: 'production',
-    output: {
-      path: path.resolve(__dirname, 'dist/')
-    }
-  })
-]
+const dev = () => merge(defaultConfigs, {
+  entry: './src/test-run.ts',
+  output: {
+    filename: 'test-run.js',
+    path: path.resolve(__dirname, '__tmp__/dist')
+  },
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  }
+})
+
+const mini = () => merge({}, defaultConfigs, {
+  mode: 'production',
+  output: {
+    path: path.resolve(__dirname, 'dist/')
+  }
+})
+
+module.exports = (env = {}) => {
+  if (env.prod) {
+    return mini()
+  } else {
+    return dev()
+  }
+}
