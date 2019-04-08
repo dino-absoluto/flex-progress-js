@@ -19,8 +19,8 @@
  *
  */
 /* imports */
-import { Item, ItemOptions, ParentElement } from './child-element'
-import { SYNCING_INTERVAL } from './parent-element'
+import { Item, ItemOptions } from './child-element'
+import { ParentElement, SYNCING_INTERVAL } from './shared'
 import stringWidth from './string-width'
 
 /* code */

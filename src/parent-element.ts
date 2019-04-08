@@ -23,9 +23,10 @@ import clamp from 'lodash-es/clamp'
 import throttle from 'lodash-es/throttle'
 import sortedIndexBy from 'lodash-es/sortedIndexBy'
 import sortedLastIndexBy from 'lodash-es/sortedLastIndexBy'
-import { Item
-  , ChildElement
-  , ParentElement } from './child-element'
+import { Item } from './child-element'
+import { ChildElement
+  , ParentElement
+  , SYNCING_INTERVAL } from './shared'
 
 /* code */
 const sortedIndexOfBy = <T, K extends keyof T>(
@@ -93,8 +94,6 @@ interface FlexState {
   width: number
   basis: number
 }
-
-export const SYNCING_INTERVAL = 40
 
 /* code */
 // █████▒░░░░░░░░░

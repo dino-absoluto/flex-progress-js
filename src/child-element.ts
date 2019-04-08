@@ -20,57 +20,14 @@
  */
 /* imports */
 import castArray from 'lodash-es/castArray'
+import { ChildElement
+, ParentElement } from './shared'
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-
-/** Describe a flex-progress element */
-export interface Element {
-  /** Fixed width element */
-  width?: number
-  /** Mimimum width */
-  minWidth?: number
-  /** Maximum width */
-  maxWidth?: number
-  /** Flexing factor, set both grow and shrink */
-  flex: number
-  /** Grow factor */
-  flexGrow: number
-  /** Shrink factor */
-  flexShrink: number
-  /** Calculate uninhibited width */
-  calculateWidth (): number
-  /** Render item with max-width */
-  render (maxWidth?: number): string
-  /** Trigger an update */
-  update (): void
-}
-
-/** Describe a child element */
-export interface ChildElement extends Element {
-  parent?: ParentElement
-}
-
-/** Describe a parent element */
-export interface ParentElement extends Element {
-  /** Array of child elements */
-  children: ChildElement[]
-  /** Add element */
-  add (child: ChildElement, atIndex?: number): ChildElement
-  /** Remove element */
-  remove (child: ChildElement): ChildElement | undefined
-  /** Clear all elements */
-  clear (): void
-  /** Add elements to the end.
-   * @param {...ChildElement} items ... of child element
-   */
-  append (...items: ChildElement[]): void
-  /** Syncing events */
-  sync (): Promise<number>
-}
 
 /** Describe options to class Item constructor() */
 export interface ItemOptions {
