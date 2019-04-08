@@ -29,10 +29,13 @@ import defaults from 'lodash-es/defaults'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+/** Describe options to class Bar constructor() */
 interface BarOptions extends ItemOptions {
   symbols?: string[]
   ratio?: number
 }
+
+/** A progress bar */
 export class Bar extends Item {
   symbols = [ '░', '▒', '▓', '█' ]
   _ratio = 0
@@ -49,12 +52,14 @@ export class Bar extends Item {
     }
   }
 
+  /** Completion ratio, range from 0 to 1 */
   get ratio () { return this._ratio }
   set ratio (value: number) {
     this._ratio = clamp(value, 0, 1)
     this.update()
   }
 
+  /** Turn data to display string */
   static renderBar (symbols: string[], ratio: number, width: number): string[] {
     const stage = symbols.length - 1
     const count = Math.floor(width * stage * ratio)

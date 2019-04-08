@@ -29,16 +29,19 @@ import stringWidth from './string-width'
 // █████████████▓░
 // █▓▒░▒▓█
 
+/** Describe Spinner style */
 interface SpinnerStyle {
   frames: string[]
   interval: number
   width?: number
 }
 
+/** Describe options to class Spinner constructor() */
 interface SpinnerOptions extends ItemOptions {
   style?: SpinnerStyle
 }
 
+/** Busy Spinner */
 export class Spinner extends Item {
   width = 1
   private $frame = 0
@@ -66,6 +69,7 @@ export class Spinner extends Item {
     }
   }
 
+  /** Style to display spinner as */
   get style () { return this.$style }
   set style (spinner: SpinnerStyle) {
     if (!spinner.width) {
@@ -79,6 +83,7 @@ export class Spinner extends Item {
     parent.sync().then(this.handleSync)
   }
 
+  /** Synchronization function */
   handleSync = (frame: number) => {
     const { $frame, $style } = this
     frame = Math.floor(frame / Math.round(($style.interval / SYNCING_INTERVAL)))

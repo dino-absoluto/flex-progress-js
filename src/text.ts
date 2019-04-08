@@ -29,17 +29,20 @@ import clamp from 'lodash-es/clamp'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-export enum TextAlignment {
+/** Text alignment */
+export const enum TextAlignment {
   Left = 'left',
   Center = 'center',
   Right = 'right'
 }
 
+/** Describe options to class Text constructor() */
 export interface TextOptions extends ItemOptions {
   text?: string
   align?: TextAlignment
 }
 
+/** A text element */
 export class Text extends Item {
   _text = ''
   align: TextAlignment = TextAlignment.Center
@@ -53,12 +56,16 @@ export class Text extends Item {
     }
   }
 
+  /** Text to display */
   get text () { return this._text }
   set text (value: string) {
     this._text = value
     this.update()
   }
+
+  /** The raw text width */
   get length () { return stringWidth(this.text) }
+
   handleCalculateWidth () {
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
@@ -82,6 +89,7 @@ export class Text extends Item {
     return text
   }
 
+  /** Grow text to width */
   grow (width: number) {
     let { text } = this
     const space = width - this.length
@@ -95,6 +103,7 @@ export class Text extends Item {
     return ' '.repeat(left) + text + ' '.repeat(right)
   }
 
+  /** Shrink text to width */
   shrink (width: number) {
     if (width <= 0) {
       return ''

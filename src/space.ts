@@ -28,6 +28,7 @@ import clamp from 'lodash-es/clamp'
 // █████████████▓░
 // █▓▒░▒▓█
 
+/** Empty space element */
 export class Space extends Item {
   handleCalculateWidth () {
     return clamp(this.width || 1, this.minWidth, this.maxWidth)

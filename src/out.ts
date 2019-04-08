@@ -28,10 +28,12 @@ import { clearLine, clearScreenDown, cursorTo } from 'readline'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+/** Describe options to class Output constructor() */
 interface OutputOptions extends ItemOptions {
   stream?: NodeJS.WriteStream
 }
 
+/** Actual output to stderr */
 export class Output extends Group {
   readonly stream: NodeJS.WriteStream = process.stderr
   readonly isTTY: boolean = true
@@ -50,10 +52,12 @@ export class Output extends Group {
     }
   }
 
+  /** Elapsed time since creation */
   get elapsed () {
     return Date.now() - this.createdTime
   }
 
+  /** Clear display line */
   clearLine () {
     const { stream } = this
     clearLine(stream, 0)
@@ -66,6 +70,7 @@ export class Output extends Group {
     this.clearLine()
   }
 
+  /** Get display width */
   get columns () {
     return this.stream.columns || 40
   }

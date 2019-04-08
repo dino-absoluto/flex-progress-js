@@ -19,11 +19,13 @@
  *
  */
 /* imports */
+
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+
 /** Control the rendering synchronization rate */
 export const SYNCING_INTERVAL = 40
 
