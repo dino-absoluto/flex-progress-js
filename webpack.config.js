@@ -22,6 +22,8 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const merge = require('lodash/merge')
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const defaultConfigs = {
   mode: 'development',
@@ -78,7 +80,10 @@ const mini = () => merge({}, defaultConfigs, {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'dist/')
-  }
+  },
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
 })
 
 module.exports = (env = {}) => {
