@@ -37,7 +37,7 @@ interface BarOptions extends ItemOptions {
 export class Bar extends Item {
   symbols = [ '░', '▒', '▓', '█' ]
   // symbols = [ '.', '-', '=', '#' ]
-  _ratio = 0
+  private $ratio = 0
 
   constructor (options: BarOptions = {}) {
     super(options)
@@ -45,7 +45,7 @@ export class Bar extends Item {
       this.symbols = options.symbols
     }
     if (options.ratio != null) {
-      this._ratio = options.ratio
+      this.$ratio = options.ratio
     }
     if (!options.width && options.minWidth) {
       this.minWidth = 5
@@ -53,9 +53,9 @@ export class Bar extends Item {
   }
 
   /** Completion ratio, range from 0 to 1 */
-  get ratio () { return this._ratio }
+  get ratio () { return this.$ratio }
   set ratio (value: number) {
-    this._ratio = clamp(value, 0, 1)
+    this.$ratio = clamp(value, 0, 1)
     this.update()
   }
 
