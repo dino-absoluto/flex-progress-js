@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "tslint-consistent-codestyle",
+    "tslint-config-standard"
+  ]
+}

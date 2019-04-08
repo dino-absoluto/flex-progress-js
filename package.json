@@ -4,7 +4,8 @@
   "description": "Progress indicator for Node.js",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,23 @@
   "bugs": {
     "url": "https://github.com/dino-absoluto/flex-progressjs/issues"
   },
-  "homepage": "https://github.com/dino-absoluto/flex-progressjs#readme"
+  "homepage": "https://github.com/dino-absoluto/flex-progressjs#readme",
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.3",
+    "@types/node": "^11.13.0",
+    "@types/webpack-node-externals": "^1.6.3",
+    "lodash-es": "^4.17.11",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-consistent-codestyle": "^1.15.1",
+    "typescript": "^3.4.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "optionalDependencies": {
+    "string-width": "^4.1.0"
+  }
 }
