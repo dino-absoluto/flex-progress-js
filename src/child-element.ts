@@ -101,10 +101,15 @@ export abstract class Item implements ChildElement {
 
   constructor (options: ItemOptions = {}) {
     if (options.width != null) {
+      console.log(this.width)
       this.width = options.width
     }
-    this.minWidth = options.minWidth || 0
-    this.maxWidth = options.maxWidth || Number.MAX_SAFE_INTEGER
+    if (options.minWidth != null) {
+      this.minWidth = options.minWidth || 0
+    }
+    if (options.maxWidth != null) {
+      this.maxWidth = options.maxWidth || Number.MAX_SAFE_INTEGER
+    }
     this.$postProcess = options.postProcess
     if (options.flex) {
       const { flex } = options
