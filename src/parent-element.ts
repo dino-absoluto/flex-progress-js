@@ -20,7 +20,7 @@
  */
 /* imports */
 import clamp from 'lodash-es/clamp'
-import throttle from 'lodash-es/throttle'
+import once from 'lodash-es/once'
 import sortedIndexBy from 'lodash-es/sortedIndexBy'
 import sortedLastIndexBy from 'lodash-es/sortedLastIndexBy'
 import { Text } from './text'
@@ -197,11 +197,16 @@ export class Group
     children.length = 0
   }
 
-  private $sync = throttle(async () => {
+  private $syncActual = async () => {
     const frame = Math.floor((Date.now() - this.$startTime) / SYNCING_INTERVAL)
     return new Promise<number>((resolve) =>
-      setTimeout(() => resolve(frame), SYNCING_INTERVAL))
-  }, SYNCING_INTERVAL)
+      setTimeout(() => {
+        resolve(frame)
+        this.$sync = once(this.$syncActual)
+      }, SYNCING_INTERVAL))
+  }
+
+  private $sync = once(this.$syncActual)
 
   sync () {
     if (this.parent) {
