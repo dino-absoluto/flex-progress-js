@@ -28,29 +28,44 @@ import * as FlexBar from '.'
 /* exports */
 
 const out = new FlexBar.Output()
-out.add(new FlexBar.Space({ width: 2 }))
-out.add(new FlexBar.Spinner({ postProcess: chalk.yellow }))
-out.add(new FlexBar.Spinner({ postProcess: chalk.red }))
-out.add(new FlexBar.Spinner({ postProcess: chalk.cyan }))
-out.add(new FlexBar.Space())
+const bar = new FlexBar.Bar({
+  flex: 1,
+  postProcess:
+    overArgs(
+      (...i: string[]) => i.join('')
+    , chalk.green, chalk.yellow, chalk.gray)
+})
+const bar2 = new FlexBar.Bar({
+  flex: 1,
+  postProcess:
+    overArgs(
+      flip((...i: string[]) => i.join(''))
+    , chalk.green, chalk.yellow, chalk.gray)
+})
 const msg = new FlexBar.Text({ text: 'Hello World!', postProcess: chalk.green })
-out.add(msg)
-out.add(new FlexBar.Space())
-out.add(new FlexBar.Spinner({ postProcess: chalk.cyan }))
-out.add(new FlexBar.Spinner({ postProcess: chalk.red }))
-out.add(new FlexBar.Spinner({ postProcess: chalk.yellow }))
-out.add(new FlexBar.Space({ width: 4 }))
-const bar = new FlexBar.Bar({ flex: 1, postProcess:
-  overArgs((...i: string[]) => i.join(''), chalk.green, chalk.yellow, chalk.gray)
-})
-const bar2 = new FlexBar.Bar({ flex: 1, postProcess:
-  overArgs(flip((...i: string[]) => i.join('')), chalk.green, chalk.yellow, chalk.gray)
-})
-out.add(bar)
-out.add(new FlexBar.Space())
-out.add(new FlexBar.Spinner({ postProcess: chalk.magenta }))
-out.add(new FlexBar.Space())
-out.add(bar2)
+
+out.append(
+  new FlexBar.Space({ width: 2 })
+, new FlexBar.Spinner({ postProcess: chalk.yellow })
+, new FlexBar.Spinner({ postProcess: chalk.red })
+, new FlexBar.Spinner({ postProcess: chalk.cyan })
+, new FlexBar.Space()
+, msg
+, new FlexBar.Space()
+, new FlexBar.Spinner({ postProcess: chalk.cyan })
+, new FlexBar.Spinner({ postProcess: chalk.red })
+, new FlexBar.Spinner({ postProcess: chalk.yellow })
+, new FlexBar.Space({ width: 4 })
+, new FlexBar.Text({ text: '⸨', flex: 0 })
+, bar
+, new FlexBar.Text({ text: '⸩', flex: 0 })
+, new FlexBar.Space()
+, new FlexBar.Spinner({ postProcess: chalk.magenta })
+, new FlexBar.Space()
+, new FlexBar.Text({ text: '⸨', flex: 0 })
+, bar2
+, new FlexBar.Text({ text: '⸩', flex: 0 })
+)
 
 let count = 0
 const int = setInterval(async () => {
@@ -61,6 +76,7 @@ const int = setInterval(async () => {
 }, 20)
 
 delay(() => {
+  clearInterval(int)
   out.clear()
   const elapsed = out.elapsed
   console.log(
@@ -69,5 +85,4 @@ delay(() => {
     chalk.gray('|'),
     chalk.white('Elapsed'),
     chalk.green(elapsed.toString()))
-  clearInterval(int)
 }, 5000)

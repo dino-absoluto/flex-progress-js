@@ -41,26 +41,39 @@ interface SpinnerOptions extends ItemOptions {
   style?: SpinnerStyle
 }
 
+const styleDots = {
+  width: 1,
+  interval: 80,
+  frames:
+  [ '⠋'
+  , '⠙'
+  , '⠹'
+  , '⠸'
+  , '⠼'
+  , '⠴'
+  , '⠦'
+  , '⠧'
+  , '⠇'
+  , '⠏'
+  ]
+}
+
+// const styleLine = {
+//   width: 1,
+//   interval: 120,
+//   frames:
+//   [ '~'
+//   , '\\'
+//   , '|'
+//   , '/'
+//   ]
+// }
+
 /** Busy Spinner */
 export class Spinner extends Item {
   width = 1
   private $frame = 0
-  private $style: SpinnerStyle & { width: number } = {
-    width: 1,
-    interval: 80,
-    frames:
-    [ '⠋',
-      '⠙',
-      '⠹',
-      '⠸',
-      '⠼',
-      '⠴',
-      '⠦',
-      '⠧',
-      '⠇',
-      '⠏'
-    ]
-  }
+  private $style: SpinnerStyle & { width: number } = styleDots
 
   constructor (options: SpinnerOptions = {}) {
     super(options)

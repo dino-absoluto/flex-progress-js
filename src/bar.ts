@@ -38,6 +38,7 @@ interface BarOptions extends ItemOptions {
 /** A progress bar */
 export class Bar extends Item {
   symbols = [ '░', '▒', '▓', '█' ]
+  // symbols = [ '.', '-', '=', '#' ]
   _ratio = 0
 
   constructor (options: BarOptions = {}) {
