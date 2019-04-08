@@ -21,7 +21,6 @@
 /* imports */
 import { Item, ItemOptions } from './child-element'
 import stringWidth from './optional/string-width'
-import defaults from 'lodash-es/defaults'
 import clamp from 'lodash-es/clamp'
 
 /* code */
@@ -39,12 +38,14 @@ export const enum TextAlignment {
 /** Describe options to class Text constructor() */
 export interface TextOptions extends ItemOptions {
   text?: string
+  more?: string
   align?: TextAlignment
 }
 
 /** A text element */
 export class Text extends Item {
-  _text = ''
+  private $text = ''
+  private $more = '…'
   align: TextAlignment = TextAlignment.Center
   constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
@@ -53,13 +54,14 @@ export class Text extends Item {
     } else {
       this.text = options.text || this.text
       this.align = options.align || this.align
+      this.$more = options.more || this.$more
     }
   }
 
   /** Text to display */
-  get text () { return this._text }
+  get text () { return this.$text }
   set text (value: string) {
-    this._text = value
+    this.$text = value
     this.update()
   }
 
@@ -108,6 +110,11 @@ export class Text extends Item {
     if (width <= 0) {
       return ''
     }
-    return this.text.substr(0, width - 1) + '…'
+    const { $more } = this
+    const length = stringWidth($more)
+    if (width <= length) {
+      return ''
+    }
+    return this.text.substr(0, width - stringWidth($more)) + $more
   }
 }

@@ -27,6 +27,9 @@ import chalk from './optional/chalk'
 import * as FlexBar from '.'
 /* exports */
 
+const text =
+  'Hello World!'
+  // 'Hello World! Welcome! To the Beyond!'
 const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
   symbols: [ '.', ':', '=', '#' ],
@@ -45,7 +48,7 @@ const bar2 = new FlexBar.Bar({
 })
 const message = new FlexBar.Text({
   flex: 1,
-  text: 'Hello World!',
+  text,
   postProcess: chalk.green
 })
 
@@ -66,7 +69,7 @@ out.append(
 let count = 0
 const int = setInterval(async () => {
   count++
-  message.text = 'Hello World! ' + count
+  message.text = text + ' ' + count
   bar1.ratio = (count % 100) / 100
   bar2.ratio = (count * 2 / 3 % 100) / 100
 }, 20)
