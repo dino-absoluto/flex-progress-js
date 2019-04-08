@@ -56,15 +56,15 @@ out.append(
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.yellow })
 , new FlexBar.Space({ width: 4 })
-, new FlexBar.Text({ text: '⸨', flex: 0 })
+, new FlexBar.Text('⸨')
 , bar
-, new FlexBar.Text({ text: '⸩', flex: 0 })
+, new FlexBar.Text('⸩')
 , new FlexBar.Space()
 , new FlexBar.Spinner({ postProcess: chalk.magenta })
 , new FlexBar.Space()
-, new FlexBar.Text({ text: '⸨', flex: 0 })
+, new FlexBar.Text('⸨')
 , bar2
-, new FlexBar.Text({ text: '⸩', flex: 0 })
+, new FlexBar.Text('⸩')
 )
 
 let count = 0

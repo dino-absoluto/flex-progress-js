@@ -46,11 +46,11 @@ export interface TextOptions extends ItemOptions {
 export class Text extends Item {
   _text = ''
   align: TextAlignment = TextAlignment.Center
-  constructor (options: TextOptions = {}) {
-    super(defaults(options, {
-      flexShrink: 1
-    }))
-    if (options) {
+  constructor (options: TextOptions | string = '') {
+    super(typeof options !== 'string' ? options : undefined)
+    if (typeof options === 'string') {
+      this.text = options
+    } else {
       this.text = options.text || this.text
       this.align = options.align || this.align
     }
