@@ -63,7 +63,7 @@ const defaultConfigs = {
   ]
 }
 
-const dev = () => merge(defaultConfigs, {
+const dev = (_env) => merge(defaultConfigs, {
   entry: './src/test-run.ts',
   output: {
     filename: 'test-run.js',
@@ -76,20 +76,26 @@ const dev = () => merge(defaultConfigs, {
   }
 })
 
-const mini = () => merge({}, defaultConfigs, {
+const mini = (_env) => merge({}, defaultConfigs, {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'dist/')
-  },
-  plugins: [
-    new BundleAnalyzerPlugin()
-  ]
+  }
 })
 
 module.exports = (env = {}) => {
+  let cfg
   if (env.prod) {
-    return mini()
+    cfg = mini(env)
   } else {
-    return dev()
+    cfg = dev(env)
   }
+  if (env.bundleAnalyze) {
+    merge(cfg, {
+      plugins: [
+        new BundleAnalyzerPlugin()
+      ]
+    })
+  }
+  return cfg
 }
