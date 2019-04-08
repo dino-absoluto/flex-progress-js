@@ -47,7 +47,7 @@ export class Bar extends Item {
     if (options.ratio != null) {
       this.$ratio = options.ratio
     }
-    if (!options.width && options.minWidth) {
+    if (!options.width && !options.minWidth) {
       this.minWidth = 5
     }
   }

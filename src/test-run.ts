@@ -33,7 +33,7 @@ const text =
 const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
   symbols: [ '.', ':', '=', '#' ],
-  width: 15,
+  minWidth: 15,
   flex: 1,
   postProcess:
     overArgs(
