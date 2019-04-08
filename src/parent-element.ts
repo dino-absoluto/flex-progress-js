@@ -92,9 +92,15 @@ class SortedObjects<T, K extends keyof T> {
   }
 }
 
-interface FlexState {
+interface FlexItem {
   width: number
   basis: number
+}
+
+interface FlexState {
+  flexGrowSum: number,
+  map: Map<ChildElement, FlexItem>,
+  wantWidth: number
 }
 
 type FlexChild = ChildElement | string | number
@@ -222,45 +228,60 @@ export class Group
   }
 
   protected handleRender (maxWidth?: number) {
-    const isGrowable = !!(maxWidth && this.flexGrow)
-    const isShrinkable = !!this.flexShrink
     maxWidth = Math.min(maxWidth || Number.MAX_SAFE_INTEGER, this.maxWidth)
-    const { map, wantWidth } = this.newFlowState()
-    if (isGrowable && wantWidth < maxWidth) {
-      this.grow(map, wantWidth, maxWidth)
-    } else if (isShrinkable && wantWidth > maxWidth) {
-      this.shrink(map, wantWidth, maxWidth)
+    const state = this.newFlexState()
+    const isGrowable = !!(maxWidth && state.flexGrowSum)
+    const isShrinkable = !!this.flexShrink
+    if (isGrowable && state.wantWidth < maxWidth) {
+      this.grow(state, maxWidth)
+      // const widths = [...map.entries()].map(([i, w]) => w.width)
+      // const sum = widths.reduce((acc, c) => acc + c, 0)
+      // if (sum !== 80) {
+      //   console.log(sum, widths)
+      // }
+    } else if (isShrinkable && state.wantWidth > maxWidth) {
+      this.shrink(state, maxWidth)
     }
-    return [...map.entries()].map(([item, { width }]) => {
+    return [...state.map.entries()].map(([item, { width }]) => {
       return item.render(width)
     })
   }
 
-  private newFlowState () {
-    const map = new Map<ChildElement, FlexState>()
+  private newFlexState (): FlexState {
+    const map = new Map<ChildElement, FlexItem>()
     let wantWidth = 0
+    let flexGrowSum = 0
     for (const item of this.children) {
       const width = item.calculateWidth()
       wantWidth += width
+      if (item.enabled && item.flexGrow > 0) {
+        flexGrowSum += item.flexGrow
+      }
       map.set(item, {
         width,
         basis: 0
       })
     }
     return {
+      flexGrowSum,
       map,
       wantWidth
     }
   }
 
-  private growRound (map: Map<ChildElement, FlexState>
+  private growRound (
+    state: FlexState
   , delta: number
   , method: typeof Math.ceil) {
     const { growable } = this
-    let perFlex = delta / this.flexGrowSum
+    const { map } = state
+    let perFlex = delta / state.flexGrowSum
     for (const item of growable.valuesRight()) {
+      if (!item.enabled) {
+        continue
+      }
       const adjust = clamp(method(item.flexGrow * perFlex), 0, delta)
-      const state = map.get(item) as FlexState
+      const state = map.get(item) as FlexItem
       delta -= adjust
       state.width += adjust
       if (delta === 0) {
@@ -269,30 +290,33 @@ export class Group
     }
     return delta
   }
-  private grow (map: Map<ChildElement, FlexState>
-  , wantWidth: number
+  private grow (
+    state: FlexState
   , maxWidth: number) {
+    const { wantWidth } = state
     let delta = maxWidth - wantWidth
-    delta = this.growRound(map, delta, Math.floor)
+    delta = this.growRound(state, delta, Math.floor)
     if (delta > 0) {
-      delta = this.growRound(map, delta, Math.ceil)
+      delta = this.growRound(state, delta, Math.ceil)
     }
   }
 
-  private shrinkRound (map: Map<ChildElement, FlexState>
+  private shrinkRound (
+    state: FlexState
   , delta: number
   , method: typeof Math.ceil) {
     const { shrinkable } = this
+    const { map } = state
     let totalBasis = 0
     for (const item of shrinkable.valuesRight()) {
-      const state = map.get(item) as FlexState
+      const state = map.get(item) as FlexItem
       const basis = state.width * item.flexShrink
       state.basis = basis
       totalBasis += basis
     }
     const perFlex = delta / totalBasis
     for (const item of shrinkable.valuesRight()) {
-      const state = map.get(item) as FlexState
+      const state = map.get(item) as FlexItem
       const adjust = clamp(method(state.basis * perFlex), 0, delta)
       delta -= adjust
       state.width -= adjust
@@ -303,14 +327,15 @@ export class Group
     return delta
   }
 
-  private shrink (map: Map<ChildElement, FlexState>
-  , wantWidth: number
+  private shrink (
+    state: FlexState
   , maxWidth: number) {
+    const { wantWidth } = state
     let delta = wantWidth - maxWidth
-    delta = this.shrinkRound(map, delta, Math.floor)
+    delta = this.shrinkRound(state, delta, Math.floor)
     // console.log(wantWidth, maxWidth, delta, widths)
     if (delta > 0) {
-      delta = this.shrinkRound(map, delta, Math.ceil)
+      delta = this.shrinkRound(state, delta, Math.ceil)
       // console.log(wantWidth, maxWidth, delta, widths)
     }
   }
