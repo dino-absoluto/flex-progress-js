@@ -20,6 +20,7 @@
  */
 /* imports */
 import { Item, ItemOptions, ParentElement } from './child-element'
+import { SYNCING_INTERVAL } from './parent-element'
 import stringWidth from './string-width'
 
 /* code */
@@ -30,6 +31,7 @@ import stringWidth from './string-width'
 
 interface SpinnerStyle {
   frames: string[]
+  interval: number
   width?: number
 }
 
@@ -42,6 +44,7 @@ export class Spinner extends Item {
   private $frame = 0
   private $style: SpinnerStyle & { width: number } = {
     width: 1,
+    interval: 80,
     frames:
     [ '⠋',
       '⠙',
@@ -77,8 +80,9 @@ export class Spinner extends Item {
   }
 
   handleSync = (frame: number) => {
-    frame = Math.floor(frame / 2)
-    if (this.$frame !== frame) {
+    const { $frame, $style } = this
+    frame = Math.floor(frame / Math.round(($style.interval / SYNCING_INTERVAL)))
+    if ($frame !== frame) {
       this.$frame = frame
       this.update()
     }

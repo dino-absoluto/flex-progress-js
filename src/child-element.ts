@@ -99,7 +99,7 @@ export abstract class Item implements ChildElement {
   private $flexGrow: number = 0
   private $flexShrink: number = 0
   private $postProcess?: (...values: string[]) => string
-  private $willUpdate = false
+  private $updating = false
 
   constructor (options: ItemOptions = {}) {
     if (options.width != null) {
@@ -196,18 +196,20 @@ export abstract class Item implements ChildElement {
     const { parent } = this
     if (parent) {
       parent.update()
+      parent.sync().then(() => { this.$updating = false })
+      // this.$updating = false
+    } else {
+      this.$updating = false
     }
-    this.$willUpdate = false
   }
 
   /** Schedule an update */
   update () {
-    if (this.$willUpdate) {
+    if (this.$updating) {
       return
     }
-    this.$willUpdate = true
+    this.$updating = true
     setImmediate(() => this.handleUpdate())
-    return false
   }
 
   /** Call when parent is set */

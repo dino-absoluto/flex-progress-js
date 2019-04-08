@@ -94,7 +94,7 @@ interface FlexState {
   basis: number
 }
 
-const SYNCING_INTERVAL = 40
+export const SYNCING_INTERVAL = 40
 
 /* code */
 // █████▒░░░░░░░░░

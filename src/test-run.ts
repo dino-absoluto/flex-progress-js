@@ -20,6 +20,7 @@
  */
 /* imports */
 import delay from 'lodash-es/delay'
+import round from 'lodash-es/round'
 import * as FlexBar from '.'
 /* exports */
 
@@ -31,9 +32,19 @@ out.add(new FlexBar.Text({ text: 'Hello World!' }))
 out.add(new FlexBar.Space())
 out.add(new FlexBar.Spinner())
 out.add(new FlexBar.Spinner())
+out.add(new FlexBar.Space())
+const bar = new FlexBar.Bar({ flex: 1 })
+out.add(bar)
+
+let count = 0
+const int = setInterval(async () => {
+  count++
+  bar.ratio = (count % 100) / 100
+}, 20)
 
 delay(() => {
   out.clear()
   const elapsed = out.elapsed
-  console.log(out.count * 1000 / elapsed, elapsed)
+  console.log('FPS', round(out.count * 1000 / elapsed, 1), 'Elapsed', elapsed)
+  clearInterval(int)
 }, 5000)
