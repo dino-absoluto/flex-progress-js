@@ -20,7 +20,7 @@
  */
 /* imports */
 import { Item, ItemOptions } from './child-element'
-import stringWidth from './string-width'
+import stringWidth from './optional/string-width'
 import defaults from 'lodash-es/defaults'
 import clamp from 'lodash-es/clamp'
 
