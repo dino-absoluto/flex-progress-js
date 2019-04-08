@@ -19,4 +19,11 @@
  *
  */
 /* imports */
+// import * as FlexProgress from './progress'
+import { Item } from './child-element'
+import { Group } from './parent-element'
+import { Text } from './text'
+import { Output } from './out'
 /* exports */
+
+export { Item, Group, Text, Output }
