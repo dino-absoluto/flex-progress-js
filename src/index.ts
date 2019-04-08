@@ -24,6 +24,7 @@ import { Group } from './parent-element'
 import { Text } from './text'
 import { Space } from './space'
 import { Spinner } from './spinner'
+import { Bar } from './bar'
 import { Output } from './out'
 /* exports */
 
@@ -32,4 +33,5 @@ export { Item
 , Space
 , Text
 , Spinner
+, Bar
 , Output }
