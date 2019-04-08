@@ -22,6 +22,7 @@
 import { ItemOptions } from './child-element'
 import { Group } from './parent-element'
 import { clearLine, clearScreenDown, cursorTo } from 'readline'
+import stringWidth from './optional/string-width'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -37,9 +38,10 @@ interface OutputOptions extends ItemOptions {
 export class Output extends Group {
   readonly stream: NodeJS.WriteStream = process.stderr
   readonly isTTY: boolean = true
-  private lastColumns = 0
+  private $lastColumns = 0
+  private $lastWidth = 0
+  private $createdTime = Date.now()
   count = 0
-  private createdTime = Date.now()
 
   constructor (options?: OutputOptions) {
     super(options)
@@ -52,9 +54,19 @@ export class Output extends Group {
     }
   }
 
+  get enabled () { return super.enabled }
+  set enabled (value: boolean) {
+    if (!value) {
+      this.clearLine()
+    } else {
+      this.update()
+    }
+    super.enabled = value
+  }
+
   /** Elapsed time since creation */
   get elapsed () {
-    return Date.now() - this.createdTime
+    return Date.now() - this.$createdTime
   }
 
   /** Clear display line */
@@ -62,7 +74,6 @@ export class Output extends Group {
     const { stream } = this
     clearLine(stream, 0)
     cursorTo(stream, 0)
-    clearScreenDown(stream)
   }
 
   clear () {
@@ -77,11 +88,19 @@ export class Output extends Group {
 
   protected handleUpdate () {
     super.handleUpdate()
-    const { stream, columns, lastColumns } = this
+    const { stream, columns, $lastColumns } = this
     const text = this.render(columns)
-    if (lastColumns !== columns) {
-      this.lastColumns = columns
+    {
+      const width = stringWidth(text)
+      if (width !== this.$lastWidth) {
+        this.clearLine()
+      }
+      this.$lastWidth = width
+    }
+    if ($lastColumns !== columns) {
+      this.$lastColumns = columns
       this.clearLine()
+      clearScreenDown(stream)
     }
     stream.write(text)
     cursorTo(stream, 0)

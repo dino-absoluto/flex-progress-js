@@ -20,6 +20,7 @@
  */
 /* imports */
 import castArray from 'lodash-es/castArray'
+import clamp from 'lodash-es/clamp'
 import { ChildElement
 , ParentElement } from './shared'
 
@@ -57,6 +58,7 @@ export abstract class Item implements ChildElement {
   private $flexShrink: number = 0
   private $postProcess?: (...values: string[]) => string
   private $updating = false
+  private $enabled: boolean = true
 
   constructor (options: ItemOptions = {}) {
     if (options.width != null) {
@@ -82,6 +84,12 @@ export abstract class Item implements ChildElement {
         }
       }
     }
+  }
+
+  /** The active state of the element */
+  get enabled () { return this.$enabled }
+  set enabled (value: boolean) {
+    this.$enabled = value
   }
 
   /** Mimimum width */
@@ -161,7 +169,7 @@ export abstract class Item implements ChildElement {
 
   /** Schedule an update */
   update () {
-    if (this.$updating) {
+    if (this.$updating || !this.enabled) {
       return
     }
     this.$updating = true
@@ -175,7 +183,7 @@ export abstract class Item implements ChildElement {
 
   /** Render this item */
   render (maxWidth?: number): string {
-    if (maxWidth === 0) {
+    if (maxWidth === 0 || !this.enabled) {
       return ''
     }
     return this.wrap(...castArray(this.handleRender(maxWidth)))
@@ -183,11 +191,14 @@ export abstract class Item implements ChildElement {
 
   /** Calculate this item width */
   calculateWidth (): number {
-    return this.handleCalculateWidth()
+    if (!this.enabled) {
+      return 0
+    }
+    return clamp(this.handleCalculateWidth(), this.minWidth, this.maxWidth)
   }
 
   /** Handle render event */
-  abstract handleRender (maxWidth?: number): string | string[]
+  protected abstract handleRender (maxWidth?: number): string | string[]
   /** Handle calculate-width event */
-  abstract handleCalculateWidth (): number
+  protected abstract handleCalculateWidth (): number
 }

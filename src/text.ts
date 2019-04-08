@@ -68,11 +68,11 @@ export class Text extends Item {
   /** The raw text width */
   get length () { return stringWidth(this.text) }
 
-  handleCalculateWidth () {
+  protected handleCalculateWidth () {
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number) {
     let { text } = this
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink
@@ -92,7 +92,7 @@ export class Text extends Item {
   }
 
   /** Grow text to width */
-  grow (width: number) {
+  private grow (width: number) {
     let { text } = this
     const space = width - this.length
     let left = 0
@@ -106,7 +106,7 @@ export class Text extends Item {
   }
 
   /** Shrink text to width */
-  shrink (width: number) {
+  private shrink (width: number) {
     if (width <= 0) {
       return ''
     }

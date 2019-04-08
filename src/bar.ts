@@ -73,11 +73,11 @@ export class Bar extends Item {
     ]
   }
 
-  handleCalculateWidth () {
+  protected handleCalculateWidth () {
     return clamp(0, this.minWidth, this.maxWidth)
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number) {
     if (maxWidth === 0) {
       return ''
     }

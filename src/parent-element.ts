@@ -211,12 +211,12 @@ export class Group
     }
   }
 
-  handleCalculateWidth () {
+  protected handleCalculateWidth () {
     const { children } = this
     return children.reduce((acc, item) => acc + item.calculateWidth(), 0)
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number) {
     const isGrowable = !!(maxWidth && this.flexGrow)
     const isShrinkable = !!this.flexShrink
     maxWidth = Math.min(maxWidth || Number.MAX_SAFE_INTEGER, this.maxWidth)

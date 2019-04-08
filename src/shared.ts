@@ -43,6 +43,8 @@ export interface Element {
   flexGrow: number
   /** Shrink factor */
   flexShrink: number
+  /** The active state of the element */
+  enabled: boolean
   /** Calculate uninhibited width */
   calculateWidth (): number
   /** Render item with max-width */

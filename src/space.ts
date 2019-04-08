@@ -30,11 +30,11 @@ import clamp from 'lodash-es/clamp'
 
 /** Empty space element */
 export class Space extends Item {
-  handleCalculateWidth () {
+  protected handleCalculateWidth () {
     return clamp(this.width || 1, this.minWidth, this.maxWidth)
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number) {
     if (maxWidth === 0) {
       return ''
     }

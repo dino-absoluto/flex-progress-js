@@ -22,6 +22,7 @@
 import { Item, ItemOptions } from './child-element'
 import { ParentElement, SYNCING_INTERVAL } from './shared'
 import stringWidth from './optional/string-width'
+import once from 'lodash-es/once'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -92,12 +93,30 @@ export class Spinner extends Item {
     this.$style = spinner as SpinnerStyle & { width: number }
   }
 
-  mounted (parent: ParentElement) {
-    parent.sync().then(this.handleSync)
+  get enabled () { return super.enabled }
+  set enabled (value) {
+    super.enabled = value
+    if (!value) {
+      this.$start()
+    }
   }
 
+  mounted (_parent: ParentElement) {
+    this.$start()
+  }
+
+  private $startActual () {
+    if (this.parent) {
+      this.parent.sync().then(this.handleSync)
+    }
+  }
+
+  private $start = once(() => {
+    this.$startActual()
+  })
+
   /** Synchronization function */
-  handleSync = (frame: number) => {
+  private handleSync = (frame: number) => {
     const { $frame, $style } = this
     frame = Math.floor(frame / Math.round(($style.interval / SYNCING_INTERVAL)))
     if ($frame !== frame) {
@@ -105,15 +124,21 @@ export class Spinner extends Item {
       this.update()
     }
     if (this.parent) {
+      /* Sync continuing */
       this.parent.sync().then(this.handleSync)
+    } else {
+      /* Reset sync */
+      this.$start = once(() => {
+        this.$startActual()
+      })
     }
   }
 
-  handleCalculateWidth (): number {
+  protected handleCalculateWidth (): number {
     return this.$style.width
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number) {
     if (maxWidth === 0) {
       return ''
     }

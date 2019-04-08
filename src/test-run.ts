@@ -34,6 +34,7 @@ const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
   symbols: [ '.', ':', '=', '#' ],
   width: 15,
+  flex: 1,
   postProcess:
     overArgs(
       (...i: string[]) => i.join('')
@@ -51,10 +52,11 @@ const message = new FlexBar.Text({
   text,
   postProcess: chalk.green
 })
+const spin1 = new FlexBar.Spinner({ postProcess: chalk.yellow })
 
 out.append(
   2
-, new FlexBar.Spinner({ postProcess: chalk.yellow })
+, spin1
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.cyan })
 , 1 , message , 1
@@ -75,6 +77,21 @@ const int = setInterval(async () => {
 }, 20)
 
 delay(() => {
+  spin1.enabled = false
+  spin1.enabled = true
+  message.enabled = false
+}, 1000)
+delay(() => {
+  message.enabled = true
+}, 3000)
+delay(() => {
+  out.enabled = false
+}, 5000)
+delay(() => {
+  out.enabled = true
+}, 7000)
+
+delay(() => {
   clearInterval(int)
   out.clear()
   const elapsed = out.elapsed
@@ -84,4 +101,4 @@ delay(() => {
     chalk.gray('|'),
     chalk.white('Elapsed'),
     chalk.green(elapsed.toString()))
-}, 5000)
+}, 10000)
