@@ -20,16 +20,32 @@
  */
 /* imports */
 import { Item } from './child-element'
-import { Group } from './parent-element'
-import { Text } from './text'
-import { Space } from './space'
-import { Spinner } from './spinner'
-import { Output } from './out'
-/* exports */
+import clamp from 'lodash-es/clamp'
 
-export { Item
-, Group
-, Space
-, Text
-, Spinner
-, Output }
+/* code */
+// █████▒░░░░░░░░░
+// ██████▓░░░░░░░░
+// █████████████▓░
+// █▓▒░▒▓█
+
+export class Space extends Item {
+  handleCalculateWidth () {
+    return clamp(this.width || 1, this.minWidth, this.maxWidth)
+  }
+
+  handleRender (maxWidth?: number) {
+    if (maxWidth === 0) {
+      return ''
+    }
+    const growable = !!(maxWidth && this.flexGrow)
+    const shrinkable = !!this.flexShrink
+    maxWidth = Math.min(
+      maxWidth != null ? maxWidth : Number.MAX_SAFE_INTEGER, this.maxWidth)
+    const width = this.calculateWidth()
+    if ((growable && width < maxWidth) ||
+      (shrinkable && width > maxWidth)) {
+      return ' '.repeat(maxWidth)
+    }
+    return ' '.repeat(width)
+  }
+}
