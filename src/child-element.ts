@@ -20,6 +20,7 @@
  */
 /* imports */
 import castArray from 'lodash-es/castArray'
+
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
@@ -60,11 +61,11 @@ export interface ParentElement extends Element {
   /** Add element */
   add (child: ChildElement, atIndex?: number): ChildElement
   /** Remove element */
-  remove (child: ChildElement): ChildElement
+  remove (child: ChildElement): ChildElement | undefined
   /** Clear all elements */
   clear (): void
   /** Add elements to the end.
-   * @param {...ChildElement} items of child element
+   * @param {...ChildElement} items ... of child element
    */
   append (...items: ChildElement[]): void
 }
@@ -176,7 +177,7 @@ export abstract class Item implements ChildElement {
   }
 
   /** Results wrapper */
-  protected wrap (...text: string[]): string {
+  private wrap (...text: string[]): string {
     if (this.$postProcess) {
       return this.$postProcess(...text)
     }
