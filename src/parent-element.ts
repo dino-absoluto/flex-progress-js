@@ -20,6 +20,7 @@
  */
 /* imports */
 import clamp from 'lodash-es/clamp'
+import throttle from 'lodash-es/throttle'
 import sortedIndexBy from 'lodash-es/sortedIndexBy'
 import sortedLastIndexBy from 'lodash-es/sortedLastIndexBy'
 import { Item
@@ -94,6 +95,8 @@ interface FlexState {
   basis: number
 }
 
+const SYNCING_INTERVAL = 40
+
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
@@ -108,6 +111,7 @@ export class Group
   private flexGrowSum: number = 0
   private growable = new SortedObjects<ChildElement, 'flexGrow'>('flexGrow')
   private shrinkable = new SortedObjects<ChildElement, 'flexShrink'>('flexShrink')
+  private $startTime = Date.now()
 
   get flexGrow () {
     return this.flexGrowSum && this.growable.length
@@ -177,6 +181,20 @@ export class Group
       this.$removed(item)
     }
     children.length = 0
+  }
+
+  private $sync = throttle(async () => {
+    const frame = Math.floor((Date.now() - this.$startTime) / SYNCING_INTERVAL)
+    return new Promise<number>((resolve) =>
+      setTimeout(() => resolve(frame), SYNCING_INTERVAL))
+  }, SYNCING_INTERVAL)
+
+  sync () {
+    if (this.parent) {
+      return this.parent.sync()
+    } else {
+      return this.$sync()
+    }
   }
 
   handleCalculateWidth () {

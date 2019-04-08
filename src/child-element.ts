@@ -68,6 +68,8 @@ export interface ParentElement extends Element {
    * @param {...ChildElement} items ... of child element
    */
   append (...items: ChildElement[]): void
+  /** Syncing events */
+  sync (): Promise<number>
 }
 
 /** Describe options to class Item constructor() */
