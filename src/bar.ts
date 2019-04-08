@@ -21,8 +21,6 @@
 /* imports */
 import { Item, ItemOptions } from './child-element'
 import clamp from 'lodash-es/clamp'
-import defaults from 'lodash-es/defaults'
-// import _orderBy from 'lodash-es/orderBy'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -42,14 +40,15 @@ export class Bar extends Item {
   _ratio = 0
 
   constructor (options: BarOptions = {}) {
-    super(defaults(options, {
-      minWidth: 5
-    }))
+    super(options)
     if (options.symbols != null) {
       this.symbols = options.symbols
     }
     if (options.ratio != null) {
       this._ratio = options.ratio
+    }
+    if (!options.width && options.minWidth) {
+      this.minWidth = 5
     }
   }
 

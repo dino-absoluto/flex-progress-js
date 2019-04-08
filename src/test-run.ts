@@ -33,14 +33,14 @@ const text =
 const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
   symbols: [ '.', ':', '=', '#' ],
-  flex: 1,
+  width: 15,
   postProcess:
     overArgs(
       (...i: string[]) => i.join('')
     , chalk.green, chalk.yellow, chalk.gray)
 })
 const bar2 = new FlexBar.Bar({
-  flex: 2,
+  width: 20,
   postProcess:
     overArgs(
       flip((...i: string[]) => i.join(''))
