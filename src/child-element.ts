@@ -60,7 +60,6 @@ export abstract class Item implements ChildElement {
 
   constructor (options: ItemOptions = {}) {
     if (options.width != null) {
-      console.log(this.width)
       this.width = options.width
     }
     if (options.minWidth != null) {
