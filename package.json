@@ -1,0 +1,29 @@
+{
+  "name": "@dinoabsoluto/flex-progressjs",
+  "version": "1.0.0",
+  "description": "Progress indicator for Node.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dino-absoluto/flex-progressjs.git"
+  },
+  "keywords": [
+    "cli",
+    "terminal",
+    "console",
+    "progressbar",
+    "progress",
+    "spinner",
+    "indicator",
+    "flex"
+  ],
+  "author": "Dino <dinoabsoluto+dev@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dino-absoluto/flex-progressjs/issues"
+  },
+  "homepage": "https://github.com/dino-absoluto/flex-progressjs#readme"
+}
