@@ -96,7 +96,7 @@ export class Spinner extends Item {
   get enabled () { return super.enabled }
   set enabled (value) {
     super.enabled = value
-    if (!value) {
+    if (value) {
       this.$start()
     }
   }
@@ -123,7 +123,7 @@ export class Spinner extends Item {
       this.$frame = frame
       this.update()
     }
-    if (this.parent) {
+    if (this.parent && this.enabled) {
       /* Sync continuing */
       this.parent.sync().then(this.handleSync)
     } else {

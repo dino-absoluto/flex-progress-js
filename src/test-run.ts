@@ -78,10 +78,10 @@ const int = setInterval(async () => {
 
 delay(() => {
   spin1.enabled = false
-  spin1.enabled = true
   message.enabled = false
 }, 1000)
 delay(() => {
+  spin1.enabled = true
   message.enabled = true
 }, 3000)
 delay(() => {
