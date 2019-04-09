@@ -1,6 +1,7 @@
 # flex-progress
 
 > CLI progress bar made simple
+[![install size](https://packagephobia.now.sh/badge?p=@dinoabsoluto/flex-progress-js)](https://packagephobia.now.sh/result?p=@dinoabsoluto/flex-progress-js)
 
 An object-oriented approach to progress bar.
 
