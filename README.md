@@ -1,14 +1,15 @@
 # flex-progress
 
 > CLI progress bar made simple
+
 [![install size](https://packagephobia.now.sh/badge?p=@dinoabsoluto/flex-progress-js)](https://packagephobia.now.sh/result?p=@dinoabsoluto/flex-progress-js)
 
 An object-oriented approach to progress bar.
 
-- *Simple:* no template, no ticking, just change the `ratio` property and
+- **Simple:** no template, no ticking, just change the `ratio` property and
 you're good to go.
-- *Theme:* personalize with colors and style.
-- *Object-oriented:* each element is an object, updating its data leads to
+- **Theme:** personalize with colors and style.
+- **Object-oriented:** each element is an object, updating its data leads to
 updating the output.
 No need to care about what others elements are doing.
 
