@@ -77,8 +77,10 @@ const themeDots: SpinnerThemeSized = {
 /** Busy Spinner */
 export class Spinner extends Item {
   width = 1
-  private $frame = 0
-  private $theme: SpinnerThemeSized = themeDots
+  frameOffset = 0
+  private pFrame = 0
+  private pTheme: SpinnerThemeSized = themeDots
+  private pTime: number = 0
 
   constructor (options: SpinnerOptions = {}) {
     super(options)
@@ -87,66 +89,72 @@ export class Spinner extends Item {
     }
   }
 
+  tick (interval?: number) {
+    const time = this.pTime + (interval || SYNCING_INTERVAL)
+    this.pTime = time
+    this.pFrame = Math.round(time / SYNCING_INTERVAL)
+  }
+
   /** Style to display spinner as */
-  get theme () { return this.$theme }
+  get theme () { return this.pTheme }
   set theme (spinner: SpinnerTheme) {
     if (!spinner.width) {
       spinner.width = stringWidth(spinner.frames[0])
     }
-    this.$frame = 0
-    this.$theme = spinner as SpinnerThemeSized
+    this.pFrame = 0
+    this.pTheme = spinner as SpinnerThemeSized
   }
 
   get enabled () { return super.enabled }
   set enabled (value) {
     super.enabled = value
     if (value) {
-      this.$start()
+      this.pStart()
     }
   }
 
   mounted (_parent: ParentElement) {
-    this.$start()
+    this.pStart()
   }
 
-  private $startActual () {
+  private pStartActual () {
     if (this.parent) {
-      this.parent.sync().then(this.handleSync)
+      this.parent.sync().then(this.pHandleSync)
     }
   }
 
-  private $start = once(() => {
-    this.$startActual()
+  private pStart = once(() => {
+    this.pStartActual()
   })
 
   /** Synchronization function */
-  private handleSync = (frame: number) => {
-    const { $frame, $theme } = this
-    frame = Math.floor(frame / Math.round(($theme.interval / SYNCING_INTERVAL)))
-    if ($frame !== frame) {
-      this.$frame = frame
+  private pHandleSync = (frame: number) => {
+    const { pFrame, pTheme } = this
+    frame = Math.floor(frame / Math.round((pTheme.interval / SYNCING_INTERVAL)))
+    if (pFrame !== frame) {
+      this.pFrame = frame
       this.update()
     }
     if (this.parent && this.enabled) {
       /* Sync continuing */
-      this.parent.sync().then(this.handleSync)
+      this.parent.sync().then(this.pHandleSync)
     } else {
       /* Reset sync */
-      this.$start = once(() => {
-        this.$startActual()
+      this.pStart = once(() => {
+        this.pStartActual()
       })
     }
   }
 
   protected handleCalculateWidth (): number {
-    return this.$theme.width
+    return this.pTheme.width
   }
 
   protected handleRender (maxWidth?: number) {
-    if (maxWidth === 0) {
+    const { pFrame, pTheme, frameOffset } = this
+    if (maxWidth != null && maxWidth < pTheme.width) {
       return ''
     }
-    let { $frame, theme: { frames } } = this
-    return frames[$frame % frames.length]
+    return pTheme.frames[pFrame + frameOffset % pTheme.frames.length]
   }
 }
