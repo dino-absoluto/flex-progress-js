@@ -30,19 +30,23 @@ import once from 'lodash-es/once'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Describe Spinner style */
-interface SpinnerStyle {
+/** Describe Spinner theme */
+interface SpinnerTheme {
   frames: string[]
   interval: number
   width?: number
 }
 
-/** Describe options to class Spinner constructor() */
-interface SpinnerOptions extends ItemOptions {
-  style?: SpinnerStyle
+interface SpinnerThemeSized extends SpinnerTheme {
+  width: number
 }
 
-const styleDots = {
+/** Describe options to class Spinner constructor() */
+interface SpinnerOptions extends ItemOptions {
+  theme?: SpinnerTheme
+}
+
+const themeDots: SpinnerThemeSized = {
   width: 1,
   interval: 80,
   frames:
@@ -74,23 +78,23 @@ const styleDots = {
 export class Spinner extends Item {
   width = 1
   private $frame = 0
-  private $style: SpinnerStyle & { width: number } = styleDots
+  private $theme: SpinnerThemeSized = themeDots
 
   constructor (options: SpinnerOptions = {}) {
     super(options)
-    if (options.style) {
-      this.style = options.style
+    if (options.theme) {
+      this.theme = options.theme
     }
   }
 
   /** Style to display spinner as */
-  get style () { return this.$style }
-  set style (spinner: SpinnerStyle) {
+  get theme () { return this.$theme }
+  set theme (spinner: SpinnerTheme) {
     if (!spinner.width) {
       spinner.width = stringWidth(spinner.frames[0])
     }
     this.$frame = 0
-    this.$style = spinner as SpinnerStyle & { width: number }
+    this.$theme = spinner as SpinnerThemeSized
   }
 
   get enabled () { return super.enabled }
@@ -117,8 +121,8 @@ export class Spinner extends Item {
 
   /** Synchronization function */
   private handleSync = (frame: number) => {
-    const { $frame, $style } = this
-    frame = Math.floor(frame / Math.round(($style.interval / SYNCING_INTERVAL)))
+    const { $frame, $theme } = this
+    frame = Math.floor(frame / Math.round(($theme.interval / SYNCING_INTERVAL)))
     if ($frame !== frame) {
       this.$frame = frame
       this.update()
@@ -135,14 +139,14 @@ export class Spinner extends Item {
   }
 
   protected handleCalculateWidth (): number {
-    return this.$style.width
+    return this.$theme.width
   }
 
   protected handleRender (maxWidth?: number) {
     if (maxWidth === 0) {
       return ''
     }
-    let { $frame, style: { frames } } = this
+    let { $frame, theme: { frames } } = this
     return frames[$frame % frames.length]
   }
 }

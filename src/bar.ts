@@ -27,22 +27,31 @@ import clamp from 'lodash-es/clamp'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+/** Describe a progress theme to class Bar constructor() */
+interface BarTheme {
+  symbols: string[]
+}
+
 /** Describe options to class Bar constructor() */
 interface BarOptions extends ItemOptions {
-  symbols?: string[]
+  theme?: BarTheme
   ratio?: number
+}
+
+const themeDefault: BarTheme = {
+  symbols: [ '░', '▒', '▓', '█' ]
 }
 
 /** A progress bar */
 export class Bar extends Item {
-  symbols = [ '░', '▒', '▓', '█' ]
   // symbols = [ '.', '-', '=', '#' ]
+  theme = themeDefault
   private $ratio = 0
 
   constructor (options: BarOptions = {}) {
     super(options)
-    if (options.symbols != null) {
-      this.symbols = options.symbols
+    if (options.theme != null) {
+      this.theme = options.theme
     }
     if (options.ratio != null) {
       this.$ratio = options.ratio
@@ -91,6 +100,6 @@ export class Bar extends Item {
     } else if (shrinkable && width > maxWidth) {
       width = maxWidth
     }
-    return Bar.renderBar(this.symbols, ratio, width)
+    return Bar.renderBar(this.theme.symbols, ratio, width)
   }
 }

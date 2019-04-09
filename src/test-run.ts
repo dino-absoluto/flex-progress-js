@@ -32,7 +32,9 @@ const text =
   // 'Hello World! Welcome! To the Beyond!'
 const out = new FlexBar.Output()
 const bar1 = new FlexBar.Bar({
-  symbols: [ '.', ':', '=', '#' ],
+  theme: {
+    symbols: [ '.', ':', '=', '#' ]
+  },
   minWidth: 15,
   flex: 1,
   postProcess:
