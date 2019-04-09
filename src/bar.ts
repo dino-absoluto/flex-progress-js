@@ -83,7 +83,7 @@ export class Bar extends Item {
   }
 
   protected handleCalculateWidth () {
-    return clamp(0, this.minWidth, this.maxWidth)
+    return 0
   }
 
   protected handleRender (maxWidth?: number) {
@@ -94,7 +94,7 @@ export class Bar extends Item {
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink
     maxWidth = Math.min(maxWidth || Number.MAX_SAFE_INTEGER, this.maxWidth)
-    let width = this.calculateWidth()
+    let width = Math.min(maxWidth, this.calculateWidth())
     if (growable && width < maxWidth) {
       width = maxWidth
     } else if (shrinkable && width > maxWidth) {

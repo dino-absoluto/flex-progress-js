@@ -194,7 +194,9 @@ export abstract class Item implements ChildElement {
     if (!this.enabled) {
       return 0
     }
-    return clamp(this.handleCalculateWidth(), this.minWidth, this.maxWidth)
+    return clamp(this.handleCalculateWidth(),
+      Math.min(this.minWidth, this.maxWidth),
+      this.maxWidth)
   }
 
   /** Handle render event */
