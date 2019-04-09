@@ -57,7 +57,8 @@ const message = new FlexBar.Text({
 const spin1 = new FlexBar.Spinner({ postProcess: chalk.yellow })
 
 out.append(
-  2
+  new FlexBar.HideCursor()
+, 2
 , spin1
 , new FlexBar.Spinner({ postProcess: chalk.red })
 , new FlexBar.Spinner({ postProcess: chalk.cyan })
@@ -92,6 +93,12 @@ delay(() => {
 delay(() => {
   out.enabled = true
 }, 7000)
+
+process.on('SIGINT', () => {
+  out.clear(false)
+  console.log()
+  process.exit(0)
+})
 
 delay(() => {
   clearInterval(int)

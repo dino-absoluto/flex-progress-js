@@ -20,20 +20,45 @@
  */
 /* imports */
 import { Item } from './child-element'
-import { Group } from './parent-element'
-import { Text } from './text'
-import { Space } from './space'
-import { Spinner } from './spinner'
-import { Bar } from './bar'
-import { HideCursor } from './hide-cursor'
+import { ParentElement } from './shared'
 import { Output } from './out'
-/* exports */
 
-export { Item
-, Group
-, Space
-, Text
-, Spinner
-, Bar
-, HideCursor
-, Output }
+/* code */
+// █████▒░░░░░░░░░
+// ██████▓░░░░░░░░
+// █████████████▓░
+// █▓▒░▒▓█
+
+/** Empty space element */
+export class HideCursor extends Item {
+  static setCursor (stream: NodeJS.WriteStream, visible: boolean) {
+    if (!stream.isTTY) {
+      return
+    }
+    if (!visible) {
+      stream.write('\x1B[?25l')
+    } else {
+      stream.write('\x1B[?25h')
+    }
+  }
+
+  didMount (parent: ParentElement) {
+    if (parent instanceof Output) {
+      HideCursor.setCursor(parent.stream, false)
+    }
+  }
+
+  willUnmount (parent: ParentElement) {
+    if (parent instanceof Output) {
+      HideCursor.setCursor(parent.stream, true)
+    }
+  }
+
+  protected handleCalculateWidth () {
+    return 0
+  }
+
+  protected handleRender (_maxWidth?: number) {
+    return ''
+  }
+}
