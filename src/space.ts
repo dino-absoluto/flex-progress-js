@@ -20,7 +20,6 @@
  */
 /* imports */
 import { Item, ItemOptions } from './child-element'
-import clamp from 'lodash-es/clamp'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -30,7 +29,7 @@ import clamp from 'lodash-es/clamp'
 
 /** Empty space element */
 export class Space extends Item {
-  constructor (options?: ItemOptions | number) {
+  constructor (options: ItemOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {
       this.width = options
@@ -38,13 +37,10 @@ export class Space extends Item {
   }
 
   protected handleCalculateWidth () {
-    return clamp(this.width || 1, this.minWidth, this.maxWidth)
+    return this.minWidth
   }
 
   protected handleRender (maxWidth?: number) {
-    if (maxWidth === 0) {
-      return ''
-    }
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink
     maxWidth = Math.min(
