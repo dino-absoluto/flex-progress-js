@@ -21,3 +21,5 @@ const loop = setInterval(() => {
   bar.ratio = (count % 41) / 40
 }, 40)
 ```
+
+<img width="400" height="100" src="media/demo-1.gif" />
