@@ -21,7 +21,10 @@
 /* imports */
 import { ItemOptions } from './child-element'
 import { Group } from './parent-element'
-import { clearLine, clearScreenDown, cursorTo } from 'readline'
+import {
+  clearLine
+, clearScreenDown
+, cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
 
 /* code */
@@ -103,6 +106,9 @@ export class Output extends Group {
       clearScreenDown(stream)
     }
     stream.write(text)
+    if (!this.flexGrow) {
+      clearLine(stream, 1)
+    }
     cursorTo(stream, 0)
     this.count++
   }
