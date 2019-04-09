@@ -23,3 +23,4 @@ const loop = setInterval(() => {
 ```
 
 <img width="400" height="100" src="media/demo-1.gif" />
+<img width="400" height="100" src="media/demo-2.gif" />
