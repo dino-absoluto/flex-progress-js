@@ -173,7 +173,7 @@ export declare class Output extends Group {
 	enabled: boolean;
 	readonly elapsed: number;
 	clearLine(): void;
-	clear(): void;
+	clear(clearLine?: boolean): void;
 	readonly columns: number;
 	protected handleUpdate(): void;
 }
