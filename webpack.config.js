@@ -1,7 +1,7 @@
 /**
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
- * Translator-js - Progress indicator for Node.js
+ * flex-progressjs - Progress indicator for Node.js
  * Copyright (C) 2019 Dino <dinoabsoluto+dev@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify

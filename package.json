@@ -4,7 +4,7 @@
   "description": "Progress indicator for Node.js",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack"
   },
   "files": [
@@ -31,13 +31,16 @@
   },
   "homepage": "https://github.com/dino-absoluto/flex-progressjs#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^11.13.0",
     "@types/webpack-bundle-analyzer": "^2.13.1",
     "@types/webpack-node-externals": "^1.6.3",
     "chalk": "^2.4.2",
+    "jest": "^24.7.1",
     "lodash-es": "^4.17.11",
     "source-map-loader": "^0.2.4",
+    "ts-jest": "^24.0.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
     "tslint-config-standard": "^8.0.1",

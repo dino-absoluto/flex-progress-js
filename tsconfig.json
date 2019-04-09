@@ -8,6 +8,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
+    "allowJs": true,
     "resolveJsonModule": true
   },
   "include": [
