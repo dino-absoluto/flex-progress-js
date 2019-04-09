@@ -4,14 +4,16 @@
     "strict": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "allowJs": true,
     "resolveJsonModule": true
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/index.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts"
   ]
 }

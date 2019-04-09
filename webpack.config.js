@@ -32,7 +32,8 @@ const defaultConfigs = {
   output: {
     pathinfo: false,
     filename: 'index.js',
-    path: path.resolve(__dirname, '__tmp__/dist')
+    libraryTarget: 'commonjs',
+    path: path.resolve(__dirname, '__tmp__/lib')
   },
   devtool: 'source-map',
   resolve: {
@@ -64,10 +65,10 @@ const defaultConfigs = {
 }
 
 const dev = (_env) => merge(defaultConfigs, {
-  entry: './src/test-run.ts',
+  entry: './src/demo/test-run.ts',
   output: {
     filename: 'test-run.js',
-    path: path.resolve(__dirname, '__tmp__/dist')
+    path: path.resolve(__dirname, '__tmp__/bin')
   },
   optimization: {
     removeAvailableModules: false,
@@ -79,7 +80,7 @@ const dev = (_env) => merge(defaultConfigs, {
 const mini = (_env) => merge({}, defaultConfigs, {
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, 'dist/')
+    path: path.resolve(__dirname, 'lib/')
   }
 })
 

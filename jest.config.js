@@ -31,6 +31,13 @@ module.exports = {
     'node_modules',
     '<rootDir>/jest/mods'
   ],
+  globals: {
+    'ts-jest': {
+      tsConfig: {
+        allowJs: true
+      }
+    }
+  },
   transform: {
     '^.+\\.(ts|tsx|js)$': 'ts-jest'
   },

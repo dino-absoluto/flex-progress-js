@@ -5,10 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack"
+    "build": "webpack",
+    "dts": "tsc -d --emitDeclarationOnly --outDir 'lib/'"
   },
   "files": [
-    "dist/index.js"
+    "lib/index.js",
+    "lib/**/*.d.ts"
   ],
   "repository": {
     "type": "git",
