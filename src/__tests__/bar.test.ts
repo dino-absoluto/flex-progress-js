@@ -27,7 +27,7 @@ import { Bar } from '../bar'
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Bar', () => {
-  test('render().min/maxWidth.1', async () => {
+  test('render()_min/maxWidth', async () => {
     const bar = new Bar()
     expect(bar.render(10)).toBe('░'.repeat(5))
     bar.minWidth = 3
@@ -38,5 +38,46 @@ describe('Bar', () => {
     expect(bar.render(10)).toBe('░'.repeat(10))
     expect(bar.render(20)).toBe('░'.repeat(10))
     expect(bar.render(5)).toBe('░'.repeat(5))
+  })
+  test('render()_flex', async () => {
+    const bar = new Bar()
+    bar.flex = 1
+    bar.maxWidth = 10
+    ;[
+      [ 10, 10 ]
+    , [ 0, 0 ]
+    , [ 1, 1 ]
+    , [ 2, 2 ]
+    , [ 3, 3 ]
+    , [ 4, 4 ]
+    , [ 5, 5 ]
+    , [ 6, 6 ]
+    , [ 7, 7 ]
+    , [ 8, 8 ]
+    , [ 9, 9 ]
+    , [ 11, 10 ]
+    , [ 12, 10 ]
+    , [ 13, 10 ]
+    , [ 14, 10 ]
+    , [ 15, 10 ]
+    ].forEach(([width, exp]) => {
+      expect(bar.render(width)).toBe('░'.repeat(exp))
+    })
+  })
+  test('render()_ratio', async () => {
+    const bar = new Bar()
+    bar.ratio = .2
+    expect(bar.render(10)).toBe('█'.repeat(1) + '░'.repeat(4))
+    bar.minWidth = 10
+    bar.ratio = .2
+    expect(bar.render(10)).toBe('█'.repeat(2) + '░'.repeat(8))
+    bar.ratio = .23
+    expect(bar.render(10)).toBe('█'.repeat(2) + '░'.repeat(8))
+    bar.ratio = .25
+    expect(bar.render(10)).toBe('█'.repeat(2) + '▒' + '░'.repeat(7))
+    bar.ratio = .27
+    expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
+    bar.ratio = .29
+    expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
   })
 })
