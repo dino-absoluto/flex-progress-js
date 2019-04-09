@@ -55,7 +55,7 @@
     "webpack-cli": "^3.3.0",
     "webpack-node-externals": "^1.7.2"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "string-width": "^4.1.0"
   }
 }
