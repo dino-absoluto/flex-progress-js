@@ -79,9 +79,11 @@ export class Output extends Group {
     cursorTo(stream, 0)
   }
 
-  clear () {
+  clear (clearLine = true) {
     super.clear()
-    this.clearLine()
+    if (clearLine) {
+      this.clearLine()
+    }
   }
 
   /** Get display width */
