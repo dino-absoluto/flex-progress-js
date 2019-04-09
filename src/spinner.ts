@@ -141,13 +141,13 @@ export class Spinner extends Item {
 
   /** Synchronization function */
   private pHandleSync = (frame: number) => {
-    const { pFrame, pTheme } = this
-    frame = Math.floor(frame / Math.round((pTheme.interval / SYNCING_INTERVAL)))
-    if (pFrame !== frame) {
-      this.pFrame = frame
-      this.update()
-    }
     if (this.parent && this.autoTicking) {
+      const { pFrame, pTheme } = this
+      frame = Math.floor(frame / Math.round((pTheme.interval / SYNCING_INTERVAL)))
+      if (pFrame !== frame) {
+        this.pFrame = frame
+        this.update()
+      }
       /* Sync continuing */
       this.parent.sync().then(this.pHandleSync)
     } else {
