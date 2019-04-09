@@ -159,6 +159,14 @@ export declare class Bar extends Item {
 	protected handleCalculateWidth(): number;
 	protected handleRender(maxWidth?: number): string[] | "";
 }
+export declare class HideCursor extends Item {
+	constructor();
+	static setCursor(stream: NodeJS.WriteStream, visible: boolean): void;
+	didMount(parent: ParentElement): void;
+	willUnmount(parent: ParentElement): void;
+	protected handleCalculateWidth(): number;
+	protected handleRender(_maxWidth?: number): string;
+}
 export interface OutputOptions extends ItemOptions {
 	stream?: NodeJS.WriteStream;
 }

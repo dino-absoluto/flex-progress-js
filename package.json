@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",
+    "prepublishOnly": "webpack --env.prod && npm run dts-bundle",
     "build": "webpack",
     "dts-bundle": "dts-bundle-generator -o lib/index.d.ts src/index.ts",
     "dts": "tsc -d --emitDeclarationOnly --outDir 'lib/'"
