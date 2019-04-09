@@ -29,8 +29,14 @@ import { Output } from './out'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Empty space element */
+/** Hide console cursor, this can only work when added to an Output stream. */
 export class HideCursor extends Item {
+  /** HideCursor doesn't accept any options */
+  constructor () {
+    super()
+  }
+
+  /** Set cursor visible state */
   static setCursor (stream: NodeJS.WriteStream, visible: boolean) {
     if (!stream.isTTY) {
       return
