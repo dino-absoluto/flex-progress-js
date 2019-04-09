@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Item } from './child-element'
+import { Item, ItemOptions } from './child-element'
 import clamp from 'lodash-es/clamp'
 
 /* code */
@@ -30,6 +30,13 @@ import clamp from 'lodash-es/clamp'
 
 /** Empty space element */
 export class Space extends Item {
+  constructor (options?: ItemOptions | number) {
+    super(typeof options === 'number' ? undefined : options)
+    if (typeof options === 'number') {
+      this.width = options
+    }
+  }
+
   protected handleCalculateWidth () {
     return clamp(this.width || 1, this.minWidth, this.maxWidth)
   }

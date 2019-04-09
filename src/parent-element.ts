@@ -155,7 +155,7 @@ export class Group
       item = new Text(item)
     }
     if (typeof item === 'number') {
-      item = new Space({ width: item })
+      item = new Space(item)
     }
     return item
   }
