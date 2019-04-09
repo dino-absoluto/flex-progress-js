@@ -9,9 +9,9 @@ const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })
 
 out.append(
-  1 , new FlexProgress.Spinner()
-, 1 , 'Hello World!'
-, 1 , new FlexProgress.Spinner()
+  1, new FlexProgress.Spinner()
+, 1, 'Hello World!'
+, 1, new FlexProgress.Spinner()
 , 1, '⸨', bar , '⸩'
 )
 
