@@ -46,7 +46,7 @@ interface SpinnerOptions extends ItemOptions {
   theme?: SpinnerTheme
 }
 
-const themeDots: SpinnerThemeSized = {
+export const themeDots: SpinnerThemeSized = {
   width: 1,
   interval: 80,
   frames:
@@ -81,6 +81,7 @@ export class Spinner extends Item {
   private pFrame = 0
   private pTheme: SpinnerThemeSized = themeDots
   private pTime: number = 0
+  private pAutoTicking: boolean = true
 
   constructor (options: SpinnerOptions = {}) {
     super(options)
@@ -90,9 +91,20 @@ export class Spinner extends Item {
   }
 
   tick (interval?: number) {
+    const { pTheme } = this
     const time = this.pTime + (interval || SYNCING_INTERVAL)
     this.pTime = time
-    this.pFrame = Math.round(time / SYNCING_INTERVAL)
+    this.pFrame =
+      Math.floor(Math.round(time / SYNCING_INTERVAL)
+        / Math.round((pTheme.interval / SYNCING_INTERVAL)))
+  }
+
+  get autoTicking () { return this.enabled && this.pAutoTicking }
+  set autoTicking (auto: boolean) {
+    this.pAutoTicking = auto
+    if (auto) {
+      this.pStart()
+    }
   }
 
   /** Style to display spinner as */
@@ -113,7 +125,7 @@ export class Spinner extends Item {
     }
   }
 
-  mounted (_parent: ParentElement) {
+  didMount (_parent: ParentElement) {
     this.pStart()
   }
 
@@ -135,7 +147,7 @@ export class Spinner extends Item {
       this.pFrame = frame
       this.update()
     }
-    if (this.parent && this.enabled) {
+    if (this.parent && this.autoTicking) {
       /* Sync continuing */
       this.parent.sync().then(this.pHandleSync)
     } else {
@@ -155,6 +167,6 @@ export class Spinner extends Item {
     if (maxWidth != null && maxWidth < pTheme.width) {
       return ''
     }
-    return pTheme.frames[pFrame + frameOffset % pTheme.frames.length]
+    return pTheme.frames[(pFrame + frameOffset) % pTheme.frames.length]
   }
 }

@@ -143,7 +143,7 @@ export abstract class Item implements ChildElement {
     }
     this.$parent = parent
     if (parent) {
-      this.mounted(parent)
+      this.didMount(parent)
     }
   }
 
@@ -177,9 +177,9 @@ export abstract class Item implements ChildElement {
   }
 
   /** Call when parent is set */
-  mounted (_parent: ParentElement) { return }
+  protected didMount (_parent: ParentElement) { return }
   /** Call when parent is unset */
-  willUnmount (_parent: ParentElement) { return }
+  protected willUnmount (_parent: ParentElement) { return }
 
   /** Render this item */
   render (maxWidth?: number): string {
