@@ -4,7 +4,6 @@
     "strict": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
     "resolveJsonModule": true

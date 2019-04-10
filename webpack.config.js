@@ -81,6 +81,19 @@ const mini = (_env) => merge({}, defaultConfigs, {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'lib/')
+  },
+  module: {
+    rules: [
+      {
+        use: {
+          options: {
+            compilerOptions: {
+              removeComments: true
+            }
+          }
+        }
+      }
+    ]
   }
 })
 

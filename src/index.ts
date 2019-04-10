@@ -21,7 +21,7 @@
 /* imports */
 import { Item } from './child-element'
 import { Group } from './parent-element'
-import { Text } from './text'
+import { Text, TextAlignment } from './text'
 import { Space } from './space'
 import { Spinner } from './spinner'
 import { Bar } from './bar'
@@ -32,7 +32,7 @@ import { Output } from './out'
 export { Item
 , Group
 , Space
-, Text
+, Text, TextAlignment
 , Spinner
 , Bar
 , HideCursor
