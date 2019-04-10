@@ -50,11 +50,13 @@ const loop = setInterval(() => {
 }, 80)
 
 /* End the loop */
-setTimeout(() => {
-  clearInterval(loop)
-  /* Clear elements from output */
-  out.clear()
-}, 10000)
+if (!(process.argv.indexOf('--loop') >= 0)) {
+  setTimeout(() => {
+    clearInterval(loop)
+    /* Clear elements from output */
+    out.clear()
+  }, 10000)
+}
 
 /* Call out.clear() on SIGINT to restore the cursor con Ctrl+C */
 process.on('SIGINT', () => {
