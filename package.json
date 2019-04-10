@@ -45,6 +45,7 @@
     "jest": "^24.7.1",
     "lodash-es": "^4.17.11",
     "source-map-loader": "^0.2.4",
+    "string-width": "^4.1.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
@@ -55,8 +56,5 @@
     "webpack-bundle-analyzer": "^3.2.0",
     "webpack-cli": "^3.3.0",
     "webpack-node-externals": "^1.7.2"
-  },
-  "peerDependencies": {
-    "string-width": "^4.1.0"
   }
 }
