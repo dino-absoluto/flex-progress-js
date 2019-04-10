@@ -31,9 +31,11 @@ const loop = setInterval(() => {
 }, 40)
 ```
 
-<img width="400" height="100" src="docs/media/demo-1.gif" />
+<img width="400" height="100"
+src="docs/media/demo-1-cropped.gif" />
 
-<img width="400" height="100" src="docs/media/demo-2.gif" />
+<img width="400" height="100"
+src="docs/media/demo-2-cropped.gif" />
 
 ## Usage
 See [documents](docs/index.md) for more details.
