@@ -68,6 +68,8 @@ export interface ParentElement extends Element {
   remove (child: ChildElement): ChildElement | undefined
   /** Clear all elements */
   clear (): void
+  /* @TODO: work out a way to better signal state changes */
+  update (child?: ChildElement): void
   /** Add elements to the end.
    * @param {...ChildElement} items ... of child element
    */

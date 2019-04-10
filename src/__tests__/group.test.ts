@@ -28,7 +28,7 @@ import { Group } from '../parent-element'
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Group', () => {
-  test('flexing', async () => {
+  test('flex.1', async () => {
     const group = new Group()
     const text = new Text({ text: 'a'.repeat(100), flex: 1 })
     group.append('abc')
@@ -36,6 +36,16 @@ describe('Group', () => {
     expect(group.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
     const group2 = new Group()
     group2.append(group)
+    expect(group2.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
+  })
+  test('flex.2', async () => {
+    const group = new Group()
+    const group2 = new Group()
+    group2.append(group)
+    const text = new Text({ text: 'a'.repeat(100), flex: 1 })
+    group.append('abc')
+    group.append(text)
+    expect(group.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
     expect(group2.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
   })
 })

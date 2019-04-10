@@ -159,7 +159,7 @@ export abstract class Item implements ChildElement {
   protected handleUpdate () {
     const { parent } = this
     if (parent) {
-      parent.update()
+      parent.update(this)
       parent.sync().then(() => { this.$updating = false })
       // this.$updating = false
     } else {
