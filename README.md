@@ -12,7 +12,7 @@ updating the output.
 No need to care about what others elements are doing.
 
 ```typescript
-import * as FlexProgress from '@dinoabsoluto/flex-progress-js'
+import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })

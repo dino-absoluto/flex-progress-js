@@ -37,6 +37,7 @@ export interface ParentElement extends Element {
 	remove(child: ChildElement): ChildElement | undefined;
 	/** Clear all elements */
 	clear(): void;
+	update(child?: ChildElement): void;
 	/** Add elements to the end.
 	 * @param {...ChildElement} items ... of child element
 	 */

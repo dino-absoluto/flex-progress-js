@@ -1,4 +1,4 @@
-import * as FlexProgress from '@dinoabsoluto/flex-progress-js'
+import * as FlexProgress from '@dinoabsoluto/flex-progress'
 import chalk from 'chalk'
 import flip = require('lodash/flip')
 import overArgs = require('lodash/overArgs')
