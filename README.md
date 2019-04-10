@@ -36,6 +36,7 @@ const loop = setInterval(() => {
 <img width="400" height="100" src="docs/media/demo-2.gif" />
 
 ## Usage
+See [Documents](docs/index.md) for more details.
 The module has the following elements:
 * `Output` - Write text to screen.
 * `Bar` - A progress bar.
