@@ -31,14 +31,9 @@ const loop = setInterval(() => {
 }, 40)
 ```
 
-<<<<<<< HEAD
 <img width="400" height="100" src="docs/media/demo-1.gif" />
 
 <img width="400" height="100" src="docs/media/demo-2.gif" />
-=======
-<img width="400" height="100" src="media/demo-1.gif" />
-<img width="400" height="100" src="media/demo-2.gif" />
->>>>>>> da996cc8ebc01371f9310a76ec10bb095361479a
 
 ## Usage
 The module has the following elements:
