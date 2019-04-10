@@ -36,7 +36,7 @@ const loop = setInterval(() => {
 
 ## Usage
 The module has the following elements:
-* `Output` - Represent the output to screen.
+* `Output` - Write text to screen.
 * `Bar` - A progress bar.
 * `Spinner` - An infinity looping spinner.
 * `Space` - Empty space.
