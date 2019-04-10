@@ -32,5 +32,19 @@ const loop = setInterval(() => {
 ```
 
 <img width="400" height="100" src="media/demo-1.gif" />
-
 <img width="400" height="100" src="media/demo-2.gif" />
+
+## Usage
+The module has the following elements:
+* `Output` - Represent the output to screen.
+* `Bar` - A progress bar.
+* `Spinner` - An infinity looping spinner.
+* `Space` - Empty space.
+* `Text` - A dynamic text element. Text can be changed at will.
+
+Elements width can be changed dynamically. Although some, such as `Spinner`,
+only render at fixed width.
+
+**Note:** some elements keep the program busy (such as `Spinner`),
+thus preventing the program from exiting.
+Use `Output.clear()` to clear all elements from `Output`.
