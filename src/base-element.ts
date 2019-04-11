@@ -52,20 +52,25 @@ export abstract class BaseElement<T extends object = {}> {
     })
   }
   protected proxy: T
-  protected schedule = setImmediate
   protected data: T
   private pUpdate: Partial<T> = {}
+  private pUpdateTimer?: ReturnType<typeof setImmediate>
   private pSchedule = once(() => {
-    this.schedule(this.pFlush)
+    this.pUpdateTimer = setImmediate(this.flush)
   })
 
-  private pFlush = () => {
+  protected flush = () => {
+    let pUpdateTimer
+    ;[ pUpdateTimer, this.pUpdateTimer ] = [ this.pUpdateTimer, undefined ]
+    if (pUpdateTimer) {
+      clearImmediate(pUpdateTimer)
+    }
     let data: Partial<T>
     ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
     this.handleFlush(data)
     Object.assign(this.data, data)
     this.pSchedule = once(() => {
-      this.schedule(this.pFlush)
+      setImmediate(this.flush)
     })
   }
 
@@ -73,7 +78,7 @@ export abstract class BaseElement<T extends object = {}> {
 
 }
 
-interface BaseData {
+export interface BaseData {
   minWidth: number
   maxWidth: number
   flexGrow: number
@@ -81,11 +86,65 @@ interface BaseData {
   enabled: boolean
 }
 
+export interface BaseOptions {
+  /** Fixed width element */
+  width?: number
+  /** Mimimum width */
+  minWidth?: number
+  /** Maximum width */
+  maxWidth?: number
+  /** Flexing factor, set both grow and shrink */
+  flex?: {
+    /** Grow factor */
+    grow?: number
+    /** Shrink factor */
+    shrink?: number
+  } | number
+  /** Post process values */
+  postProcess?: (...values: string[]) => string
+}
+
 export abstract class Base<T extends BaseData>
 extends BaseElement<T>
 implements ChildElement {
   parent?: ParentElement
   outdated = false
+
+  constructor (options?: BaseOptions,
+    defaultData?: Exclude<T, BaseData>) {
+    super(Object.assign({
+      minWidth: 0,
+      maxWidth: Number.MAX_SAFE_INTEGER,
+      flexGrow: 0,
+      flexShrink: 0,
+      enabled: true
+    }, defaultData))
+    if (!options) {
+      return
+    }
+    if (options.width != null) {
+      this.width = options.width
+    }
+    if (options.minWidth != null) {
+      this.minWidth = options.minWidth
+    }
+    if (options.maxWidth != null) {
+      this.maxWidth = options.maxWidth
+    }
+    if (options.flex != null) {
+      const { flex } = options
+      if (typeof flex === 'number') {
+        this.flex = flex
+      } else {
+        if (flex.grow != null) {
+          this.flexGrow = flex.grow
+        }
+        if (flex.shrink != null) {
+          this.flexShrink = flex.shrink
+        }
+      }
+    }
+  }
 
   handleFlush (data: Partial<BaseData>) {
     const { parent } = this
@@ -155,5 +214,13 @@ implements ChildElement {
       return ''
     }
     return this.rendered(...castArray(this.render(maxWidth)))
+  }
+
+  beforeMount (_parent: ParentElement) {
+    this.flush()
+  }
+
+  mounted (_parent: ParentElement) {
+    return
   }
 }
