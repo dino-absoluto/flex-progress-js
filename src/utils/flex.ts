@@ -20,6 +20,7 @@
  */
 /* imports */
 import clamp from 'lodash-es/clamp'
+import sortedIndex from 'lodash-es/sortedIndex'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -42,36 +43,67 @@ interface FlexState {
   grow: number
   shrink: number
   item: FlexItem
+  [Symbol.toPrimitive]?: () => number
 }
 
 const grow = (states: FlexState[], deltaW: number, flexSum: number) => {
   const perFlex = deltaW / flexSum
+  const sortedFractions: FlexState[] = []
   for (const state of states) {
     if (state.grow === 0) {
       continue
     }
-    let adjust = clamp(perFlex * state.grow, 0, Math.min(deltaW, state.growRoom))
-    let round = Math.round(adjust)
+    const adjust = clamp(perFlex * state.grow, 0, Math.min(deltaW, state.growRoom))
+    const round = Math.round(adjust)
+    const fraction = adjust - round
+    if (fraction > 0 && state.growRoom > round) {
+      state[Symbol.toPrimitive] = () => -fraction
+      sortedFractions.splice(sortedIndex(sortedFractions, state), 0, state)
+    }
     deltaW -= round
     state.width += round
     if (deltaW === 0) {
       break
     }
   }
+  if (deltaW > 0) {
+    for (const state of sortedFractions) {
+      state.width++
+      deltaW--
+      if (deltaW === 0) {
+        break
+      }
+    }
+  }
 }
 
 const shrink = (states: FlexState[], deltaW: number, flexSum: number) => {
   const perFlex = deltaW / flexSum
+  const sortedFractions: FlexState[] = []
   for (const state of states) {
     if (state.shrink === 0) {
       continue
     }
     let adjust = clamp(perFlex * state.shrink, 0, Math.min(deltaW, state.shrinkRoom))
     let round = Math.round(adjust)
+    const fraction = adjust - round
+    if (fraction > 0 && state.shrinkRoom > round) {
+      state[Symbol.toPrimitive] = () => -fraction
+      sortedFractions.splice(sortedIndex(sortedFractions, state), 0, state)
+    }
     deltaW -= round
     state.width -= round
     if (deltaW === 0) {
       break
+    }
+  }
+  if (deltaW > 0) {
+    for (const state of sortedFractions) {
+      state.width--
+      deltaW--
+      if (deltaW === 0) {
+        break
+      }
     }
   }
 }
