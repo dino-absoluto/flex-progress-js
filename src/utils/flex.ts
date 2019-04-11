@@ -84,7 +84,7 @@ export const flex = (children: FlexItem[], maxWidth: number) => {
     const growRoom = Math.min(item.maxWidth || maxWidth, maxWidth) - width
     const shrinkRoom = width - Math.max(item.minWidth || 0, 0)
     const grow = item.flexGrow * growRoom
-    const shrink = item.flexShrink * growRoom
+    const shrink = item.flexShrink * shrinkRoom
     growSum += grow
     shrinkSum += shrink
     widthSum += width

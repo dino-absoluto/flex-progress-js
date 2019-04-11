@@ -44,6 +44,27 @@ describe('flex', () => {
       }
     ], 20)
     expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
-    console.log(results)
+  })
+  test('shrink', async () => {
+    const results = flex([
+      {
+        flexGrow: 0,
+        flexShrink: 0,
+        calculateWidth () { return 3 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 10 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 17 }
+      }, {
+        flexGrow: 2,
+        flexShrink: 2,
+        calculateWidth () { return 10 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
   })
 })
