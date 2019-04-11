@@ -23,7 +23,7 @@ import { flex } from '../flex'
 
 /* code */
 describe('flex', () => {
-  test('grow', async () => {
+  test('grow.1', async () => {
     const results = flex([
       {
         flexGrow: 0,
@@ -33,19 +33,53 @@ describe('flex', () => {
         flexGrow: 1,
         flexShrink: 0,
         calculateWidth () { return 5 }
-      }, {
-        flexGrow: 1,
-        flexShrink: 0,
-        calculateWidth () { return 3 }
-      }, {
-        flexGrow: 2,
-        flexShrink: 0,
-        calculateWidth () { return 3 }
       }
     ], 20)
     expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
   })
-  test('shrink', async () => {
+  test('grow.2', async () => {
+    const results = flex([
+      {
+        flexGrow: 1000,
+        flexShrink: 0,
+        calculateWidth () { return 3 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 5 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('grow.3', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 3 }
+      }, {
+        flexGrow: .01,
+        flexShrink: 0,
+        calculateWidth () { return 5 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('grow.4', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 3 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 0 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.1', async () => {
     const results = flex([
       {
         flexGrow: 0,
@@ -55,14 +89,48 @@ describe('flex', () => {
         flexGrow: 1,
         flexShrink: 1,
         calculateWidth () { return 10 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.2', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 10,
+        calculateWidth () { return 1 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 17 }
+        calculateWidth () { return 40 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.3', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 1 }
       }, {
-        flexGrow: 2,
-        flexShrink: 2,
-        calculateWidth () { return 10 }
+        flexGrow: 1,
+        flexShrink: .1,
+        calculateWidth () { return 40 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.4', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 1 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 100000 }
       }
     ], 20)
     expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
