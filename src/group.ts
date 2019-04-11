@@ -40,7 +40,10 @@ implements ParentElement {
     return ''
   }
 
-  nextFrame () {
+  nextFrame (cb: (frame: number) => void) {
+    if (this.parent) {
+      return this.parent.nextFrame(cb)
+    }
     return false
   }
 
