@@ -22,21 +22,25 @@
 import { BaseElement } from '../base'
 
 /* code */
-// █████▒░░░░░░░░░
-// ██████▓░░░░░░░░
-// █████████████▓░
-// █▓▒░▒▓█
-
 const immediate = () => {
   return new Promise(resolve => setImmediate(resolve))
 }
 
-describe('ElementNext', () => {
+describe('BaseElement', () => {
   test('simple', async () => {
-    class TestE<T extends object> extends BaseElement<T> {
+    interface TestI {
+      a: number
+      b: number
+      c: number
+    }
+    class TestE<T extends TestI> extends BaseElement<T> {
       count = 0
       tProxy = this.proxy
       tFlush = this.flush
+      constructor (opts: TestI) {
+        super()
+        Object.assign(this.data, opts)
+      }
       handleFlush () {
         this.count++
         return
@@ -53,10 +57,11 @@ describe('ElementNext', () => {
       b: 1,
       c: 2
     })
-    node.tProxy.a += 10
-    node.tProxy.b += 10
-    node.tProxy.c += 10
-    expect(node.tProxy).toMatchObject({
+    const tProxy = node.tProxy as TestI
+    tProxy.a += 10
+    tProxy.b += 10
+    tProxy.c += 10
+    expect(tProxy).toMatchObject({
       a: 10,
       b: 11,
       c: 12
@@ -64,9 +69,9 @@ describe('ElementNext', () => {
     expect(node.count).toBe(0)
     await immediate()
     expect(node.count).toBe(1)
-    node.tProxy.a += 10
-    node.tProxy.b += 10
-    node.tProxy.c += 10
+    tProxy.a += 10
+    tProxy.b += 10
+    tProxy.c += 10
     expect(node.tProxy).toMatchObject({
       a: 20,
       b: 21,

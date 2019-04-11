@@ -30,8 +30,12 @@ import { ChildElement, ParentElement } from './shared'
 // █▓▒░▒▓█
 
 export abstract class BaseElement<T extends object = {}> {
-  constructor (data: T) {
-    this.data = data
+  protected proxy: Partial<T>
+  protected data: Partial<T> = {}
+  private pUpdate: Partial<T> = {}
+  private pUpdateTimer?: ReturnType<typeof setImmediate>
+
+  constructor () {
     this.proxy = new Proxy(this.data, {
       get: ($, prop: keyof T) => {
         const { pUpdate } = this
@@ -51,10 +55,7 @@ export abstract class BaseElement<T extends object = {}> {
       }
     })
   }
-  protected proxy: T
-  protected data: T
-  private pUpdate: Partial<T> = {}
-  private pUpdateTimer?: ReturnType<typeof setImmediate>
+
   private pSchedule = once(() => {
     this.pUpdateTimer = setImmediate(this.flush)
   })
@@ -107,18 +108,11 @@ export interface BaseOptions {
 export abstract class Base<T extends BaseData>
 extends BaseElement<T>
 implements ChildElement {
-  parent?: ParentElement
+  private pParent?: ParentElement
   outdated = false
 
-  constructor (options?: BaseOptions,
-    defaultData?: Exclude<T, BaseData>) {
-    super(Object.assign({
-      minWidth: 0,
-      maxWidth: Number.MAX_SAFE_INTEGER,
-      flexGrow: 0,
-      flexShrink: 0,
-      enabled: true
-    }, defaultData))
+  constructor (options?: BaseOptions) {
+    super()
     if (!options) {
       return
     }
@@ -146,6 +140,30 @@ implements ChildElement {
     }
   }
 
+  get parent () { return this.pParent }
+  set parent (parent: ParentElement | undefined) {
+    if (this.pParent != null) {
+      this.beforeUnmount()
+    }
+    if (parent != null) {
+      this.beforeMount(parent)
+      this.pParent = parent
+      this.mounted()
+    }
+  }
+
+  protected beforeMount (_parent: ParentElement) {
+    this.flush()
+  }
+
+  protected mounted () {
+    return
+  }
+
+  protected beforeUnmount () {
+    return
+  }
+
   handleFlush (data: Partial<BaseData>) {
     const { parent } = this
     if (parent) {
@@ -161,12 +179,12 @@ implements ChildElement {
     this.maxWidth = value
   }
 
-  get minWidth () { return this.proxy.minWidth }
+  get minWidth () { return this.proxy.minWidth || 0 }
   set minWidth (value: number) {
     this.proxy.minWidth = Math.max(value || 0, 0)
   }
 
-  get maxWidth () { return this.proxy.maxWidth }
+  get maxWidth () { return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER }
   set maxWidth (value: number) {
     this.proxy.maxWidth = Math.min(value || Number.MAX_SAFE_INTEGER,
       Number.MAX_SAFE_INTEGER)
@@ -182,16 +200,16 @@ implements ChildElement {
     return this.minWidth < this.maxWidth
   }
 
-  get flexGrow () { return this.proxy.flexGrow }
+  get flexGrow () { return this.proxy.flexGrow || 0 }
   set flexGrow (value: number) {
     this.proxy.flexGrow = Math.max(0, value || 0)
   }
-  get flexShrink () { return this.proxy.flexShrink }
+  get flexShrink () { return this.proxy.flexShrink || 0 }
   set flexShrink (value: number) {
     this.proxy.flexShrink = Math.max(0, value || 0)
   }
 
-  get enabled () { return this.proxy.enabled }
+  get enabled () { return this.proxy.enabled != null ? this.proxy.enabled : true }
   set enabled (value: boolean) {
     this.proxy.enabled = value
   }
@@ -221,15 +239,4 @@ implements ChildElement {
     return this.rendered(...castArray(this.render(maxWidth)))
   }
 
-  protected beforeMount (_parent: ParentElement) {
-    this.flush()
-  }
-
-  protected mounted (_parent: ParentElement) {
-    return
-  }
-
-  protected beforeUnmount (_parent: ParentElement) {
-    return
-  }
 }

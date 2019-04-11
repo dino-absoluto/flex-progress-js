@@ -20,7 +20,7 @@
  */
 /* imports */
 import { ChildElement, ParentElement } from './shared'
-import { Base, BaseData } from './base'
+import { Base, BaseData, BaseOptions } from './base'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -28,10 +28,20 @@ import { Base, BaseData } from './base'
 // █████████████▓░
 // █▓▒░▒▓█
 
-export class Group<T extends BaseData = BaseData>
-extends Base<BaseData>
+interface GroupData extends BaseData {
+}
+
+interface GroupOptions extends BaseOptions {
+}
+
+export class Group<T extends GroupData = GroupData>
+extends Base<GroupData>
 implements ParentElement {
   readonly children: ChildElement[] = []
+  constructor (options?: GroupOptions) {
+    super()
+  }
+
   handleCalculateWidth () {
     return 0
   }
