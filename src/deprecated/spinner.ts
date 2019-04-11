@@ -21,7 +21,7 @@
 /* imports */
 import { Item, ItemOptions } from './child-element'
 import { ParentElement, SYNCING_INTERVAL } from './shared'
-import stringWidth from './optional/string-width'
+import stringWidth from '../optional/string-width'
 import once from 'lodash-es/once'
 
 /* code */

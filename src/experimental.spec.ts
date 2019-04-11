@@ -27,11 +27,11 @@ import once from 'lodash-es/once'
 // █████████████▓░
 // █▓▒░▒▓█
 
-abstract class ElementNext<T extends object, K extends keyof T> {
+abstract class ElementNext<T extends object = {}> {
   constructor (data: T) {
-    this.pData = data
-    this.proxy = new Proxy(this.pData, {
-      get: ($, prop: K) => {
+    this.data = data
+    this.proxy = new Proxy(this.data, {
+      get: ($, prop: keyof T) => {
         const { pUpdate } = this
         if (pUpdate[prop] !== undefined) {
           return pUpdate[prop]
@@ -39,7 +39,10 @@ abstract class ElementNext<T extends object, K extends keyof T> {
           return $[prop]
         }
       },
-      set: (_$, prop: K, value: any) => {
+      set: ($, prop: keyof T, value: any) => {
+        if ($[prop] === this.pUpdate[prop]) {
+          return true
+        }
         this.pUpdate[prop] = value
         this.pSchedule()
         return true
@@ -48,7 +51,7 @@ abstract class ElementNext<T extends object, K extends keyof T> {
   }
   protected proxy: T
   protected schedule = setImmediate
-  private pData: T
+  protected data: T
   private pUpdate: Partial<T> = {}
   private pSchedule = once(() => {
     this.schedule(this.pFlush)
@@ -58,8 +61,7 @@ abstract class ElementNext<T extends object, K extends keyof T> {
     let data: Partial<T>
     ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
     this.handleFlush(data)
-    Object.assign(this.pData, data)
-    this.count++
+    Object.assign(this.data, data)
     this.pSchedule = once(() => {
       this.schedule(this.pFlush)
     })
@@ -67,7 +69,6 @@ abstract class ElementNext<T extends object, K extends keyof T> {
 
   protected abstract handleFlush (data: Partial<T>): void
 
-  count = 0
 }
 
 const immediate = () => {
@@ -76,9 +77,11 @@ const immediate = () => {
 
 describe('ElementNext', () => {
   test('simple', async () => {
-    class TestE<T extends object, K extends keyof T> extends ElementNext<T, K> {
+    class TestE<T extends object> extends ElementNext<T> {
+      count = 0
       tProxy = this.proxy
       handleFlush () {
+        this.count++
         return
       }
     }
@@ -105,4 +108,28 @@ describe('ElementNext', () => {
     await immediate()
     expect(node.count).toBe(1)
   })
+})
+
+class ChildElement extends ElementNext {
+  parent?: ParentElement
+  handleFlush () {
+    return
+  }
+}
+
+class ParentElement extends ElementNext<{}> {
+  children: ChildElement[] = []
+  handleFlush () {
+    return
+  }
+
+  get hasTTY () { return false }
+
+  nextFrame (task: (frame: number) => void): boolean {
+    return false
+  }
+}
+
+describe('ChildNext', () => {
+  return
 })

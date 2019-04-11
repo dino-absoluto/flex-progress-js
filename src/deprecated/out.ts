@@ -25,7 +25,7 @@ import {
   clearLine
 , clearScreenDown
 , cursorTo } from 'readline'
-import stringWidth from './optional/string-width'
+import stringWidth from '../optional/string-width'
 
 /* code */
 // █████▒░░░░░░░░░
