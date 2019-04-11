@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { BaseElement } from '../base-element'
+import { BaseElement } from '../base'
 
 /* code */
 // █████▒░░░░░░░░░
