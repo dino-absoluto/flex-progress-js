@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import once from 'lodash-es/once'
+import { BaseElement } from '../base-element'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -27,57 +27,13 @@ import once from 'lodash-es/once'
 // █████████████▓░
 // █▓▒░▒▓█
 
-abstract class ElementNext<T extends object = {}> {
-  constructor (data: T) {
-    this.data = data
-    this.proxy = new Proxy(this.data, {
-      get: ($, prop: keyof T) => {
-        const { pUpdate } = this
-        if (pUpdate[prop] !== undefined) {
-          return pUpdate[prop]
-        } else {
-          return $[prop]
-        }
-      },
-      set: ($, prop: keyof T, value: any) => {
-        if ($[prop] === this.pUpdate[prop]) {
-          return true
-        }
-        this.pUpdate[prop] = value
-        this.pSchedule()
-        return true
-      }
-    })
-  }
-  protected proxy: T
-  protected schedule = setImmediate
-  protected data: T
-  private pUpdate: Partial<T> = {}
-  private pSchedule = once(() => {
-    this.schedule(this.pFlush)
-  })
-
-  private pFlush = () => {
-    let data: Partial<T>
-    ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
-    this.handleFlush(data)
-    Object.assign(this.data, data)
-    this.pSchedule = once(() => {
-      this.schedule(this.pFlush)
-    })
-  }
-
-  protected abstract handleFlush (data: Partial<T>): void
-
-}
-
 const immediate = () => {
   return new Promise(resolve => setImmediate(resolve))
 }
 
 describe('ElementNext', () => {
   test('simple', async () => {
-    class TestE<T extends object> extends ElementNext<T> {
+    class TestE<T extends object> extends BaseElement<T> {
       count = 0
       tProxy = this.proxy
       handleFlush () {
@@ -108,28 +64,4 @@ describe('ElementNext', () => {
     await immediate()
     expect(node.count).toBe(1)
   })
-})
-
-class ChildElement extends ElementNext {
-  parent?: ParentElement
-  handleFlush () {
-    return
-  }
-}
-
-class ParentElement extends ElementNext<{}> {
-  children: ChildElement[] = []
-  handleFlush () {
-    return
-  }
-
-  get hasTTY () { return false }
-
-  nextFrame (task: (frame: number) => void): boolean {
-    return false
-  }
-}
-
-describe('ChildNext', () => {
-  return
 })
