@@ -149,7 +149,7 @@ implements ChildElement {
   handleFlush (data: Partial<BaseData>) {
     const { parent } = this
     if (parent) {
-      parent.notify(this, data)
+      parent.notify(this, this.data, data)
     }
     this.outdated = true
     return

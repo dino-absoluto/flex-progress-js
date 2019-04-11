@@ -19,6 +19,8 @@
  *
  */
 /* imports */
+import { ChildElement, ParentElement } from './shared'
+import { Base, BaseData } from './base'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -26,40 +28,25 @@
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Control the rendering synchronization rate */
-export const SYNCING_INTERVAL = 40
+export class Group<T extends BaseData = BaseData>
+extends Base<BaseData>
+implements ParentElement {
+  readonly children: ChildElement[] = []
+  handleCalculateWidth () {
+    return 0
+  }
 
-/** Describe a flex-progress element */
-export interface Element {
-  /** Fixed width element */
-  width?: number
-  /** Mimimum width */
-  minWidth?: number
-  /** Maximum width */
-  maxWidth?: number
-  /** Flexing factor, set both grow and shrink */
-  flex: number
-  /** Grow factor */
-  flexGrow: number
-  /** Shrink factor */
-  flexShrink: number
-  /** The active state of the element */
-  enabled: boolean
-  /** Calculate uninhibited width */
-  calculateWidth (): number
-  /** Render item with max-width */
-  render (maxWidth?: number): string
-}
+  handleRender () {
+    return ''
+  }
 
-/** Describe a child element */
-export interface ChildElement extends Element {
-  parent?: ParentElement
-}
+  nextFrame () {
+    return false
+  }
 
-/** Describe a parent element */
-export interface ParentElement extends Element {
-  /** Array of child elements */
-  children: ChildElement[]
-  nextFrame (cb: (frame: number) => void): boolean
-  notify (child: ChildElement, before: Readonly<unknown>, data: unknown): void
+  notify (child: ChildElement
+  , before: Readonly<BaseData>
+  , after: Readonly<Partial<BaseData>>) {
+    return
+  }
 }
