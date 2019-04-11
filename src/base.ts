@@ -46,7 +46,7 @@ export abstract class BaseElement<T extends object = {}> {
         }
       },
       set: ($, prop: keyof T, value: any) => {
-        if ($[prop] === this.pUpdate[prop]) {
+        if ($[prop] === this.pUpdate[prop] && $[prop] != null) {
           return true
         }
         this.pUpdate[prop] = value
@@ -236,7 +236,7 @@ implements ChildElement {
     if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }
-    return this.rendered(...castArray(this.render(maxWidth)))
+    return this.rendered(...castArray(this.handleRender(maxWidth)))
   }
 
 }
