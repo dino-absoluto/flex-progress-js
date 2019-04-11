@@ -36,19 +36,22 @@ interface FlexItem {
   calculateWidth (): number
 }
 
-interface FlexState {
+interface FlexState<T extends FlexItem> {
   width: number
   growRoom: number
   shrinkRoom: number
   grow: number
   shrink: number
-  item: FlexItem
+  item: T
   [Symbol.toPrimitive]?: () => number
 }
 
-const grow = (states: FlexState[], deltaW: number, flexSum: number) => {
+const grow = <T extends FlexItem>(
+  states: FlexState<T>[]
+, deltaW: number
+, flexSum: number) => {
   const perFlex = deltaW / flexSum
-  const sortedFractions: FlexState[] = []
+  const sortedFractions: FlexState<T>[] = []
   for (const state of states) {
     if (state.grow === 0) {
       continue
@@ -77,9 +80,12 @@ const grow = (states: FlexState[], deltaW: number, flexSum: number) => {
   }
 }
 
-const shrink = (states: FlexState[], deltaW: number, flexSum: number) => {
+const shrink = <T extends FlexItem>(
+  states: FlexState<T>[]
+, deltaW: number
+, flexSum: number) => {
   const perFlex = deltaW / flexSum
-  const sortedFractions: FlexState[] = []
+  const sortedFractions: FlexState<T>[] = []
   for (const state of states) {
     if (state.shrink === 0) {
       continue
@@ -108,8 +114,8 @@ const shrink = (states: FlexState[], deltaW: number, flexSum: number) => {
   }
 }
 
-export const flex = (children: FlexItem[], maxWidth: number) => {
-  let states: FlexState[]
+export const flex = <T extends FlexItem>(children: T[], maxWidth: number) => {
+  let states: FlexState<T>[]
   let growSum = 0
   let shrinkSum = 0
   let widthSum = 0

@@ -21,6 +21,8 @@
 /* imports */
 import { ChildElement, ParentElement } from './shared'
 import { Base, BaseData, BaseOptions } from './base'
+import { Text } from './text'
+import { flex } from './utils/flex'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -28,22 +30,23 @@ import { Base, BaseData, BaseOptions } from './base'
 // █████████████▓░
 // █▓▒░▒▓█
 
-interface GroupData extends BaseData {
+export interface GroupData extends BaseData {
 }
 
-interface GroupOptions extends BaseOptions {
-}
-
-class Flexer {
-  children: ChildElement[] = []
+export interface GroupOptions extends BaseOptions {
 }
 
 export class Group<T extends GroupData = GroupData>
-extends Base<GroupData>
+extends Base<T>
 implements ParentElement {
   readonly children: ChildElement[] = []
-  constructor (options?: GroupOptions) {
-    super()
+
+  get flexGrow () {
+    return 1
+  }
+
+  get flexShrink () {
+    return 1
   }
 
   handleCalculateWidth () {
@@ -51,7 +54,13 @@ implements ParentElement {
   }
 
   handleRender (maxWidth?: number) {
-    return ''
+    if (maxWidth == null) {
+      return this.children.map(item => item.render())
+    }
+    const states = flex(this.children, maxWidth)
+    return states.map(state => {
+      return state.item.render(state.width)
+    })
   }
 
   nextFrame (cb: (frame: number) => void) {
@@ -61,9 +70,21 @@ implements ParentElement {
     return false
   }
 
-  notify (child: ChildElement
-  , before: Readonly<BaseData>
-  , patch: Readonly<Partial<BaseData>>) {
+  append (...items: (string | ChildElement)[]) {
+    const { children } = this
+    for (const item of items) {
+      let child
+      if (typeof item === 'string') {
+        child = new Text(item)
+      } else {
+        child = item
+      }
+      children.push(child)
+      child.parent = this
+    }
+  }
+
+  notify () {
     return
   }
 }
