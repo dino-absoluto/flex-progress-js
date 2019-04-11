@@ -61,5 +61,5 @@ export interface ParentElement extends Element {
   /** Array of child elements */
   children: ChildElement[]
   nextFrame (cb: (frame: number) => void): boolean
-  notify (child: ChildElement, before: Readonly<unknown>, data: unknown): void
+  notify (child: ChildElement, before: unknown, patch: unknown): void
 }

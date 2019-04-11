@@ -233,7 +233,7 @@ implements ChildElement {
   }
 
   render (maxWidth?: number): string {
-    if (!this.beforeRender(maxWidth) || maxWidth === 0 || !this.enabled) {
+    if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }
     return this.rendered(...castArray(this.render(maxWidth)))

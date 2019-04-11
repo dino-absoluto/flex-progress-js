@@ -34,6 +34,10 @@ interface GroupData extends BaseData {
 interface GroupOptions extends BaseOptions {
 }
 
+class Flexer {
+  children: ChildElement[] = []
+}
+
 export class Group<T extends GroupData = GroupData>
 extends Base<GroupData>
 implements ParentElement {
@@ -43,10 +47,10 @@ implements ParentElement {
   }
 
   handleCalculateWidth () {
-    return 0
+    return this.children.reduce((acc, child) => acc + child.calculateWidth(), 0)
   }
 
-  handleRender () {
+  handleRender (maxWidth?: number) {
     return ''
   }
 
@@ -59,7 +63,7 @@ implements ParentElement {
 
   notify (child: ChildElement
   , before: Readonly<BaseData>
-  , after: Readonly<Partial<BaseData>>) {
+  , patch: Readonly<Partial<BaseData>>) {
     return
   }
 }
