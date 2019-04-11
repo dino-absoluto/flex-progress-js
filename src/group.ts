@@ -22,6 +22,7 @@
 import { ChildElement, ParentElement } from './shared'
 import { Base, BaseData, BaseOptions } from './base'
 import { Text } from './text'
+import { Space } from './space'
 import { flex } from './utils/flex'
 
 /* code */
@@ -30,11 +31,9 @@ import { flex } from './utils/flex'
 // █████████████▓░
 // █▓▒░▒▓█
 
-export interface GroupData extends BaseData {
-}
-
-export interface GroupOptions extends BaseOptions {
-}
+export type GroupData = BaseData
+export type GroupOptions = BaseOptions
+type FlexChild = string | number | ChildElement
 
 export class Group<T extends GroupData = GroupData>
 extends Base<T>
@@ -68,17 +67,62 @@ implements ParentElement {
     return false
   }
 
+  private pItemAdded (item: ChildElement) {
+    item.parent = this
+  }
+
+  private pItemRemoved (item: ChildElement) {
+    item.parent = undefined
+  }
+
+  private static pCastChild (item: FlexChild): ChildElement {
+    if (typeof item === 'string') {
+      item = new Text(item)
+    }
+    if (typeof item === 'number') {
+      item = new Space(item)
+    }
+    return item
+  }
+
+  add (item: FlexChild, atIndex?: number) {
+    item = Group.pCastChild(item)
+    const { children } = this
+    if (atIndex != null && Number.isInteger(atIndex) && Math.abs(atIndex) < children.length) {
+      children.splice(atIndex, 0, item)
+      this.pItemAdded(item)
+    } else {
+      children.push(item)
+      this.pItemAdded(item)
+    }
+    return item
+  }
+
+  remove (item: ChildElement) {
+    if (item.parent !== this) {
+      return
+    }
+    const { children } = this
+    const index = children.indexOf(item)
+    children.splice(index, 1)
+    this.pItemRemoved(item)
+    return item
+  }
+
+  clear () {
+    const { children } = this
+    for (const item of children) {
+      this.pItemRemoved(item)
+    }
+    children.length = 0
+  }
+
   append (...items: (string | ChildElement)[]) {
     const { children } = this
     for (const item of items) {
-      let child
-      if (typeof item === 'string') {
-        child = new Text(item)
-      } else {
-        child = item
-      }
+      const child = Group.pCastChild(item)
       children.push(child)
-      child.parent = this
+      this.pItemAdded(child)
     }
   }
 
