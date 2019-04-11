@@ -177,6 +177,11 @@ implements ChildElement {
     this.flexShrink = value
   }
 
+  /** Check if item is flexible */
+  get isFlexible () {
+    return this.minWidth < this.maxWidth
+  }
+
   get flexGrow () { return this.proxy.flexGrow }
   set flexGrow (value: number) {
     this.proxy.flexGrow = Math.max(0, value || 0)
@@ -210,17 +215,21 @@ implements ChildElement {
   }
 
   render (maxWidth?: number): string {
-    if (!this.beforeRender(maxWidth) || maxWidth === 0) {
+    if (!this.beforeRender(maxWidth) || maxWidth === 0 || !this.enabled) {
       return ''
     }
     return this.rendered(...castArray(this.render(maxWidth)))
   }
 
-  beforeMount (_parent: ParentElement) {
+  protected beforeMount (_parent: ParentElement) {
     this.flush()
   }
 
-  mounted (_parent: ParentElement) {
+  protected mounted (_parent: ParentElement) {
+    return
+  }
+
+  protected beforeUnmount (_parent: ParentElement) {
     return
   }
 }
