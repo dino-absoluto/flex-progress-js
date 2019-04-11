@@ -41,12 +41,10 @@ extends Base<T>
 implements ParentElement {
   readonly children: ChildElement[] = []
 
-  get flexGrow () {
-    return 1
-  }
-
-  get flexShrink () {
-    return 1
+  constructor (options: BaseOptions) {
+    super(Object.assign({
+      flex: 1
+    }, options))
   }
 
   handleCalculateWidth () {
