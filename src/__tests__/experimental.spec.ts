@@ -36,6 +36,7 @@ describe('ElementNext', () => {
     class TestE<T extends object> extends BaseElement<T> {
       count = 0
       tProxy = this.proxy
+      tFlush = this.flush
       handleFlush () {
         this.count++
         return
@@ -63,5 +64,18 @@ describe('ElementNext', () => {
     expect(node.count).toBe(0)
     await immediate()
     expect(node.count).toBe(1)
+    node.tProxy.a += 10
+    node.tProxy.b += 10
+    node.tProxy.c += 10
+    expect(node.tProxy).toMatchObject({
+      a: 20,
+      b: 21,
+      c: 22
+    })
+    expect(node.count).toBe(1)
+    node.tFlush()
+    expect(node.count).toBe(2)
+    await immediate()
+    expect(node.count).toBe(2)
   })
 })

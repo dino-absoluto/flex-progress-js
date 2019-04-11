@@ -70,7 +70,7 @@ export abstract class BaseElement<T extends object = {}> {
     this.handleFlush(data)
     Object.assign(this.data, data)
     this.pSchedule = once(() => {
-      setImmediate(this.flush)
+      this.pUpdateTimer = setImmediate(this.flush)
     })
   }
 
