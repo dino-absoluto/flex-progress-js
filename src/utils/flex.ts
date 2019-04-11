@@ -50,9 +50,10 @@ const grow = (states: FlexState[], deltaW: number, flexSum: number) => {
     if (state.grow === 0) {
       continue
     }
-    const adjust = clamp(perFlex * state.grow, 0, Math.min(deltaW, state.growRoom))
-    deltaW -= adjust
-    state.width += adjust
+    let adjust = clamp(perFlex * state.grow, 0, Math.min(deltaW, state.growRoom))
+    let round = Math.round(adjust)
+    deltaW -= round
+    state.width += round
     if (deltaW === 0) {
       break
     }
@@ -65,9 +66,10 @@ const shrink = (states: FlexState[], deltaW: number, flexSum: number) => {
     if (state.shrink === 0) {
       continue
     }
-    const adjust = clamp(perFlex * state.shrink, 0, Math.min(deltaW, state.shrinkRoom))
-    deltaW -= adjust
-    state.width -= adjust
+    let adjust = clamp(perFlex * state.shrink, 0, Math.min(deltaW, state.shrinkRoom))
+    let round = Math.round(adjust)
+    deltaW -= round
+    state.width -= round
     if (deltaW === 0) {
       break
     }

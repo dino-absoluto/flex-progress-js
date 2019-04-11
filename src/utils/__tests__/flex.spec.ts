@@ -79,6 +79,42 @@ describe('flex', () => {
     ], 20)
     expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
   })
+  test('grow.5', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 6 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 6 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 6 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('grow.6', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 7 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 6 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 0,
+        calculateWidth () { return 6 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
   test('shrink.1', async () => {
     const results = flex([
       {
@@ -131,6 +167,42 @@ describe('flex', () => {
         flexGrow: 1,
         flexShrink: 1,
         calculateWidth () { return 100000 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.5', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 7 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 7 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 7 }
+      }
+    ], 20)
+    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+  })
+  test('shrink.6', async () => {
+    const results = flex([
+      {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 7 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 7 }
+      }, {
+        flexGrow: 1,
+        flexShrink: 1,
+        calculateWidth () { return 8 }
       }
     ], 20)
     expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
