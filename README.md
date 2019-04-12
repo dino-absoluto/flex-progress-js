@@ -51,7 +51,3 @@ The module has the following elements:
 
 Elements width can be changed dynamically. Although some, such as `Spinner`,
 only render at fixed width.
-
-**Note:** some elements keep the program busy (such as `Spinner`),
-thus preventing the program from exiting.
-Use `Output.clear()` to clear all elements from `Output`.
