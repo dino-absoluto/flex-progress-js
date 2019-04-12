@@ -93,9 +93,6 @@ export class Bar<T extends BarData> extends Base<T> {
   }
 
   protected handleRender (maxWidth?: number) {
-    if (maxWidth === 0) {
-      return ''
-    }
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink

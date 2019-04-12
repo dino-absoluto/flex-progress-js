@@ -161,7 +161,7 @@ export class Spinner<T extends SpinnerData> extends Base<T> {
     if (maxWidth != null && maxWidth < theme.width) {
       return ''
     }
-    if (parent) {
+    if (this.autoTicking && parent) {
       parent.nextFrame(this.pHandleSync)
     }
     return theme.frames[(frame + frameOffset) % theme.frames.length]

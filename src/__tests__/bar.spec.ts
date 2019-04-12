@@ -27,7 +27,7 @@ import { Bar } from '../bar'
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Bar', () => {
-  test('render()_min/maxWidth', async () => {
+  test('render() min/maxWidth', async () => {
     const bar = new Bar()
     expect(bar.render(10)).toBe('░'.repeat(5))
     bar.minWidth = 3
@@ -39,7 +39,7 @@ describe('Bar', () => {
     expect(bar.render(20)).toBe('░'.repeat(10))
     expect(bar.render(5)).toBe('░'.repeat(5))
   })
-  test('render()_flex', async () => {
+  test('render() flex', async () => {
     const bar = new Bar()
     bar.flex = 1
     bar.maxWidth = 10
@@ -64,9 +64,8 @@ describe('Bar', () => {
       expect(bar.render(width)).toBe('░'.repeat(exp))
     })
   })
-  test('render()_ratio', async () => {
-    const bar = new Bar()
-    bar.ratio = .2
+  test('render() ratio', async () => {
+    const bar = new Bar({ ratio: .2 })
     expect(bar.render(10)).toBe('█'.repeat(1) + '░'.repeat(4))
     bar.minWidth = 10
     bar.ratio = .2
@@ -79,5 +78,15 @@ describe('Bar', () => {
     expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
     bar.ratio = .29
     expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
+  })
+  test('theme', async () => {
+    const bar = new Bar()
+    bar.theme = {
+      symbols: ['.', '-', '#']
+    }
+    bar.minWidth = 10
+    expect(bar.render(20)).toBe('.'.repeat(10))
+    bar.ratio = .2
+    expect(bar.render(20)).toBe('#'.repeat(2) + '.'.repeat(8))
   })
 })

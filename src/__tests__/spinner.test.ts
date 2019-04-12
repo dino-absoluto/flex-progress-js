@@ -30,6 +30,7 @@ describe('Spinner', () => {
   test('render()', async () => {
     const spin = new Spinner()
     expect(spin.calculateWidth()).toBe(1)
+    expect(spin.autoTicking).toBe(true)
     for (let i = 0; i < 5; ++i) {
       for (const frame of themeDefault.frames) {
         expect(spin.render()).toBe(frame)
@@ -52,6 +53,17 @@ describe('Spinner', () => {
   })
   test('theme', async () => {
     const spin = new Spinner({ theme: themeLine })
+    expect(spin.calculateWidth()).toBe(1)
+    for (let i = 0; i < 5; ++i) {
+      for (const frame of themeLine.frames) {
+        expect(spin.render()).toBe(frame)
+        spin.tick(themeLine.interval)
+      }
+    }
+    spin.theme = {
+      interval: themeLine.interval,
+      frames: themeLine.frames
+    }
     expect(spin.calculateWidth()).toBe(1)
     for (let i = 0; i < 5; ++i) {
       for (const frame of themeLine.frames) {

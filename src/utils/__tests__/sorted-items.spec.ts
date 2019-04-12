@@ -54,6 +54,11 @@ describe('SortedItems', () => {
       expect(id).toBe(index)
       expect(item).toBe(samples[index])
     }
+    const right = [...array.valuesRight()].reverse()
+    for (const [ index, value ] of values.entries()) {
+      expect(value).toBe(right[index])
+    }
+    expect(array.indexOf(20, 'abc')).toBe(-1)
     expect(array.indexOf(8, 'abc')).toBe(-1)
     expect(array.indexOf(8, 'eight')).toBe(8)
     expect(array.length).toBe(11)
@@ -63,5 +68,7 @@ describe('SortedItems', () => {
     array.remove(8, 'eight')
     expect(array.length).toBe(10)
     expect(array.indexOf(8, 'eight')).toBe(-1)
+    array.clear()
+    expect(array.length).toBe(0)
   })
 })
