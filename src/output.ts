@@ -104,6 +104,7 @@ export class Output<T extends OutputData> extends Group<T> {
   }
 
   private pProcessFrame = () => {
+    this.update()
     setTimeout(() => {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
@@ -112,7 +113,6 @@ export class Output<T extends OutputData> extends Group<T> {
       }
       pNextFrameCBs.clear()
       this.pScheduleFrame = once(this.pProcessFrame)
-      this.update()
     }, SYNCING_INTERVAL).unref()
   }
 
