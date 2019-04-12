@@ -211,11 +211,11 @@ implements ChildElement {
     return this.minWidth < this.maxWidth
   }
 
-  get flexGrow () { return this.proxy.flexGrow || 0 }
+  get flexGrow () { return this.enabled && this.proxy.flexGrow || 0 }
   set flexGrow (value: number) {
     this.proxy.flexGrow = value >= 0 ? value : 0
   }
-  get flexShrink () { return this.proxy.flexShrink || 0 }
+  get flexShrink () { return this.enabled && this.proxy.flexShrink || 0 }
   set flexShrink (value: number) {
     this.proxy.flexShrink = value >= 0 ? value : 0
   }
