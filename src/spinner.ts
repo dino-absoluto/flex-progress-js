@@ -122,7 +122,11 @@ export class Spinner<T extends SpinnerData> extends Base<T> {
         / Math.round((theme.interval / SYNCING_INTERVAL)))
   }
 
-  get autoTicking () { return this.enabled && (this.proxy.autoTicking || true) }
+  get autoTicking () {
+    const auto = this.proxy.autoTicking
+    return this.enabled &&
+      (auto != null ? auto : true)
+  }
   set autoTicking (auto: boolean) {
     this.proxy.autoTicking = auto
     // if (auto) {

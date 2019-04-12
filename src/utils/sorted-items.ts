@@ -48,9 +48,6 @@ export class SortedItems<T> {
     const { $data } = this
     const wrapper = new SortedWrapper(id, item)
     const index = sortedIndex($data, wrapper)
-    if (index < 0) {
-      return index
-    }
     const last = sortedLastIndex($data, wrapper)
     for (let i = index; i < last; ++i) {
       if ($data[i].item === item) {

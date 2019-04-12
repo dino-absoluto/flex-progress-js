@@ -95,13 +95,14 @@ export class Bar<T extends BarData> extends Base<T> {
   protected handleRender (maxWidth?: number) {
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)
-    const shrinkable = !!this.flexShrink
+    /* Dead code */
+    // const shrinkable = !!this.flexShrink
     maxWidth = Math.min(maxWidth || Number.MAX_SAFE_INTEGER, this.maxWidth)
     let width = Math.min(maxWidth, this.calculateWidth())
     if (growable && width < maxWidth) {
       width = maxWidth
-    } else if (shrinkable && width > maxWidth) {
-      width = maxWidth
+    // } else if (shrinkable && width > maxWidth) {
+    //   width = maxWidth
     }
     return Bar.renderBar(this.theme.symbols, ratio, width)
   }

@@ -22,6 +22,7 @@
 import { Base, BaseOptions, BaseData } from './base'
 import stringWidth from './optional/string-width'
 import clamp from 'lodash-es/clamp'
+import toString from 'lodash-es/toString'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -70,12 +71,12 @@ export class Text<T extends TextData> extends Base<T> {
   /** Text to display */
   get text () { return this.proxy.text || '' }
   set text (value: string) {
-    this.proxy.text = (value && value.toString()) || ''
+    this.proxy.text = toString(value) || ''
   }
 
   get more () { return this.proxy.more || '…' }
   set more (value: string) {
-    this.proxy.more = (value && value.toString()) || '…'
+    this.proxy.more = toString(value) || '…'
   }
 
   get align () { return this.proxy.align || TextAlignment.Left }

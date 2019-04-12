@@ -99,5 +99,11 @@ describe('Bar', () => {
   test('shrink', async () => {
     const bar = new Bar({ minWidth: 5 })
     expect(bar.render(1)).toBe('░')
+    expect(bar.render()).toBe('░'.repeat(5))
+    expect(bar.render(10)).toBe('░'.repeat(5))
+    bar.flex = 1
+    expect(bar.render(10)).toBe('░'.repeat(10))
+    bar.minWidth = 15
+    expect(bar.render(10)).toBe('░'.repeat(10))
   })
 })

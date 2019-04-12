@@ -133,6 +133,14 @@ describe('Base', () => {
       b.enabled = false
       expect(b.calculateWidth()).toBe(0)
     }
+    {
+      const b = new TestBase({
+        width: 10,
+        postProcess: (a, b) => [ b, a ].join('')
+      })
+      expect(b.calculateWidth()).toBe(10)
+      expect(b.render()).toBe('#abc')
+    }
   })
   test('incorrect value', async () => {
     const b = new TestBase({

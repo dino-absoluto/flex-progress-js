@@ -28,11 +28,12 @@ import optionalStringWidth = require('string-width')
 // █▓▒░▒▓█
 /** Get a string display width */
 const stringWidth = (() => {
+  let fn = (text: string) => text.length
   try {
     const getLength: typeof optionalStringWidth = require('string-width')
-    return getLength
-  } catch {
-    return (text: string) => text.length
+    fn = getLength
+  } finally {
+    return fn
   }
 })()
 

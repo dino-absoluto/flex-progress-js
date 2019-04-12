@@ -73,6 +73,23 @@ describe('Spinner', () => {
       }
     }
   })
+  test('theme invalid', async () => {
+    const frames = themeLine.frames.map(i => i + i)
+    const spin = new Spinner({
+      theme: {
+        interval: themeLine.interval,
+        frames
+      }
+    })
+    expect(spin.calculateWidth()).toBe(2)
+    for (let i = 0; i < 5; ++i) {
+      for (const frame of frames) {
+        expect(spin.render()).toBe(frame)
+        spin.tick(themeLine.interval)
+      }
+    }
+    expect(spin.render(1)).toBe('')
+  })
   test('nextFrame', () => {
     const group = new Group()
     let i = 0
@@ -88,5 +105,13 @@ describe('Spinner', () => {
     group.append(spin)
     expect(group.render()).toBe(themeDefault.frames[0])
     expect(i).toBe(11)
+    i = 0
+    group.render()
+    expect(i).toBe(11)
+    spin.autoTicking = false
+    expect(spin.autoTicking).toBe(false)
+    i = 0
+    group.render()
+    expect(i).toBe(0)
   })
 })
