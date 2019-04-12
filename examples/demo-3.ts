@@ -1,14 +1,19 @@
-import * as FlexProgress from '@dinoabsoluto/flex-progress'
+import * as FlexProgress from '..'
+// import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })
+const text = new FlexProgress.Text('ABC!')
 
 out.append(
   1 , new FlexProgress.Spinner()
 , 1 , 'Hello World!'
 , 1 , new FlexProgress.Spinner()
-, 1, '⸨', bar , '⸩'
+// , 1, '⸨', bar , '⸩'
+, 1, text
 )
+
+text.text = 'abc!'
 
 let count = 0
 const loop = setInterval(() => {
