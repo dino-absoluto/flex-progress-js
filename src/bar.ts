@@ -38,12 +38,12 @@ const themeDefault: BarTheme = {
 }
 
 /** Describe options to class Bar constructor() */
-interface BarOptions extends BaseOptions {
+export interface BarOptions extends BaseOptions {
   theme?: BarTheme
   ratio?: number
 }
 
-interface BarData extends BaseData {
+export interface BarData extends BaseData {
   ratio: number
   theme: BarTheme
 }

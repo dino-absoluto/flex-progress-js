@@ -20,7 +20,7 @@
  */
 /* imports */
 import { Base, BaseData } from './base'
-import { Output } from './output'
+import { Output, OutputStream } from './output'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -36,7 +36,7 @@ export class HideCursor extends Base<BaseData> {
   }
 
   /** Set cursor visible state */
-  static setCursor (stream: NodeJS.WriteStream, visible: boolean) {
+  static setCursor (stream: OutputStream, visible: boolean) {
     if (!stream.isTTY) {
       return
     }

@@ -43,7 +43,7 @@ export interface TextOptions extends BaseOptions {
   align?: TextAlignment
 }
 
-interface TextData extends BaseData {
+export interface TextData extends BaseData {
   text: string
   more: string
   align: TextAlignment

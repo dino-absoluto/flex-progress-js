@@ -130,7 +130,7 @@ implements ParentElement {
     this.notify()
   }
 
-  notify (node?: ChildElement) {
+  notify (_child?: ChildElement) {
     const { parent } = this
     if (parent) {
       parent.notify(this, this.data, {})

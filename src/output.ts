@@ -33,14 +33,14 @@ import once from 'lodash-es/once'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-interface OutputStream extends NodeJS.WritableStream {
+export interface OutputStream extends NodeJS.WritableStream {
   isTTY?: boolean
   columns?: number
   rows?: number
 }
 
 /** Describe options to class Output constructor() */
-interface OutputOptions extends GroupOptions {
+export interface OutputOptions extends GroupOptions {
   stream?: OutputStream
 }
 

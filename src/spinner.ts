@@ -31,13 +31,13 @@ import stringWidth from './optional/string-width'
 // █▓▒░▒▓█
 
 /** Describe Spinner theme */
-interface SpinnerTheme {
+export interface SpinnerTheme {
   frames: string[]
   interval: number
   width?: number
 }
 
-interface SpinnerThemeSized extends SpinnerTheme {
+export interface SpinnerThemeSized extends SpinnerTheme {
   width: number
 }
 
@@ -73,12 +73,12 @@ export const themeLine = {
 }
 
 /** Describe options to class Spinner constructor() */
-interface SpinnerOptions extends BaseOptions {
+export interface SpinnerOptions extends BaseOptions {
   theme?: SpinnerTheme
   frameOffset?: number
 }
 
-interface SpinnerData extends BaseData {
+export interface SpinnerData extends BaseData {
   theme: SpinnerThemeSized
   autoTicking: boolean
   time: number
