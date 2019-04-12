@@ -50,7 +50,7 @@ export class Output<T extends OutputData> extends Group<T> {
   private $lastWidth = 0
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
-  count = 0
+  renderedCount = 0
 
   constructor (options?: OutputOptions) {
     super(options)
@@ -61,6 +61,11 @@ export class Output<T extends OutputData> extends Group<T> {
         this.isTTY = !!stream.isTTY
       }
     }
+  }
+
+  get parent () { return undefined }
+  set parent (_value: undefined) {
+    throw new Error('clas Output cannot have parent')
   }
 
   get enabled () { return super.enabled }
@@ -144,6 +149,6 @@ export class Output<T extends OutputData> extends Group<T> {
       clearLine(stream, 1)
     }
     cursorTo(stream, 0)
-    this.count++
+    this.renderedCount++
   }
 }

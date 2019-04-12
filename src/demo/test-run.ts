@@ -106,7 +106,7 @@ delay(() => {
   const elapsed = out.elapsed
   console.log(
     chalk.white('FPS'),
-    chalk.green(round(out.count * 1000 / elapsed, 1).toString()),
+    chalk.green(round(out.renderedCount * 1000 / elapsed, 1).toString()),
     chalk.gray('|'),
     chalk.white('Elapsed'),
     chalk.green(elapsed.toString()))
