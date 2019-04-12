@@ -52,9 +52,30 @@ interface Target {
   update (text: string): void
 }
 
+export class TargetWriteOnly implements Target {
+  readonly stream: OutputStream
+  constructor (stream: OutputStream) {
+    this.stream = stream
+  }
+
+  get columns () {
+    return 72
+  }
+
+  clearLine () {
+    const { stream } = this
+    stream.write('\n')
+  }
+
+  update (text: string) {
+    const { stream } = this
+    stream.write(text + '\n')
+    return
+  }
+}
+
 export class TargetTTY implements Target {
-  readonly stream: OutputStream = process.stderr
-  readonly isTTY: boolean = true
+  readonly stream: OutputStream
   private pLastColumns = 0
   private pLastWidth = 0
   constructor (stream: OutputStream) {
@@ -117,7 +138,11 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
       this.stream = process.stderr
       this.isTTY = !!this.stream.isTTY
     }
-    this.pTarget = new TargetTTY(this.stream)
+    if (this.isTTY) {
+      this.pTarget = new TargetTTY(this.stream)
+    } else {
+      this.pTarget = new TargetWriteOnly(this.stream)
+    }
   }
 
   get parent () { return undefined }
