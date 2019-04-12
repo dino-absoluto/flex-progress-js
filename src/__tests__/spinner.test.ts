@@ -20,6 +20,7 @@
  */
 /* imports */
 import { Spinner, themeDefault, themeLine } from '../spinner'
+import { Group } from '../group'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -71,5 +72,21 @@ describe('Spinner', () => {
         spin.tick(themeLine.interval)
       }
     }
+  })
+  test('nextFrame', () => {
+    const group = new Group()
+    let i = 0
+    group.nextFrame = (cb: (frame: number) => void) => {
+      i++
+      if (i > 10) {
+        return false
+      }
+      cb(i)
+      return true
+    }
+    const spin = new Spinner()
+    group.append(spin)
+    expect(group.render()).toBe(themeDefault.frames[0])
+    expect(i).toBe(11)
   })
 })

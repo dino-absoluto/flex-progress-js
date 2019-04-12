@@ -57,4 +57,10 @@ describe('Text', () => {
     expect(text.render(2)).toBe('  ')
     expect(text.render(0)).toBe('')
   })
+  test('set text', async () => {
+    const text = new Text({ text: 'a'.repeat(4), flex: 1 })
+    expect(text.render(8)).toBe('a'.repeat(4) + ' '.repeat(4))
+    text.text = 'ABC'
+    expect(text.render(8)).toBe('ABC' + ' '.repeat(5))
+  })
 })

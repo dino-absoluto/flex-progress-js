@@ -80,13 +80,24 @@ describe('Bar', () => {
     expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
   })
   test('theme', async () => {
-    const bar = new Bar()
-    bar.theme = {
-      symbols: ['.', '-', '#']
-    }
+    const bar = new Bar({
+      theme: {
+        symbols: ['.', '-', '#']
+      }
+    })
     bar.minWidth = 10
     expect(bar.render(20)).toBe('.'.repeat(10))
     bar.ratio = .2
     expect(bar.render(20)).toBe('#'.repeat(2) + '.'.repeat(8))
+    bar.ratio = .25
+    expect(bar.render(20)).toBe('#'.repeat(2) + '-' + '.'.repeat(7))
+    bar.theme = {
+      symbols: [ '0', '1', '2' ]
+    }
+    expect(bar.render(20)).toBe('2'.repeat(2) + '1' + '0'.repeat(7))
+  })
+  test('shrink', async () => {
+    const bar = new Bar({ minWidth: 5 })
+    expect(bar.render(1)).toBe('░')
   })
 })

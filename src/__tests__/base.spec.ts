@@ -108,4 +108,42 @@ describe('Base', () => {
     expect(b.render()).toBe('#abc')
     expect(b.render(0)).toBe('')
   })
+  test('options', async () => {
+    {
+      const b = new TestBase({
+        width: 10,
+        flex: 1
+      })
+      expect(b.minWidth).toBe(10)
+      expect(b.maxWidth).toBe(10)
+      expect(b.isFlexible).toBe(false)
+    }
+    {
+      const b = new TestBase({
+        minWidth: 10,
+        maxWidth: 20,
+        flex: {
+          grow: 1,
+          shrink: 1
+        }
+      })
+      expect(b.minWidth).toBe(10)
+      expect(b.maxWidth).toBe(20)
+      expect(b.isFlexible).toBe(true)
+      b.enabled = false
+      expect(b.calculateWidth()).toBe(0)
+    }
+  })
+  test('incorrect value', async () => {
+    const b = new TestBase({
+      width: 10
+    })
+    expect(b.minWidth).toBe(10)
+    b.minWidth = 'zero' as any
+    expect(b.minWidth).toBe(0)
+    expect(b.maxWidth).toBe(10)
+    b.maxWidth = 'infinity' as any
+    expect(b.maxWidth).toBe(Number.MAX_SAFE_INTEGER)
+    expect(() => b.width).toThrow()
+  })
 })
