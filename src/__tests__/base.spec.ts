@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { BaseElement } from '../base'
+import { BaseElement, Base, BaseData } from '../base'
 
 /* code */
 const immediate = () => {
@@ -82,5 +82,30 @@ describe('BaseElement', () => {
     expect(node.count).toBe(2)
     await immediate()
     expect(node.count).toBe(2)
+    tProxy.a = tProxy.a
+    await immediate()
+    expect(node.count).toBe(2)
+  })
+})
+
+describe('Base', () => {
+  class TestBase extends Base<BaseData> {
+    handleCalculateWidth () {
+      return 1
+    }
+    handleRender () {
+      return ['abc', '#']
+    }
+  }
+  test('simple', async () => {
+    const b = new TestBase()
+    expect(b.render()).toBe('abc#')
+    b.postProcess = (a, b) => [ b, a ].join('')
+    expect(b.render()).toBe('#abc')
+    b.enabled = false
+    expect(b.render()).toBe('')
+    b.enabled = true
+    expect(b.render()).toBe('#abc')
+    expect(b.render(0)).toBe('')
   })
 })

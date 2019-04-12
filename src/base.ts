@@ -47,7 +47,8 @@ export abstract class BaseElement<T extends object = {}> {
         }
       },
       set: ($, prop: keyof T, value: any) => {
-        if ($[prop] === this.pUpdate[prop] && $[prop] != null) {
+        if ($[prop] === value ||
+          ($[prop] === this.pUpdate[prop] && $[prop] != null)) {
           return true
         }
         this.pUpdate[prop] = value
