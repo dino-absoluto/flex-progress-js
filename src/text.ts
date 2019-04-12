@@ -70,12 +70,12 @@ export class Text<T extends TextData> extends Base<T> {
   /** Text to display */
   get text () { return this.proxy.text || '' }
   set text (value: string) {
-    this.proxy.text = value || ''
+    this.proxy.text = (value && value.toString()) || ''
   }
 
   get more () { return this.proxy.more || '…' }
   set more (value: string) {
-    this.proxy.more = value || '…'
+    this.proxy.more = (value && value.toString()) || '…'
   }
 
   get align () { return this.proxy.align || TextAlignment.Left }
@@ -102,10 +102,6 @@ export class Text<T extends TextData> extends Base<T> {
     } else if (shrinkable && length > maxWidth) {
       return this.shrink(maxWidth)
     }
-    const { minWidth } = this
-    if (length < minWidth) {
-      return this.grow(minWidth)
-    }
     return text
   }
 
@@ -125,9 +121,6 @@ export class Text<T extends TextData> extends Base<T> {
 
   /** Shrink text to width */
   private shrink (width: number) {
-    if (width <= 0) {
-      return ''
-    }
     const { more } = this
     const length = stringWidth(more)
     if (width <= length) {
