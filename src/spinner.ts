@@ -99,8 +99,8 @@ export class Spinner<T extends SpinnerData> extends Base<T> {
   }
 
   get time () { return this.proxy.time || 0 }
-  set time (frame: number) {
-    this.proxy.time = frame
+  set time (time: number) {
+    this.proxy.time = time
   }
 
   get frame () { return this.proxy.frame || 0 }
@@ -113,9 +113,10 @@ export class Spinner<T extends SpinnerData> extends Base<T> {
     this.proxy.frameOffset = offset
   }
 
-  tick (interval?: number) {
+  tick (interval: number = SYNCING_INTERVAL) {
     const theme = this.theme as SpinnerThemeSized
-    const time = (this.time || 0) + (interval || SYNCING_INTERVAL)
+    const time = (this.time >= 0 ? this.time : 0) +
+      (interval >= 0 ? interval : SYNCING_INTERVAL)
     this.time = time
     this.frame =
       Math.floor(Math.round(time / SYNCING_INTERVAL)

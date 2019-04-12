@@ -21,6 +21,7 @@
 /* imports */
 import { Spinner, themeDefault, themeLine } from '../spinner'
 import { Group } from '../group'
+import { SYNCING_INTERVAL } from '../shared'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -89,6 +90,18 @@ describe('Spinner', () => {
       }
     }
     expect(spin.render(1)).toBe('')
+  })
+  test('values invalid', async () => {
+    const spin = new Spinner()
+    spin.time = -themeDefault.interval
+    expect(spin.render()).toBe(themeDefault.frames[0])
+    spin.theme = {
+      interval: SYNCING_INTERVAL * 2,
+      frames: themeDefault.frames
+    }
+    spin.tick()
+    spin.tick(-themeDefault.interval)
+    expect(spin.render()).toBe(themeDefault.frames[1])
   })
   test('nextFrame', () => {
     const group = new Group()

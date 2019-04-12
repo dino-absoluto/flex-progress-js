@@ -39,6 +39,9 @@ describe('Text', () => {
   })
   test('align default', async () => {
     const text = new Text({ text: 'abc', flex: 1 })
+    expect(text.align).toBe(TextAlignment.Left)
+    expect(text.render(10)).toBe('abc' + ' '.repeat(7))
+    text.align = 'random' as any
     expect(text.render(10)).toBe('abc' + ' '.repeat(7))
   })
   test('align center', async () => {

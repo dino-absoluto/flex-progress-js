@@ -81,7 +81,20 @@ export class Text<T extends TextData> extends Base<T> {
 
   get align () { return this.proxy.align || TextAlignment.Left }
   set align (value: TextAlignment) {
-    this.proxy.align = value || TextAlignment.Left
+    switch (value) {
+      case TextAlignment.Center: {
+        this.proxy.align = TextAlignment.Center
+        return
+      }
+      case TextAlignment.Right: {
+        this.proxy.align = TextAlignment.Right
+        return
+      }
+      default: {
+        this.proxy.align = TextAlignment.Left
+        return
+      }
+    }
   }
 
   /** The raw text width */

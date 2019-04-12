@@ -27,20 +27,26 @@ import { Space } from '../space'
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Space', () => {
-  test('render()__flex.1', async () => {
+  test('constructor', async () => {
+    const sp = new Space()
+    expect(sp.render()).toBe(' ')
+    expect(sp.render(2)).toBe(' ')
+    expect(sp.render(0)).toBe('')
+  })
+  test('render() flex.1', async () => {
     const sp = new Space(10)
     expect(sp.render(6)).toBe(' '.repeat(10))
     expect(sp.render(8)).toBe(' '.repeat(10))
     sp.flex = 1
     expect(sp.render(8)).toBe(' '.repeat(8))
   })
-  test('render()__flex.2', async () => {
+  test('render() flex.2', async () => {
     const sp = new Space({ flex: 1 })
     expect(sp.render(8)).toBe(' '.repeat(8))
     sp.flex = 1
     expect(sp.render(20)).toBe(' '.repeat(20))
   })
-  test('render()__flex.3', async () => {
+  test('render() flex.3', async () => {
     const sp = new Space({ minWidth: 5 })
     expect(sp.render(1)).toBe(' '.repeat(5))
     expect(sp.render(8)).toBe(' '.repeat(5))

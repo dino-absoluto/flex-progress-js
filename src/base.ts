@@ -194,12 +194,12 @@ implements ChildElement {
 
   get minWidth () { return this.proxy.minWidth || 0 }
   set minWidth (value: number) {
-    this.proxy.minWidth = Math.max(value || 0, 0)
+    this.proxy.minWidth = value >= 0 ? value : 0
   }
 
   get maxWidth () { return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER }
   set maxWidth (value: number) {
-    this.proxy.maxWidth = Math.min(value || Number.MAX_SAFE_INTEGER,
+    this.proxy.maxWidth = Math.min(value >= 0 ? value : Number.MAX_SAFE_INTEGER,
       Number.MAX_SAFE_INTEGER)
   }
 
@@ -215,11 +215,11 @@ implements ChildElement {
 
   get flexGrow () { return this.proxy.flexGrow || 0 }
   set flexGrow (value: number) {
-    this.proxy.flexGrow = Math.max(0, value || 0)
+    this.proxy.flexGrow = value >= 0 ? value : 0
   }
   get flexShrink () { return this.proxy.flexShrink || 0 }
   set flexShrink (value: number) {
-    this.proxy.flexShrink = Math.max(0, value || 0)
+    this.proxy.flexShrink = value >= 0 ? value : 0
   }
 
   get enabled () { return this.proxy.enabled != null ? this.proxy.enabled : true }

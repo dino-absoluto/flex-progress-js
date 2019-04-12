@@ -153,5 +153,11 @@ describe('Base', () => {
     b.maxWidth = 'infinity' as any
     expect(b.maxWidth).toBe(Number.MAX_SAFE_INTEGER)
     expect(() => b.width).toThrow()
+    b.flex = 1
+    expect(b.flexGrow).toBe(1)
+    expect(b.flexShrink).toBe(1)
+    b.flex = -1
+    expect(b.flexGrow).toBe(0)
+    expect(b.flexShrink).toBe(0)
   })
 })
