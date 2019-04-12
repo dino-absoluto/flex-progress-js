@@ -50,7 +50,7 @@ interface TextData extends BaseData {
 }
 
 /** A text element */
-export class Text<T extends TextData> extends Base<T> {
+export class Text<T extends TextData = TextData> extends Base<T> {
   constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
     if (typeof options === 'string') {

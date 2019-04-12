@@ -33,9 +33,15 @@ import once from 'lodash-es/once'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+interface OutputStream extends NodeJS.WritableStream {
+  isTTY?: boolean
+  columns?: number
+  rows?: number
+}
+
 /** Describe options to class Output constructor() */
 interface OutputOptions extends GroupOptions {
-  stream?: NodeJS.WriteStream
+  stream?: OutputStream
 }
 
 export type OutputData = GroupData
@@ -43,8 +49,8 @@ export type OutputData = GroupData
 type FrameCB = (frame: number) => void
 
 /** Actual output to stderr */
-export class Output<T extends OutputData> extends Group<T> {
-  readonly stream: NodeJS.WriteStream = process.stderr
+export class Output<T extends OutputData = OutputData> extends Group<T> {
+  readonly stream: OutputStream = process.stderr
   readonly isTTY: boolean = true
   private $lastColumns = 0
   private $lastWidth = 0
@@ -65,7 +71,7 @@ export class Output<T extends OutputData> extends Group<T> {
 
   get parent () { return undefined }
   set parent (_value: undefined) {
-    throw new Error('clas Output cannot have parent')
+    throw new Error('class Output cannot have parent')
   }
 
   get enabled () { return super.enabled }

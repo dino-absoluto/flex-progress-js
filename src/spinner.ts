@@ -87,7 +87,7 @@ interface SpinnerData extends BaseData {
 }
 
 /** Busy Spinner */
-export class Spinner<T extends SpinnerData> extends Base<T> {
+export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
   constructor (options: SpinnerOptions = {}) {
     super(options)
     if (options.theme != null) {

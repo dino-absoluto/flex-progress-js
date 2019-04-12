@@ -31,7 +31,7 @@ export type SpaceData = BaseData
 export type SpaceOptions = BaseOptions
 
 /** Empty space element */
-export class Space<T extends SpaceData> extends Base<T> {
+export class Space<T extends SpaceData = SpaceData> extends Base<T> {
   constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {

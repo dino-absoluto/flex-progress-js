@@ -110,7 +110,7 @@ export interface BaseOptions {
   postProcess?: (...values: string[]) => string
 }
 
-export abstract class Base<T extends BaseData>
+export abstract class Base<T extends BaseData = BaseData>
 extends BaseElement<T>
 implements ChildElement {
   private pParent?: ParentElement
