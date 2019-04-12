@@ -49,8 +49,6 @@ export interface Element {
   calculateWidth (): number
   /** Render item with max-width */
   render (maxWidth?: number): string
-  /** Trigger an update */
-  update (): void
 }
 
 /** Describe a child element */
@@ -62,18 +60,6 @@ export interface ChildElement extends Element {
 export interface ParentElement extends Element {
   /** Array of child elements */
   children: ChildElement[]
-  /** Add element */
-  add (child: ChildElement, atIndex?: number): ChildElement
-  /** Remove element */
-  remove (child: ChildElement): ChildElement | undefined
-  /** Clear all elements */
-  clear (): void
-  /* @TODO: work out a way to better signal state changes */
-  update (child?: ChildElement): void
-  /** Add elements to the end.
-   * @param {...ChildElement} items ... of child element
-   */
-  append (...items: ChildElement[]): void
-  /** Syncing events */
-  sync (): Promise<number>
+  nextFrame (cb: (frame: number) => void): boolean
+  notify (child: ChildElement, before: unknown, patch: unknown): void
 }

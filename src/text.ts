@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Item, ItemOptions } from './child-element'
+import { Base, BaseOptions, BaseData } from './base'
 import stringWidth from './optional/string-width'
 import clamp from 'lodash-es/clamp'
 
@@ -36,33 +36,51 @@ export const enum TextAlignment {
 }
 
 /** Describe options to class Text constructor() */
-export interface TextOptions extends ItemOptions {
+export interface TextOptions extends BaseOptions {
   text?: string
   more?: string
   align?: TextAlignment
 }
 
+interface TextData extends BaseData {
+  text: string
+  more: string
+  align: TextAlignment
+}
+
 /** A text element */
-export class Text extends Item {
-  private $text = ''
-  private $more = '…'
-  align: TextAlignment = TextAlignment.Center
+export class Text<T extends TextData> extends Base<T> {
   constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
     if (typeof options === 'string') {
       this.text = options
     } else {
-      this.text = options.text || this.text
-      this.align = options.align || this.align
-      this.$more = options.more || this.$more
+      if (options.text != null) {
+        this.text = options.text
+      }
+      if (options.align != null) {
+        this.align = options.align
+      }
+      if (options.more != null) {
+        this.more = options.more
+      }
     }
   }
 
   /** Text to display */
-  get text () { return this.$text }
+  get text () { return this.proxy.text || '' }
   set text (value: string) {
-    this.$text = value
-    this.update()
+    this.proxy.text = value || ''
+  }
+
+  get more () { return this.proxy.more || '…' }
+  set more (value: string) {
+    this.proxy.more = value || '…'
+  }
+
+  get align () { return this.proxy.align || TextAlignment.Left }
+  set align (value: TextAlignment) {
+    this.proxy.align = value || TextAlignment.Left
   }
 
   /** The raw text width */
@@ -93,12 +111,12 @@ export class Text extends Item {
 
   /** Grow text to width */
   private grow (width: number) {
-    let { text } = this
+    let { text, align } = this
     const space = width - this.length
     let left = 0
-    if (this.align === TextAlignment.Center) {
+    if (align === TextAlignment.Center) {
       left = Math.floor(space / 2)
-    } else if (this.align === TextAlignment.Right) {
+    } else if (align === TextAlignment.Right) {
       left = space
     }
     const right = space - left
@@ -110,14 +128,14 @@ export class Text extends Item {
     if (width <= 0) {
       return ''
     }
-    const { $more } = this
-    const length = stringWidth($more)
+    const { more } = this
+    const length = stringWidth(more)
     if (width <= length) {
       if (width > 0) {
         return ' '.repeat(width)
       }
       return ''
     }
-    return this.text.substr(0, width - stringWidth($more)) + $more
+    return this.text.substr(0, width - stringWidth(more)) + more
   }
 }

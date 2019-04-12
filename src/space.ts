@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Item, ItemOptions } from './child-element'
+import { Base, BaseOptions, BaseData } from './base'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -27,9 +27,12 @@ import { Item, ItemOptions } from './child-element'
 // █████████████▓░
 // █▓▒░▒▓█
 
+export type SpaceData = BaseData
+export type SpaceOptions = BaseOptions
+
 /** Empty space element */
-export class Space extends Item {
-  constructor (options: ItemOptions | number = 1) {
+export class Space<T extends SpaceData> extends Base<T> {
+  constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {
       this.width = options

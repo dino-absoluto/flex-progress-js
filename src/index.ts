@@ -19,17 +19,17 @@
  *
  */
 /* imports */
-import { Item } from './child-element'
-import { Group } from './parent-element'
+import { Base } from './base'
+import { Group } from './group'
 import { Text, TextAlignment } from './text'
 import { Space } from './space'
 import { Spinner } from './spinner'
 import { Bar } from './bar'
 import { HideCursor } from './hide-cursor'
-import { Output } from './out'
+import { Output } from './output'
 /* exports */
 
-export { Item
+export { Base
 , Group
 , Space
 , Text, TextAlignment

@@ -19,33 +19,34 @@
  *
  */
 /* imports */
-import { Text } from '../text'
-import { Group } from '../parent-element'
+import { Space } from '../space'
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Group', () => {
-  test('flex.1', async () => {
-    const group = new Group()
-    const text = new Text({ text: 'a'.repeat(100), flex: 1 })
-    group.append('abc')
-    group.append(text)
-    expect(group.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
-    const group2 = new Group()
-    group2.append(group)
-    expect(group2.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
+describe('Space', () => {
+  test('render()__flex.1', async () => {
+    const sp = new Space(10)
+    expect(sp.render(6)).toBe(' '.repeat(10))
+    expect(sp.render(8)).toBe(' '.repeat(10))
+    sp.flex = 1
+    expect(sp.render(8)).toBe(' '.repeat(8))
   })
-  test('flex.2', async () => {
-    const group = new Group()
-    const group2 = new Group()
-    group2.append(group)
-    const text = new Text({ text: 'a'.repeat(100), flex: 1 })
-    group.append('abc')
-    group.append(text)
-    expect(group.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
-    expect(group2.render(80)).toBe('abc' + 'a'.repeat(76) + '…')
+  test('render()__flex.2', async () => {
+    const sp = new Space({ flex: 1 })
+    expect(sp.render(8)).toBe(' '.repeat(8))
+    sp.flex = 1
+    expect(sp.render(20)).toBe(' '.repeat(20))
+  })
+  test('render()__flex.3', async () => {
+    const sp = new Space({ minWidth: 5 })
+    expect(sp.render(1)).toBe(' '.repeat(5))
+    expect(sp.render(8)).toBe(' '.repeat(5))
+    expect(sp.render(20)).toBe(' '.repeat(5))
+    sp.flex = 1
+    expect(sp.render(1)).toBe(' '.repeat(1))
+    expect(sp.render(8)).toBe(' '.repeat(8))
   })
 })

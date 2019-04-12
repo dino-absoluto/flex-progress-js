@@ -19,13 +19,14 @@
  *
  */
 /* imports */
-import { ItemOptions } from './child-element'
-import { Group } from './parent-element'
+import { Group, GroupData, GroupOptions } from './group'
 import {
   clearLine
 , clearScreenDown
 , cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
+import { SYNCING_INTERVAL } from './shared'
+import once from 'lodash-es/once'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -33,17 +34,22 @@ import stringWidth from './optional/string-width'
 // █████████████▓░
 // █▓▒░▒▓█
 /** Describe options to class Output constructor() */
-interface OutputOptions extends ItemOptions {
+interface OutputOptions extends GroupOptions {
   stream?: NodeJS.WriteStream
 }
 
+export type OutputData = GroupData
+
+type FrameCB = (frame: number) => void
+
 /** Actual output to stderr */
-export class Output extends Group {
+export class Output<T extends OutputData> extends Group<T> {
   readonly stream: NodeJS.WriteStream = process.stderr
   readonly isTTY: boolean = true
   private $lastColumns = 0
   private $lastWidth = 0
-  private $createdTime = Date.now()
+  private pCreatedTime = Date.now()
+  private pNextFrameCBs = new Set<FrameCB>()
   count = 0
 
   constructor (options?: OutputOptions) {
@@ -62,14 +68,18 @@ export class Output extends Group {
     if (!value) {
       this.clearLine()
     } else {
-      this.update()
+      this.pScheduleFrame()
     }
     super.enabled = value
   }
 
+  notify () {
+    this.pScheduleFrame()
+  }
+
   /** Elapsed time since creation */
   get elapsed () {
-    return Date.now() - this.$createdTime
+    return Date.now() - this.pCreatedTime
   }
 
   /** Clear display line */
@@ -86,13 +96,34 @@ export class Output extends Group {
     }
   }
 
+  nextFrame (cb: (frame: number) => void) {
+    const { pNextFrameCBs } = this
+    pNextFrameCBs.add(cb)
+    this.pScheduleFrame()
+    return true
+  }
+
+  private pProcessFrame = () => {
+    this.update()
+    setTimeout(() => {
+      const { pNextFrameCBs } = this
+      const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
+      for (const cb of pNextFrameCBs) {
+        cb(frame)
+      }
+      pNextFrameCBs.clear()
+      this.pScheduleFrame = once(this.pProcessFrame)
+    }, SYNCING_INTERVAL).unref()
+  }
+
+  private pScheduleFrame = once(this.pProcessFrame)
+
   /** Get display width */
   get columns () {
     return this.stream.columns || 40
   }
 
-  protected handleUpdate () {
-    super.handleUpdate()
+  protected update () {
     const { stream, columns, $lastColumns } = this
     const text = this.render(columns)
     {

@@ -19,10 +19,10 @@
  *
  */
 /* imports */
-import { Item, ItemOptions } from './child-element'
+import { Base, BaseOptions, BaseData } from './base'
 import { ParentElement, SYNCING_INTERVAL } from './shared'
 import stringWidth from './optional/string-width'
-import once from 'lodash-es/once'
+// import once from 'lodash-es/once'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -41,12 +41,7 @@ interface SpinnerThemeSized extends SpinnerTheme {
   width: number
 }
 
-/** Describe options to class Spinner constructor() */
-interface SpinnerOptions extends ItemOptions {
-  theme?: SpinnerTheme
-}
-
-export const themeDots: SpinnerThemeSized = {
+export const themeDefault: SpinnerThemeSized = {
   width: 1,
   interval: 80,
   frames:
@@ -63,6 +58,9 @@ export const themeDots: SpinnerThemeSized = {
   ]
 }
 
+Object.freeze(themeDefault)
+Object.freeze(themeDefault.frames)
+
 // const styleLine = {
 //   width: 1,
 //   interval: 120,
@@ -74,15 +72,21 @@ export const themeDots: SpinnerThemeSized = {
 //   ]
 // }
 
-/** Busy Spinner */
-export class Spinner extends Item {
-  width = 1
-  frameOffset = 0
-  private pFrame = 0
-  private pTheme: SpinnerThemeSized = themeDots
-  private pTime: number = 0
-  private pAutoTicking: boolean = true
+/** Describe options to class Spinner constructor() */
+interface SpinnerOptions extends BaseOptions {
+  theme?: SpinnerTheme
+}
 
+interface SpinnerData extends BaseData {
+  theme: SpinnerThemeSized
+  autoTicking: boolean
+  time: number
+  frame: number
+  frameOffset: number
+}
+
+/** Busy Spinner */
+export class Spinner<T extends SpinnerData> extends Base<T> {
   constructor (options: SpinnerOptions = {}) {
     super(options)
     if (options.theme) {
@@ -90,83 +94,72 @@ export class Spinner extends Item {
     }
   }
 
-  tick (interval?: number) {
-    const { pTheme } = this
-    const time = this.pTime + (interval || SYNCING_INTERVAL)
-    this.pTime = time
-    this.pFrame =
-      Math.floor(Math.round(time / SYNCING_INTERVAL)
-        / Math.round((pTheme.interval / SYNCING_INTERVAL)))
+  get time () { return this.proxy.time || 0 }
+  set time (frame: number) {
+    this.proxy.time = frame
   }
 
-  get autoTicking () { return this.enabled && this.pAutoTicking }
+  get frame () { return this.proxy.frame || 0 }
+  set frame (frame: number) {
+    this.proxy.frame = frame
+  }
+
+  get frameOffset () { return this.proxy.frameOffset || 0 }
+  set frameOffset (offset: number) {
+    this.proxy.frameOffset = offset
+  }
+
+  tick (interval?: number) {
+    const theme = this.theme as SpinnerThemeSized
+    const time = (this.time || 0) + (interval || SYNCING_INTERVAL)
+    this.time = time
+    this.frame =
+      Math.floor(Math.round(time / SYNCING_INTERVAL)
+        / Math.round((theme.interval / SYNCING_INTERVAL)))
+  }
+
+  get autoTicking () { return this.enabled && (this.proxy.autoTicking || true) }
   set autoTicking (auto: boolean) {
-    this.pAutoTicking = auto
-    if (auto) {
-      this.pStart()
-    }
+    this.proxy.autoTicking = auto
+    // if (auto) {
+    //   this.pStart()
+    // }
   }
 
   /** Style to display spinner as */
-  get theme () { return this.pTheme }
+  get theme () { return this.proxy.theme || themeDefault }
   set theme (spinner: SpinnerTheme) {
     if (!spinner.width) {
       spinner.width = stringWidth(spinner.frames[0])
     }
-    this.pFrame = 0
-    this.pTheme = spinner as SpinnerThemeSized
+    this.proxy.theme = spinner as SpinnerThemeSized
+    // this.pFrame = 0
   }
 
-  get enabled () { return super.enabled }
-  set enabled (value) {
-    super.enabled = value
-    if (value) {
-      this.pStart()
-    }
-  }
-
-  didMount (_parent: ParentElement) {
-    this.pStart()
-  }
-
-  private pStartActual () {
-    if (this.parent) {
-      this.parent.sync().then(this.pHandleSync)
-    }
-  }
-
-  private pStart = once(() => {
-    this.pStartActual()
-  })
-
-  /** Synchronization function */
   private pHandleSync = (frame: number) => {
     if (this.parent && this.autoTicking) {
-      const { pFrame, pTheme } = this
-      frame = Math.floor(frame / Math.round((pTheme.interval / SYNCING_INTERVAL)))
-      if (pFrame !== frame) {
-        this.pFrame = frame
-        this.update()
+      const { frame: oldFrame, theme } = this
+      frame = Math.floor(frame / Math.round((theme.interval / SYNCING_INTERVAL)))
+      if (oldFrame !== frame) {
+        this.frame = frame
       }
-      /* Sync continuing */
-      this.parent.sync().then(this.pHandleSync)
-    } else {
-      /* Reset sync */
-      this.pStart = once(() => {
-        this.pStartActual()
-      })
+      this.parent.nextFrame(this.pHandleSync)
     }
   }
 
   protected handleCalculateWidth (): number {
-    return this.pTheme.width
+    return (this.theme as SpinnerThemeSized).width
   }
 
   protected handleRender (maxWidth?: number) {
-    const { pFrame, pTheme, frameOffset } = this
-    if (maxWidth != null && maxWidth < pTheme.width) {
+    const { frame, frameOffset, parent } = this
+    const theme = this.theme as SpinnerThemeSized
+    if (maxWidth != null && maxWidth < theme.width) {
       return ''
     }
-    return pTheme.frames[(pFrame + frameOffset) % pTheme.frames.length]
+    if (parent) {
+      parent.nextFrame(this.pHandleSync)
+    }
+    return theme.frames[(frame + frameOffset) % theme.frames.length]
   }
 }

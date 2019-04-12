@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Item, ItemOptions } from './child-element'
+import { Base, BaseOptions, BaseData } from './base'
 import clamp from 'lodash-es/clamp'
 
 /* code */
@@ -32,40 +32,46 @@ interface BarTheme {
   symbols: string[]
 }
 
+const themeDefault: BarTheme = {
+  // symbols: [ '.', '-', '=', '#' ]
+  symbols: [ '░', '▒', '▓', '█' ]
+}
+
 /** Describe options to class Bar constructor() */
-interface BarOptions extends ItemOptions {
+interface BarOptions extends BaseOptions {
   theme?: BarTheme
   ratio?: number
 }
 
-const themeDefault: BarTheme = {
-  symbols: [ '░', '▒', '▓', '█' ]
+interface BarData extends BaseData {
+  ratio: number
+  theme: BarTheme
 }
 
 /** A progress bar */
-export class Bar extends Item {
-  // symbols = [ '.', '-', '=', '#' ]
-  theme = themeDefault
-  private $ratio = 0
-
+export class Bar<T extends BarData> extends Base<T> {
   constructor (options: BarOptions = {}) {
     super(options)
     if (options.theme != null) {
       this.theme = options.theme
     }
     if (options.ratio != null) {
-      this.$ratio = options.ratio
+      this.ratio = options.ratio
     }
     if (!options.width && !options.minWidth) {
       this.minWidth = 5
     }
   }
 
+  get theme () { return this.proxy.theme || themeDefault }
+  set theme (theme: BarTheme) {
+    this.proxy.theme = theme
+  }
+
   /** Completion ratio, range from 0 to 1 */
-  get ratio () { return this.$ratio }
+  get ratio () { return this.proxy.ratio || 0 }
   set ratio (value: number) {
-    this.$ratio = clamp(value, 0, 1)
-    this.update()
+    this.proxy.ratio = clamp(value, 0, 1)
   }
 
   /** Turn data to display string */
@@ -83,7 +89,7 @@ export class Bar extends Item {
   }
 
   protected handleCalculateWidth () {
-    return 0
+    return this.minWidth
   }
 
   protected handleRender (maxWidth?: number) {

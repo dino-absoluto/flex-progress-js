@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Spinner, themeDots } from '../spinner'
+import { Spinner, themeDefault } from '../spinner'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -30,9 +30,9 @@ describe('Spinner', () => {
   test('render()', async () => {
     const spin = new Spinner()
     for (let i = 0; i < 5; ++i) {
-      for (const frame of themeDots.frames) {
+      for (const frame of themeDefault.frames) {
         expect(spin.render()).toBe(frame)
-        spin.tick(themeDots.interval)
+        spin.tick(themeDefault.interval)
       }
     }
   })

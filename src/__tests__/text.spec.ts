@@ -19,53 +19,22 @@
  *
  */
 /* imports */
-import { Base, BaseData } from './base'
-import { Output } from './output'
+import { Text } from '../text'
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-
-/** Hide console cursor, this can only work when added to an Output stream. */
-export class HideCursor extends Base<BaseData> {
-  /** HideCursor doesn't accept any options */
-  constructor () {
-    super()
-  }
-
-  /** Set cursor visible state */
-  static setCursor (stream: NodeJS.WriteStream, visible: boolean) {
-    if (!stream.isTTY) {
-      return
-    }
-    if (!visible) {
-      stream.write('\x1B[?25l')
-    } else {
-      stream.write('\x1B[?25h')
-    }
-  }
-
-  mounted () {
-    const { parent } = this
-    if (parent instanceof Output) {
-      HideCursor.setCursor(parent.stream, false)
-    }
-  }
-
-  beforeUnmount () {
-    const { parent } = this
-    if (parent instanceof Output) {
-      HideCursor.setCursor(parent.stream, true)
-    }
-  }
-
-  protected handleCalculateWidth () {
-    return 0
-  }
-
-  protected handleRender (_maxWidth?: number) {
-    return ''
-  }
-}
+describe('Text', () => {
+  test('render()__flex.1', async () => {
+    const text = new Text({ text: 'a'.repeat(10), flex: 1 })
+    expect(text.render(8)).toBe('a'.repeat(7) + '…')
+  })
+  test('render()__flex.2', async () => {
+    const text = new Text({ text: 'a'.repeat(10) })
+    expect(text.render(8)).toBe('a'.repeat(10))
+    text.flex = 1
+    expect(text.render(8)).toBe('a'.repeat(7) + '…')
+  })
+})

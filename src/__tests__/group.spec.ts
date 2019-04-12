@@ -20,21 +20,32 @@
  */
 /* imports */
 import { Text } from '../text'
+import { Group } from '../group'
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Text', () => {
-  test('render()__flex.1', async () => {
-    const text = new Text({ text: 'a'.repeat(100), flex: 1 })
-    expect(text.render(80)).toBe('a'.repeat(79) + '…')
+describe('Group', () => {
+  test('flex.1', async () => {
+    const group = new Group()
+    const text = new Text({ text: 'a'.repeat(25), flex: 1 })
+    group.append('abc')
+    group.append(text)
+    expect(group.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
+    const group2 = new Group()
+    group2.append(group)
+    expect(group2.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
   })
-  test('render()__flex.2', async () => {
-    const text = new Text({ text: 'a'.repeat(100) })
-    expect(text.render(80)).toBe('a'.repeat(100))
-    text.flex = 1
-    expect(text.render(80)).toBe('a'.repeat(79) + '…')
+  test('flex.2', async () => {
+    const group = new Group()
+    const group2 = new Group()
+    group2.append(group)
+    const text = new Text({ text: 'a'.repeat(25), flex: 1 })
+    group.append('abc')
+    group.append(text)
+    expect(group.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
+    expect(group2.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
   })
 })
