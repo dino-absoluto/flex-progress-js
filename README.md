@@ -2,6 +2,9 @@
 
 > CLI progress bar made simple
 
+[![Build Status](https://travis-ci.org/dino-absoluto/flex-progress-js.svg?branch=master)](https://travis-ci.org/dino-absoluto/flex-progress-js)
+[![Coverage Status](https://coveralls.io/repos/github/dino-absoluto/flex-progress-js/badge.svg?branch=master)](https://coveralls.io/github/dino-absoluto/flex-progress-js?branch=master)
+
 An object-oriented approach to progress bar.
 
 - **Simple:** no template, no ticking, just change the `ratio` property and
