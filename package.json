@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.3",
-    "@types/node": "^11.13.0",
+    "@types/node": "^11.13.4",
     "@types/webpack-bundle-analyzer": "^2.13.1",
     "@types/webpack-node-externals": "^1.6.3",
     "chalk": "^2.4.2",
@@ -54,7 +54,7 @@
     "tslint-consistent-codestyle": "^1.15.1",
     "typescript": "^3.4.3",
     "webpack": "^4.29.6",
-    "webpack-bundle-analyzer": "^3.3.0",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.0",
     "webpack-node-externals": "^1.7.2"
   }
