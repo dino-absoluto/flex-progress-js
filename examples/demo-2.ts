@@ -8,6 +8,7 @@ const MESSAGE = 'Hello World!'
 const out = new FlexProgress.Output()
 const msg = new FlexProgress.Text({
   text: MESSAGE,
+  align: FlexProgress.TextAlignment.Center,
   /** Allow the element to stretch */
   flex: 1
 })
@@ -61,5 +62,6 @@ if (!(process.argv.indexOf('--loop') >= 0)) {
 /* Call out.clear() on SIGINT to restore the cursor con Ctrl+C */
 process.on('SIGINT', () => {
   out.clear(false)
+  console.log()
   process.exit(0)
 })
