@@ -20,6 +20,7 @@
  */
 /* imports */
 import { BaseElement, Base, BaseData } from '../base'
+import { Group } from '../group'
 
 /* code */
 const immediate = () => {
@@ -159,5 +160,18 @@ describe('Base', () => {
     b.flex = -1
     expect(b.flexGrow).toBe(0)
     expect(b.flexShrink).toBe(0)
+  })
+  test('notify', async () => {
+    const b = new TestBase({
+      width: 10
+    })
+    const group = new Group()
+    group.append(b)
+    expect(b.parent).toBe(group)
+    const mockNotify = jest.fn(group.notify)
+    group.notify = mockNotify
+    b.width = 15
+    await immediate()
+    expect(mockNotify.mock.calls.length).toBe(1)
   })
 })

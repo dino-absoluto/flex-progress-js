@@ -95,6 +95,7 @@ implements ParentElement {
       children.push(item)
       this.pItemAdded(item)
     }
+    this.notify()
     return item
   }
 
@@ -106,6 +107,7 @@ implements ParentElement {
     const index = children.indexOf(item)
     children.splice(index, 1)
     this.pItemRemoved(item)
+    this.notify()
     return item
   }
 
@@ -115,6 +117,7 @@ implements ParentElement {
       this.pItemRemoved(item)
     }
     children.length = 0
+    this.notify()
   }
 
   append (...items: FlexChild[]) {
@@ -124,9 +127,14 @@ implements ParentElement {
       children.push(child)
       this.pItemAdded(child)
     }
+    this.notify()
   }
 
-  notify () {
+  notify (node?: ChildElement) {
+    const { parent } = this
+    if (parent) {
+      parent.notify(this, this.data, {})
+    }
     return
   }
 }

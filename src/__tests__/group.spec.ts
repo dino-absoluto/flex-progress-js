@@ -74,8 +74,12 @@ describe('Group', () => {
     const parent = new Group()
     parent.add(group)
     const mockFn = jest.fn(parent.nextFrame)
+    const mockNotify = jest.fn(parent.notify)
     parent.nextFrame = mockFn
+    parent.notify = mockNotify
     expect(group.nextFrame(() => undefined)).toBe(false)
     expect(mockFn.mock.calls.length).toBe(1)
+    group.notify()
+    expect(mockNotify.mock.calls.length).toBe(1)
   })
 })
