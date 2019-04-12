@@ -33,11 +33,19 @@ import { flex } from './utils/flex'
 
 export type GroupData = BaseData
 export type GroupOptions = BaseOptions
+
 type FlexChild = string | number | ChildElement
+
+interface Container {
+  add (item: FlexChild, atIndex?: number): void
+  remove (item: ChildElement): void
+  append (...items: FlexChild[]): void
+  clear (): void
+}
 
 export class Group<T extends GroupData = GroupData>
 extends Base<T>
-implements ParentElement {
+implements ParentElement, Container {
   readonly children: ChildElement[] = []
 
   constructor (options?: BaseOptions) {
