@@ -22,22 +22,22 @@ const bar = new FlexProgress.Bar({
 
 The following options are accepted by most elements.
 
-###### minWidth
+##### minWidth
 *Type:* `number`
 
 Minimum acceptable width.
 
-###### maxWidth
+##### maxWidth
 *Type:* `number`
 
 Maximum acceptable width.
 
-###### width
+##### width
 *Type:* `number`
 
 Short hand for `minWidth` & `maxWidth`
 
-###### flex
+##### flex
 *Type:*
 ```typescript
 number | {
@@ -48,8 +48,9 @@ number | {
 
 Make the element grow or shrink.
 
-###### postProcess
+##### postProcess
 *Type:* `(...texts: string[]) => string | string[]`
+
 Post process the rendered text.
 
 Putting ANSI escape code to your text may cause various problems.
@@ -90,12 +91,12 @@ Inherited from `Group`, supports all `Group` functions. Except that it cannot
 be added to another `Group` and all it output will be directed to screen.
 
 ### Bar
-###### ratio
+##### ratio
 *Type:* `number`
 
 The completion degree of the progress bar. Clamped to [0-1].
 
-###### theme
+##### theme
 *Type:*
 ```typescript
 interface BarTheme {
@@ -109,7 +110,7 @@ The last string → a completed field.
 Anything in between are divided evenly.
 
 ### Spinner
-###### theme
+##### theme
 *Type:*
 ```typescript
 interface SpinnerTheme {
@@ -123,7 +124,7 @@ Compatible with [`cli-spinners`](https://www.npmjs.com/package/cli-spinners)
 
 
 ### Text
-###### text
+##### text
 *Type:* `string`
 
 Text to display.
