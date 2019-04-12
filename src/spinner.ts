@@ -61,20 +61,21 @@ export const themeDefault: SpinnerThemeSized = {
 Object.freeze(themeDefault)
 Object.freeze(themeDefault.frames)
 
-// const styleLine = {
-//   width: 1,
-//   interval: 120,
-//   frames:
-//   [ '~'
-//   , '\\'
-//   , '|'
-//   , '/'
-//   ]
-// }
+export const themeLine = {
+  width: 1,
+  interval: 120,
+  frames:
+  [ '~'
+  , '\\'
+  , '|'
+  , '/'
+  ]
+}
 
 /** Describe options to class Spinner constructor() */
 interface SpinnerOptions extends BaseOptions {
   theme?: SpinnerTheme
+  frameOffset?: number
 }
 
 interface SpinnerData extends BaseData {
@@ -89,8 +90,11 @@ interface SpinnerData extends BaseData {
 export class Spinner<T extends SpinnerData> extends Base<T> {
   constructor (options: SpinnerOptions = {}) {
     super(options)
-    if (options.theme) {
+    if (options.theme != null) {
       this.theme = options.theme
+    }
+    if (options.frameOffset != null) {
+      this.frameOffset = options.frameOffset
     }
   }
 
