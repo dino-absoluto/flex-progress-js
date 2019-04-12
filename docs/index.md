@@ -53,13 +53,13 @@ Make the element grow or shrink.
 
 Post process the rendered text.
 
-Putting ANSI escape code to your text may cause various problems.
+Putting ANSI escape code in your text may cause various problems.
 Especially when the text needed to be truncated.
 Therefore it's an unrecommended act.
 
 Pass a function to this option to postProcess the output
 (e.g. `chalk.red`)
-The resulted string visual length must always equal to the input length.
+The resulted string's visual length must always equal to the input length.
 
 ***NOTE:*** class `Bar` pass 3 strings as arguments:
 - 1st, a string represents filled space
@@ -70,7 +70,7 @@ The resulted string visual length must always equal to the input length.
 A group of elements. A `Group` is also an element.
 Therefore it can be added to another `Group` as a sub-element.
 
-`Group` implements the following space
+`Group` implements the following interface.
 ```typescript
 type FlexChild = string | number | ChildElement
 
