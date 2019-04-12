@@ -1,23 +1,34 @@
 ## Options
-Work in progress.
+All element accept 1 optional object as options.
+
+```typescript
+const bar = new FlexProgress.Bar({
+  minWidth: 10,
+  flex: {
+    grow: 1
+  }
+})
+```
+
+The following options are accepted by most elements.
 
 ###### minWidth
-Type: `number`
+**Type:** `number`
 
 Minimum acceptable width.
 
 ###### maxWidth
-Type: `number`
+**Type:** `number`
 
 Maximum acceptable width.
 
 ###### width
-Type: `number`
+**Type:** `number`
 
 Short hand for `minWidth` & `maxWidth`
 
 ###### flex
-Type:
+**Type:**
 ```typescript
 number | {
   grow: number
@@ -28,7 +39,7 @@ number | {
 Make the element grow or shrink.
 
 ###### postProcess
-Type: `(...texts: string[]) => string | string[]`
+**Type:** `(...texts: string[]) => string | string[]`
 Post process the rendered text.
 
 Putting ANSI escape code to your text may cause various problems.
@@ -70,12 +81,12 @@ be added to another `Group` and all it output will be directed to screen.
 
 ### Bar
 ###### ratio
-Type: `number`
+**Type:** `number`
 
 The completion degree of the progress bar. Clamped to [0-1].
 
 ###### theme
-Type:
+**Type:**
 ```typescript
 interface BarTheme {
   symbols: string[] /* default: [ '░', '▒', '▓', '█' ] */
@@ -89,7 +100,7 @@ Anything in between are divided evenly.
 
 ### Spinner
 ###### theme
-Type:
+**Type:**
 ```typescript
 interface SpinnerTheme {
   interval: number
@@ -98,18 +109,17 @@ interface SpinnerTheme {
   width?: number
 }
 ```
-Compatible with
-[![npm version](https://badge.fury.io/js/cli-spinners.svg)](https://badge.fury.io/js/cli-spinners)
+Compatible with [`cli-spinners`](https://www.npmjs.com/package/cli-spinners)
 
 
 ### Text
 ###### text
-Type: `string`
+**Type:** `string`
 
 Text to display.
 
 ##### align
-Type:
+**Type:**
 ```typescript
 const enum TextAlignment {
   Left = 'left',
@@ -127,7 +137,7 @@ Removing it make the cursor return.
 
 **NOTE:** if the program was interrupted with Ctrl+C, the cursor
 may stay hidden.
-Capture `SIGINT` signal to cleanly clear out `Output`.
+Capture `SIGINT` signal to cleanly clear `Output`.
 
 ```typescript
 process.on('SIGINT', () => {
