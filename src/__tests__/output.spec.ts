@@ -69,7 +69,7 @@ class TestOutput extends Output {
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Output', () => {
+describe('Output as TTY', () => {
   test('constructor', async () => {
     const isTTY = process.stderr.isTTY
     process.stderr.isTTY = true
@@ -88,12 +88,12 @@ describe('Output', () => {
     const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new Test1({ stream })
-    out.append('Hello')
+    out.append('ABC')
     out.append(new Spinner())
     out.clearLine()
     await p
     expect(stripANSI(stream.data)).toBe(
-      'Hello⠋Hello⠙Hello⠙Hello⠹Hello⠹Hello⠸Hello⠸Hello⠼Hello⠼Hello⠴Hello⠴')
+      'ABC⠋ABC⠙ABC⠹ABC⠸ABC⠼ABC⠴ABC⠦ABC⠧ABC⠇ABC⠏ABC⠋')
   })
   test('timer', async () => {
     const stream = new TestStreamTTY()
@@ -130,6 +130,27 @@ describe('Output', () => {
     await p
     expect(stripANSI(stream.data)).toBe(
       'ABC')
+  })
+})
+
+describe('Output as write-only', () => {
+  test('simple', async () => {
+    class Test1 extends TestOutput {
+      eCounter = 0
+      get elapsed () {
+        this.eCounter += SYNCING_INTERVAL
+        return this.eCounter
+      }
+    }
+    const stream = new TestStream()
+    const p = new Promise(resolve => stream.on('finish', resolve))
+    const out = new Test1({ stream })
+    out.append('ABC')
+    out.append(new Spinner())
+    out.clearLine()
+    await p
+    expect(stream.data).toBe(
+      '\nABC⠋\nABC⠙\nABC⠹\nABC⠸\nABC⠼\nABC⠴\nABC⠦\nABC⠧\nABC⠇\nABC⠏\nABC⠋\n')
   })
 })
 

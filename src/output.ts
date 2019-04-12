@@ -126,6 +126,8 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
   private pTarget: Target
+  private pLastText = ''
+  private pIsOutdated = false
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
@@ -161,6 +163,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   }
 
   notify () {
+    this.pIsOutdated = true
     this.pScheduleFrame()
   }
 
@@ -197,7 +200,10 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
       pNextFrameCBs.clear()
       this.pScheduleFrame = once(this.pProcessFrame)
       /* Frame has to be updated after callbacks */
-      this.update()
+      if (this.pIsOutdated) {
+        this.update()
+        this.pIsOutdated = false
+      }
     }, SYNCING_INTERVAL).unref()
   }
 
@@ -205,8 +211,12 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
 
   protected update () {
     this.renderedCount++
-    const { pTarget } = this
+    const { pTarget, pLastText } = this
     const text = this.render(pTarget.columns)
+    if (pLastText === text) {
+      return
+    }
+    this.pLastText = text
     this.pTarget.update(text)
   }
 }
