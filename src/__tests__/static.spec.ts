@@ -17,23 +17,22 @@
  *
  */
 /* imports */
-import { Base } from './base'
-import { Group } from './group'
-import { Text, TextAlignment } from './text'
-import { Static } from './static'
-import { Space } from './space'
-import { Spinner } from './spinner'
-import { Bar } from './bar'
-import { HideCursor } from './hide-cursor'
-import { Output } from './output'
+import { Static } from '../static'
 /* exports */
 
-export { Base
-, Group
-, Space
-, Text, TextAlignment
-, Static
-, Spinner
-, Bar
-, HideCursor
-, Output }
+describe('Static', () => {
+  test('constructor with string', async () => {
+    const TEXT = 'abc'
+    const i = new Static(TEXT)
+    expect(i.render(0)).toBe(TEXT)
+    expect(i.render(1)).toBe(TEXT)
+    expect(i.render(2)).toBe(TEXT)
+    expect(i.enabled).toBe(true)
+    expect(() => { (i as any).enabled = false }).toThrow()
+    expect(() => { (i as any).flex = 1 }).toThrow()
+    expect(i.flexShrink).toBe(0)
+    expect(i.flexGrow).toBe(0)
+    expect(i.minWidth).toBe(TEXT.length)
+    expect(i.maxWidth).toBe(TEXT.length)
+  })
+})

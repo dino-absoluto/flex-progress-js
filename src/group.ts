@@ -1,28 +1,25 @@
 /**
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
- * flex-progress-js - Progress indicator for Node.js
- * Copyright (C) 2019 Dino <dinoabsoluto+dev@gmail.com>
+ * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 /* imports */
 import { ChildElement, ParentElement } from './shared'
 import { Base, BaseData, BaseOptions } from './base'
-import { Text } from './text'
-import { Space } from './space'
+import { Static } from './static'
 import { flex } from './utils/flex'
 
 /* code */
@@ -85,10 +82,10 @@ implements ParentElement, Container {
 
   private static pCastChild (item: FlexChild): ChildElement {
     if (typeof item === 'string') {
-      item = new Text(item)
+      item = new Static(item)
     }
     if (typeof item === 'number') {
-      item = new Space(item)
+      item = new Static(item)
     }
     return item
   }

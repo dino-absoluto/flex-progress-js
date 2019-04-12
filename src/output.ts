@@ -1,21 +1,19 @@
 /**
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
- * flex-progress-js - Progress indicator for Node.js
- * Copyright (C) 2019 Dino <dinoabsoluto+dev@gmail.com>
+ * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 /* imports */
@@ -48,24 +46,104 @@ export type OutputData = GroupData
 
 type FrameCB = (frame: number) => void
 
+interface Target {
+  columns: number
+  clearLine (): void
+  update (text: string): void
+}
+
+export class TargetWriteOnly implements Target {
+  readonly stream: OutputStream
+  constructor (stream: OutputStream) {
+    this.stream = stream
+  }
+
+  get columns () {
+    return 72
+  }
+
+  clearLine () {
+    const { stream } = this
+    stream.write('\n')
+  }
+
+  update (text: string) {
+    const { stream } = this
+    stream.write(text + '\n')
+    return
+  }
+}
+
+export class TargetTTY implements Target {
+  readonly stream: OutputStream
+  private pLastColumns = 0
+  private pLastWidth = 0
+  constructor (stream: OutputStream) {
+    this.stream = stream
+    if (!stream.isTTY) {
+      throw new Error('stream is not TTY')
+    }
+  }
+
+  /** Clear display line */
+  clearLine () {
+    const { stream } = this
+    clearLine(stream, 0)
+    cursorTo(stream, 0)
+  }
+
+  get columns () {
+    return this.stream.columns || 40
+  }
+
+  update (text: string) {
+    const { stream, columns, pLastColumns } = this
+    {
+      const width = stringWidth(text)
+      if (width !== this.pLastWidth) {
+        this.clearLine()
+      }
+      this.pLastWidth = width
+    }
+    if (pLastColumns !== columns) {
+      this.pLastColumns = columns
+      this.clearLine()
+      clearScreenDown(stream)
+    }
+    stream.write(text)
+    // if (!this.flexGrow) {
+    //   clearLine(stream, 1)
+    // }
+    cursorTo(stream, 0)
+    return text
+  }
+}
+
 /** Actual output to stderr */
 export class Output<T extends OutputData = OutputData> extends Group<T> {
-  readonly stream: OutputStream = process.stderr
+  readonly stream: OutputStream
   readonly isTTY: boolean = true
-  private $lastColumns = 0
-  private $lastWidth = 0
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
+  private pTarget: Target
+  private pLastText = ''
+  private pIsOutdated = false
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
     super(options)
-    if (options) {
+    if (options && options.stream) {
       const { stream } = options
-      if (stream) {
-        this.stream = stream
-        this.isTTY = !!stream.isTTY
-      }
+      this.stream = stream
+      this.isTTY = !!stream.isTTY
+    } else {
+      this.stream = process.stderr
+      this.isTTY = !!this.stream.isTTY
+    }
+    if (this.isTTY) {
+      this.pTarget = new TargetTTY(this.stream)
+    } else {
+      this.pTarget = new TargetWriteOnly(this.stream)
     }
   }
 
@@ -77,7 +155,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   get enabled () { return super.enabled }
   set enabled (value: boolean) {
     if (!value) {
-      this.clearLine()
+      this.pTarget.clearLine()
     } else {
       this.pScheduleFrame()
     }
@@ -85,6 +163,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   }
 
   notify () {
+    this.pIsOutdated = true
     this.pScheduleFrame()
   }
 
@@ -93,18 +172,15 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     return Date.now() - this.pCreatedTime
   }
 
-  /** Clear display line */
-  clearLine () {
-    const { stream } = this
-    clearLine(stream, 0)
-    cursorTo(stream, 0)
-  }
-
   clear (clearLine = true) {
     super.clear()
     if (clearLine) {
-      this.clearLine()
+      this.pTarget.clearLine()
     }
+  }
+
+  clearLine () {
+    this.pTarget.clearLine()
   }
 
   nextFrame (cb: (frame: number) => void) {
@@ -124,37 +200,23 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
       pNextFrameCBs.clear()
       this.pScheduleFrame = once(this.pProcessFrame)
       /* Frame has to be updated after callbacks */
-      this.update()
+      if (this.pIsOutdated) {
+        this.update()
+        this.pIsOutdated = false
+      }
     }, SYNCING_INTERVAL).unref()
   }
 
   private pScheduleFrame = once(this.pProcessFrame)
 
-  /** Get display width */
-  get columns () {
-    return this.stream.columns || 40
-  }
-
   protected update () {
-    const { stream, columns, $lastColumns } = this
-    const text = this.render(columns)
-    {
-      const width = stringWidth(text)
-      if (width !== this.$lastWidth) {
-        this.clearLine()
-      }
-      this.$lastWidth = width
-    }
-    if ($lastColumns !== columns) {
-      this.$lastColumns = columns
-      this.clearLine()
-      clearScreenDown(stream)
-    }
-    stream.write(text)
-    if (!this.flexGrow) {
-      clearLine(stream, 1)
-    }
-    cursorTo(stream, 0)
     this.renderedCount++
+    const { pTarget, pLastText } = this
+    const text = this.render(pTarget.columns)
+    if (pLastText === text) {
+      return
+    }
+    this.pLastText = text
+    this.pTarget.update(text)
   }
 }

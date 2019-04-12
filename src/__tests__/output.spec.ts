@@ -1,26 +1,24 @@
 /**
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
- * flex-progress-js - Progress indicator for Node.js
- * Copyright (C) 2019 Dino <dinoabsoluto+dev@gmail.com>
+ * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 /* imports */
 import { SYNCING_INTERVAL } from '../shared'
-import { Output } from '../output'
+import { Output, TargetTTY } from '../output'
 import { Spinner } from '../spinner'
 import { Writable } from 'stream'
 import stripANSI from 'strip-ansi'
@@ -35,6 +33,10 @@ class TestStream extends Writable {
     this.data += chunk.toString()
     cb(null)
   }
+}
+
+class TestStreamTTY extends TestStream {
+  isTTY = true
 }
 
 class TestOutput extends Output {
@@ -67,7 +69,14 @@ class TestOutput extends Output {
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Output', () => {
+describe('Output as TTY', () => {
+  test('constructor', async () => {
+    const isTTY = process.stderr.isTTY
+    process.stderr.isTTY = true
+    const out = new Output()
+    process.stderr.isTTY = isTTY
+    out.clear()
+  })
   test('simple', async () => {
     class Test1 extends TestOutput {
       eCounter = 0
@@ -76,25 +85,25 @@ describe('Output', () => {
         return this.eCounter
       }
     }
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new Test1({ stream })
-    out.append('Hello')
+    out.append('ABC')
     out.append(new Spinner())
     out.clearLine()
     await p
     expect(stripANSI(stream.data)).toBe(
-      'Hello⠋Hello⠙Hello⠙Hello⠹Hello⠹Hello⠸Hello⠸Hello⠼Hello⠼Hello⠴Hello⠴')
+      'ABC⠋ABC⠙ABC⠹ABC⠸ABC⠼ABC⠴ABC⠦ABC⠧ABC⠇ABC⠏ABC⠋')
   })
   test('timer', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const out = new TestOutput({ stream })
     const elapsed = out.elapsed
     await delay(10)
     expect(elapsed).toBeLessThan(out.elapsed)
   })
   test('parent & children', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new TestOutput({ stream })
     expect(() => { out.parent = {} as any }).toThrow()
@@ -106,7 +115,7 @@ describe('Output', () => {
       ' #ABC# ')
   })
   test('enabled', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new TestOutput({ stream })
     out.flexGrow = 0
@@ -121,5 +130,32 @@ describe('Output', () => {
     await p
     expect(stripANSI(stream.data)).toBe(
       'ABC')
+  })
+})
+
+describe('Output as write-only', () => {
+  test('simple', async () => {
+    class Test1 extends TestOutput {
+      eCounter = 0
+      get elapsed () {
+        this.eCounter += SYNCING_INTERVAL
+        return this.eCounter
+      }
+    }
+    const stream = new TestStream()
+    const p = new Promise(resolve => stream.on('finish', resolve))
+    const out = new Test1({ stream })
+    out.append('ABC')
+    out.append(new Spinner())
+    out.clearLine()
+    await p
+    expect(stream.data).toBe(
+      '\nABC⠋\nABC⠙\nABC⠹\nABC⠸\nABC⠼\nABC⠴\nABC⠦\nABC⠧\nABC⠇\nABC⠏\nABC⠋\n')
+  })
+})
+
+describe('TargetTTY', () => {
+  test('constructor', async () => {
+    expect(() => new TargetTTY(new TestStream())).toThrow()
   })
 })
