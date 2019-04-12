@@ -19,9 +19,10 @@
  *
  */
 /* imports */
-import once from 'lodash-es/once'
-import castArray from 'lodash-es/castArray'
 import { ChildElement, ParentElement } from './shared'
+import once from 'lodash-es/once'
+import clamp from 'lodash-es/clamp'
+import castArray from 'lodash-es/castArray'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -79,12 +80,15 @@ export abstract class BaseElement<T extends object = {}> {
 
 }
 
+export type PostProcessFn = (...values: string[]) => string
+
 export interface BaseData {
   minWidth: number
   maxWidth: number
   flexGrow: number
   flexShrink: number
   enabled: boolean
+  postProcess?: PostProcessFn
 }
 
 export interface BaseOptions {
@@ -138,6 +142,11 @@ implements ChildElement {
         }
       }
     }
+  }
+
+  get postProcess () { return this.proxy.postProcess }
+  set postProcess (fn: PostProcessFn | undefined) {
+    this.proxy.postProcess = fn
   }
 
   get parent () { return this.pParent }
@@ -222,6 +231,10 @@ implements ChildElement {
   }
 
   protected rendered (...texts: string[]): string {
+    const { postProcess } = this
+    if (postProcess) {
+      return postProcess(...texts)
+    }
     return texts.join('')
   }
 
@@ -229,7 +242,9 @@ implements ChildElement {
     if (!this.enabled) {
       return 0
     }
-    return this.handleCalculateWidth()
+    return clamp(this.handleCalculateWidth(),
+      Math.min(this.minWidth, this.maxWidth),
+      this.maxWidth)
   }
 
   render (maxWidth?: number): string {
