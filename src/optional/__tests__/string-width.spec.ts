@@ -19,21 +19,27 @@
  *
  */
 /* imports */
-import optionalStringWidth = require('string-width')
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** Get a string display width */
-const stringWidth = (() => {
-  try {
-    const getLength: typeof optionalStringWidth = require('string-width')
-    return getLength
-  } catch {
-    return (text: string) => text.length
-  }
-})()
+test('no string-width', () => {
+  jest.doMock('string-width', () => {
+    throw new Error('no string-width')
+  })
+  expect(() => require('string-width')).toThrow()
+  const stringWidth = require('../string-width').default
+  expect(stringWidth('abc')).toBe(3)
+  expect(stringWidth('古')).toBe('古'.length)
+  expect(stringWidth('古')).toBe(1)
+  jest.dontMock('string-width')
+})
 
-export default stringWidth
+test('with string-width', () => {
+  expect(() => require('string-width')).not.toThrow()
+  const stringWidth = require('../string-width').default
+  expect(stringWidth('abc')).toBe(3)
+  expect(stringWidth('古')).toBe(1)
+})
