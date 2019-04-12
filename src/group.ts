@@ -40,7 +40,7 @@ extends Base<T>
 implements ParentElement {
   readonly children: ChildElement[] = []
 
-  constructor (options: BaseOptions) {
+  constructor (options?: BaseOptions) {
     super(Object.assign({
       flex: 1
     }, options))

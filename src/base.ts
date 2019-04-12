@@ -142,6 +142,9 @@ implements ChildElement {
         }
       }
     }
+    if (options.postProcess) {
+      this.postProcess = options.postProcess
+    }
   }
 
   get postProcess () { return this.proxy.postProcess }
