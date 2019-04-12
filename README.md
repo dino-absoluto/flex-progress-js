@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.org/dino-absoluto/flex-progress-js.svg?branch=master)](https://travis-ci.org/dino-absoluto/flex-progress-js)
 [![Coverage Status](https://coveralls.io/repos/github/dino-absoluto/flex-progress-js/badge.svg?branch=master)](https://coveralls.io/github/dino-absoluto/flex-progress-js?branch=master)
+[![npm version](https://badge.fury.io/js/%40dinoabsoluto%2Fflex-progress.svg)](https://badge.fury.io/js/%40dinoabsoluto%2Fflex-progress)
 
 An object-oriented approach to progress bar.
 

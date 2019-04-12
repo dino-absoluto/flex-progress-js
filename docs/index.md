@@ -68,7 +68,7 @@ The resulted string's visual length must always equal to the input length.
 
 ### Group
 A group of elements. A `Group` is also an element.
-Therefore it can be added to another `Group` as a sub-element.
+Therefore it can be added to another `Group` as sub-element.
 
 `Group` implements the following interface.
 ```typescript
