@@ -25,6 +25,8 @@ import {
 , clearScreenDown
 , cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
+import { SYNCING_INTERVAL } from './shared'
+import once from 'lodash-es/once'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -38,13 +40,16 @@ interface OutputOptions extends GroupOptions {
 
 export type OutputData = GroupData
 
+type FrameCB = (frame: number) => void
+
 /** Actual output to stderr */
 export class Output<T extends OutputData> extends Group<T> {
   readonly stream: NodeJS.WriteStream = process.stderr
   readonly isTTY: boolean = true
   private $lastColumns = 0
   private $lastWidth = 0
-  private $createdTime = Date.now()
+  private pCreatedTime = Date.now()
+  private pNextFrameCBs = new Set<FrameCB>()
   count = 0
 
   constructor (options?: OutputOptions) {
@@ -74,7 +79,7 @@ export class Output<T extends OutputData> extends Group<T> {
 
   /** Elapsed time since creation */
   get elapsed () {
-    return Date.now() - this.$createdTime
+    return Date.now() - this.pCreatedTime
   }
 
   /** Clear display line */
@@ -90,6 +95,27 @@ export class Output<T extends OutputData> extends Group<T> {
       this.clearLine()
     }
   }
+
+  nextFrame (cb: (frame: number) => void) {
+    const { pNextFrameCBs } = this
+    pNextFrameCBs.add(cb)
+    this.pScheduleFrame()
+    return true
+  }
+
+  private pProcessFrame = () => {
+    setTimeout(() => {
+      const { pNextFrameCBs } = this
+      const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
+      for (const cb of pNextFrameCBs) {
+        cb(frame)
+      }
+      pNextFrameCBs.clear()
+      this.pScheduleFrame = once(this.pProcessFrame)
+    }, SYNCING_INTERVAL).unref()
+  }
+
+  private pScheduleFrame = once(this.pProcessFrame)
 
   /** Get display width */
   get columns () {
