@@ -81,7 +81,7 @@ export abstract class BaseElement<T extends object = {}> {
 
 }
 
-export type PostProcessFn = (...values: string[]) => string
+export type PostProcessFn = (...values: string[]) => string | string[]
 
 export interface BaseData {
   minWidth: number
@@ -237,7 +237,7 @@ implements ChildElement {
   protected rendered (...texts: string[]): string {
     const { postProcess } = this
     if (postProcess) {
-      return postProcess(...texts)
+      texts = castArray(postProcess(...texts))
     }
     return texts.join('')
   }
