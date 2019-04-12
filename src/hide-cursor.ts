@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Base, BaseData } from './Base'
+import { Base, BaseData } from './base'
 import { Output } from './output'
 
 /* code */
