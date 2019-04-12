@@ -49,5 +49,7 @@ export class Static implements ChildElement {
   get flexGrow () { return 0 }
   get maxWidth () { return this.width }
   get minWidth () { return this.width }
-  get flex () { return 0 }
+  set flex (_value: number) {
+    throw new Error('static cannot set flex')
+  }
 }
