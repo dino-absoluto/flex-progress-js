@@ -46,25 +46,72 @@ export type OutputData = GroupData
 
 type FrameCB = (frame: number) => void
 
-/** Actual output to stderr */
-export class Output<T extends OutputData = OutputData> extends Group<T> {
+class TargetTTY {
   readonly stream: OutputStream = process.stderr
   readonly isTTY: boolean = true
-  private $lastColumns = 0
-  private $lastWidth = 0
+  private pLastColumns = 0
+  private pLastWidth = 0
+  constructor (stream: OutputStream) {
+    this.stream = stream
+    if (!stream.isTTY) {
+      throw new Error('stream is not TTY')
+    }
+  }
+
+  /** Clear display line */
+  clearLine () {
+    const { stream } = this
+    clearLine(stream, 0)
+    cursorTo(stream, 0)
+  }
+
+  get columns () {
+    return this.stream.columns || 40
+  }
+
+  update (text: string) {
+    const { stream, columns, pLastColumns } = this
+    {
+      const width = stringWidth(text)
+      if (width !== this.pLastWidth) {
+        this.clearLine()
+      }
+      this.pLastWidth = width
+    }
+    if (pLastColumns !== columns) {
+      this.pLastColumns = columns
+      this.clearLine()
+      clearScreenDown(stream)
+    }
+    stream.write(text)
+    // if (!this.flexGrow) {
+    //   clearLine(stream, 1)
+    // }
+    cursorTo(stream, 0)
+    return text
+  }
+}
+
+/** Actual output to stderr */
+export class Output<T extends OutputData = OutputData> extends Group<T> {
+  readonly stream: OutputStream
+  readonly isTTY: boolean = true
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
+  private pTarget: TargetTTY
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
     super(options)
-    if (options) {
+    if (options && options.stream) {
       const { stream } = options
-      if (stream) {
-        this.stream = stream
-        this.isTTY = !!stream.isTTY
-      }
+      this.stream = stream
+      this.isTTY = !!stream.isTTY
+    } else {
+      this.stream = process.stderr
+      this.isTTY = !!this.stream.isTTY
     }
+    this.pTarget = new TargetTTY(this.stream)
   }
 
   get parent () { return undefined }
@@ -75,7 +122,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   get enabled () { return super.enabled }
   set enabled (value: boolean) {
     if (!value) {
-      this.clearLine()
+      this.pTarget.clearLine()
     } else {
       this.pScheduleFrame()
     }
@@ -91,18 +138,15 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     return Date.now() - this.pCreatedTime
   }
 
-  /** Clear display line */
-  clearLine () {
-    const { stream } = this
-    clearLine(stream, 0)
-    cursorTo(stream, 0)
-  }
-
   clear (clearLine = true) {
     super.clear()
     if (clearLine) {
-      this.clearLine()
+      this.pTarget.clearLine()
     }
+  }
+
+  clearLine () {
+    this.pTarget.clearLine()
   }
 
   nextFrame (cb: (frame: number) => void) {
@@ -128,31 +172,10 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
 
   private pScheduleFrame = once(this.pProcessFrame)
 
-  /** Get display width */
-  get columns () {
-    return this.stream.columns || 40
-  }
-
   protected update () {
-    const { stream, columns, $lastColumns } = this
-    const text = this.render(columns)
-    {
-      const width = stringWidth(text)
-      if (width !== this.$lastWidth) {
-        this.clearLine()
-      }
-      this.$lastWidth = width
-    }
-    if ($lastColumns !== columns) {
-      this.$lastColumns = columns
-      this.clearLine()
-      clearScreenDown(stream)
-    }
-    stream.write(text)
-    if (!this.flexGrow) {
-      clearLine(stream, 1)
-    }
-    cursorTo(stream, 0)
     this.renderedCount++
+    const { pTarget } = this
+    const text = this.render(pTarget.columns)
+    this.pTarget.update(text)
   }
 }

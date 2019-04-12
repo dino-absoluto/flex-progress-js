@@ -35,6 +35,10 @@ class TestStream extends Writable {
   }
 }
 
+class TestStreamTTY extends TestStream {
+  isTTY = true
+}
+
 class TestOutput extends Output {
   i = 0
   end = false
@@ -74,7 +78,7 @@ describe('Output', () => {
         return this.eCounter
       }
     }
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new Test1({ stream })
     out.append('Hello')
@@ -85,14 +89,14 @@ describe('Output', () => {
       'Hello⠋Hello⠙Hello⠙Hello⠹Hello⠹Hello⠸Hello⠸Hello⠼Hello⠼Hello⠴Hello⠴')
   })
   test('timer', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const out = new TestOutput({ stream })
     const elapsed = out.elapsed
     await delay(10)
     expect(elapsed).toBeLessThan(out.elapsed)
   })
   test('parent & children', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new TestOutput({ stream })
     expect(() => { out.parent = {} as any }).toThrow()
@@ -104,7 +108,7 @@ describe('Output', () => {
       ' #ABC# ')
   })
   test('enabled', async () => {
-    const stream = new TestStream()
+    const stream = new TestStreamTTY()
     const p = new Promise(resolve => stream.on('finish', resolve))
     const out = new TestOutput({ stream })
     out.flexGrow = 0
