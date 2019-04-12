@@ -20,7 +20,7 @@
  */
 /* imports */
 import { Base, BaseOptions, BaseData } from './base'
-import { ParentElement, SYNCING_INTERVAL } from './shared'
+import { SYNCING_INTERVAL } from './shared'
 import stringWidth from './optional/string-width'
 // import once from 'lodash-es/once'
 

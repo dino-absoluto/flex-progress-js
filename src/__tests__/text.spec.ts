@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Text } from '../text'
+import { Text, TextAlignment } from '../text'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -27,14 +27,34 @@ import { Text } from '../text'
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Text', () => {
-  test('render()__flex.1', async () => {
+  test('render() flex.1', async () => {
     const text = new Text({ text: 'a'.repeat(10), flex: 1 })
     expect(text.render(8)).toBe('a'.repeat(7) + '…')
   })
-  test('render()__flex.2', async () => {
+  test('render() flex.2', async () => {
     const text = new Text({ text: 'a'.repeat(10) })
     expect(text.render(8)).toBe('a'.repeat(10))
     text.flex = 1
     expect(text.render(8)).toBe('a'.repeat(7) + '…')
+  })
+  test('align default', async () => {
+    const text = new Text({ text: 'abc', flex: 1 })
+    expect(text.render(10)).toBe('abc' + ' '.repeat(7))
+  })
+  test('align center', async () => {
+    const text = new Text({ text: 'abc', flex: 1, align: TextAlignment.Center })
+    expect(text.render(10)).toBe(' '.repeat(3) + 'abc' + ' '.repeat(4))
+  })
+  test('align right', async () => {
+    const text = new Text({ text: 'abc', flex: 1, align: TextAlignment.Right })
+    expect(text.render(10)).toBe(' '.repeat(7) + 'abc')
+  })
+  test('more', async () => {
+    const text = new Text({ text: 'a'.repeat(10), flex: 1, more: '++' })
+    expect(text.render(8)).toBe('a'.repeat(6) + '++')
+    text.more = '+++'
+    expect(text.render(8)).toBe('a'.repeat(5) + '+++')
+    expect(text.render(2)).toBe('  ')
+    expect(text.render(0)).toBe('')
   })
 })

@@ -19,7 +19,7 @@
  *
  */
 /* imports */
-import { Spinner, themeDefault } from '../spinner'
+import { Spinner, themeDefault, themeLine } from '../spinner'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -29,10 +29,34 @@ import { Spinner, themeDefault } from '../spinner'
 describe('Spinner', () => {
   test('render()', async () => {
     const spin = new Spinner()
+    expect(spin.calculateWidth()).toBe(1)
     for (let i = 0; i < 5; ++i) {
       for (const frame of themeDefault.frames) {
         expect(spin.render()).toBe(frame)
         spin.tick(themeDefault.interval)
+      }
+    }
+  })
+  test('render() offset', async () => {
+    const spin = new Spinner({ frameOffset: 1 })
+    const frames = Array.from(themeDefault.frames)
+    frames.push(frames[0])
+    frames.shift()
+    expect(spin.calculateWidth()).toBe(1)
+    for (let i = 0; i < 5; ++i) {
+      for (const frame of frames) {
+        expect(spin.render()).toBe(frame)
+        spin.tick(themeDefault.interval)
+      }
+    }
+  })
+  test('theme', async () => {
+    const spin = new Spinner({ theme: themeLine })
+    expect(spin.calculateWidth()).toBe(1)
+    for (let i = 0; i < 5; ++i) {
+      for (const frame of themeLine.frames) {
+        expect(spin.render()).toBe(frame)
+        spin.tick(themeLine.interval)
       }
     }
   })
