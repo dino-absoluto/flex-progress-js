@@ -105,7 +105,7 @@ export interface BaseOptions {
     shrink?: number
   } | number
   /** Post process values */
-  postProcess?: (...values: string[]) => string
+  postProcess?: PostProcessFn
 }
 
 export abstract class Base<T extends BaseData = BaseData>
