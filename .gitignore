@@ -5,3 +5,4 @@ desktop.ini
 __tmp__
 /node_modules
 /lib
+/coverage
