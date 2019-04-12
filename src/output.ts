@@ -68,13 +68,13 @@ export class Output<T extends OutputData> extends Group<T> {
     if (!value) {
       this.clearLine()
     } else {
-      this.update()
+      this.pScheduleFrame()
     }
     super.enabled = value
   }
 
   notify () {
-    this.update()
+    this.pScheduleFrame()
   }
 
   /** Elapsed time since creation */
@@ -112,6 +112,7 @@ export class Output<T extends OutputData> extends Group<T> {
       }
       pNextFrameCBs.clear()
       this.pScheduleFrame = once(this.pProcessFrame)
+      this.update()
     }, SYNCING_INTERVAL).unref()
   }
 
