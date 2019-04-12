@@ -20,6 +20,7 @@
 import { Base } from './base'
 import { Group } from './group'
 import { Text, TextAlignment } from './text'
+import { Static } from './static'
 import { Space } from './space'
 import { Spinner } from './spinner'
 import { Bar } from './bar'
@@ -31,6 +32,7 @@ export { Base
 , Group
 , Space
 , Text, TextAlignment
+, Static
 , Spinner
 , Bar
 , HideCursor
