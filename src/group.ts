@@ -117,7 +117,7 @@ implements ParentElement {
     children.length = 0
   }
 
-  append (...items: (string | ChildElement)[]) {
+  append (...items: FlexChild[]) {
     const { children } = this
     for (const item of items) {
       const child = Group.pCastChild(item)
