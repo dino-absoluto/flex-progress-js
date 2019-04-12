@@ -19,8 +19,7 @@
 /* imports */
 import { ChildElement, ParentElement } from './shared'
 import { Base, BaseData, BaseOptions } from './base'
-import { Text } from './text'
-import { Space } from './space'
+import { Static } from './static'
 import { flex } from './utils/flex'
 
 /* code */
@@ -83,10 +82,10 @@ implements ParentElement, Container {
 
   private static pCastChild (item: FlexChild): ChildElement {
     if (typeof item === 'string') {
-      item = new Text(item)
+      item = new Static(item)
     }
     if (typeof item === 'number') {
-      item = new Space(item)
+      item = new Static(item)
     }
     return item
   }
