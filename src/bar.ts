@@ -32,7 +32,7 @@ interface BarTheme {
   symbols: string[]
 }
 
-const defaultTheme: BarTheme = {
+const themeDefault: BarTheme = {
   // symbols: [ '.', '-', '=', '#' ]
   symbols: [ '░', '▒', '▓', '█' ]
 }
@@ -63,7 +63,7 @@ export class Bar<T extends BarData> extends Base<T> {
     }
   }
 
-  get theme () { return this.proxy.theme || defaultTheme }
+  get theme () { return this.proxy.theme || themeDefault }
   set theme (theme: BarTheme) {
     this.proxy.theme = theme
   }
