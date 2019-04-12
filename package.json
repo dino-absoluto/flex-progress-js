@@ -47,6 +47,7 @@
     "lodash-es": "^4.17.11",
     "source-map-loader": "^0.2.4",
     "string-width": "^4.1.0",
+    "strip-ansi": "^5.2.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
