@@ -18,7 +18,7 @@
  */
 /* imports */
 import { SYNCING_INTERVAL } from '../shared'
-import { Output } from '../output'
+import { Output, TargetTTY } from '../output'
 import { Spinner } from '../spinner'
 import { Writable } from 'stream'
 import stripANSI from 'strip-ansi'
@@ -70,6 +70,13 @@ class TestOutput extends Output {
 // █████████████▓░
 // █▓▒░▒▓█
 describe('Output', () => {
+  test('constructor', async () => {
+    const isTTY = process.stderr.isTTY
+    process.stderr.isTTY = true
+    const out = new Output()
+    process.stderr.isTTY = isTTY
+    out.clear()
+  })
   test('simple', async () => {
     class Test1 extends TestOutput {
       eCounter = 0
@@ -123,5 +130,11 @@ describe('Output', () => {
     await p
     expect(stripANSI(stream.data)).toBe(
       'ABC')
+  })
+})
+
+describe('TargetTTY', () => {
+  test('constructor', async () => {
+    expect(() => new TargetTTY(new TestStream())).toThrow()
   })
 })

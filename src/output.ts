@@ -46,7 +46,13 @@ export type OutputData = GroupData
 
 type FrameCB = (frame: number) => void
 
-class TargetTTY {
+interface Target {
+  columns: number
+  clearLine (): void
+  update (text: string): void
+}
+
+export class TargetTTY implements Target {
   readonly stream: OutputStream = process.stderr
   readonly isTTY: boolean = true
   private pLastColumns = 0
@@ -98,7 +104,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   readonly isTTY: boolean = true
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
-  private pTarget: TargetTTY
+  private pTarget: Target
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
