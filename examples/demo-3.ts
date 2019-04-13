@@ -48,15 +48,15 @@ const HSY = (h: number, s: number, y: number) => {
 
 /* NOTE: need true color supports */
 const colors: typeof chalk.red[] = []
-for (let i = 0; i <= 36; i++) {
-  const [r, g, b ] = HSY(i * 10, .5, .5).map(c => Math.floor(c * 255))
+for (let h = 0; h <= 120; h += 10) {
+  const [r, g, b ] = HSY(h, .5, .5).map(c => Math.floor(c * 255))
   colors.push(chalk.rgb(r, g, b))
 }
 
 let ratio = 0
 
 const colorBar = (fill: string, half: string, empty: string) => {
-  const i = Math.min(colors.length - 1, Math.floor(ratio * colors.length))
+  const i = Math.floor(ratio * 1 * (colors.length - 1)) % colors.length
   return [ colors[i](fill), colors[Math.max(0, i)](half), chalk.gray(empty) ].join('')
 }
 
@@ -67,8 +67,9 @@ const text = new FlexProgress.Text({
 })
 
 out.append(
-  1, new FlexProgress.Spinner({ postProcess: chalk.cyan })
-, 1, 'Hello World!'
+  new FlexProgress.HideCursor()
+, 1, new FlexProgress.Spinner({ postProcess: chalk.cyan })
+, 1, new FlexProgress.Text({ text: 'Hello World!', postProcess: chalk.white })
 , 1, new FlexProgress.Spinner({ postProcess: chalk.magenta })
 , 1, '⸨', bar , '⸩'
 , 1, text
@@ -85,9 +86,7 @@ const loop = setInterval(() => {
 }, 80)
 
 process.on('SIGINT', () => {
-  process.exit(0)
-})
-
-process.on('exit', () => {
+  out.clear(false)
   console.log()
+  process.exit(0)
 })
