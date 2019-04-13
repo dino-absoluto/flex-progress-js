@@ -13,14 +13,14 @@ const msg = new FlexProgress.Text({
   flex: 1
 })
 const bar1 = new FlexProgress.Bar({
-  width: 10,
+  width: 15,
   /** The output text will be pass to this function */
   postProcess:
     overArgs((...s: string[]) => s.join(''),
       [chalk.green, chalk.yellow, chalk.gray])
 })
 const bar2 = new FlexProgress.Bar({
-  width: 15,
+  width: 25,
   postProcess:
     overArgs(flip((...s: string[]) => s.join('')),
       [chalk.green, chalk.yellow, chalk.gray])
@@ -46,8 +46,8 @@ out.append(
 let count = 0
 const loop = setInterval(() => {
   count++
-  bar1.ratio = (count % 39) / 38
-  bar2.ratio = ((2 * count) % 39) / 38
+  bar1.ratio = (count % 40) / 39
+  bar2.ratio = ((2 * count) % 40) / 39
 }, 80)
 
 /* End the loop */

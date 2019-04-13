@@ -35,13 +35,16 @@ const loop = setInterval(() => {
 }, 40)
 ```
 
-<img width="450" height="50"
-src="docs/media/demo-1-cropped.gif" />
+<img width="550" height="50"
+src="docs/media/demo-1.gif" />
 
-<img width="450" height="50"
-src="docs/media/demo-2-cropped.gif" />
+<img width="550" height="50"
+src="docs/media/demo-2.gif" />
 
-**NOTE:** The two images above are screen capture of the demos in folder examples.
+<img width="550" height="50"
+src="docs/media/demo-3.gif" />
+
+**NOTE:** The three images above are screen capture of the demos in folder examples.
 
 ## Concept: why is it **flex**-progress?
 This was inspired by CSS Flexbox concept, although much simpler.
