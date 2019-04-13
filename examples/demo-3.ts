@@ -69,7 +69,7 @@ const text = new FlexProgress.Text({
 out.append(
   new FlexProgress.HideCursor()
 , 1, new FlexProgress.Spinner({ postProcess: chalk.cyan })
-, 1, new FlexProgress.Text({ text: 'Hello World!', postProcess: chalk.white })
+, 1, new FlexProgress.Text({ text: 'Hello World!', postProcess: chalk.green })
 , 1, new FlexProgress.Spinner({ postProcess: chalk.magenta })
 , 1, '⸨', bar , '⸩'
 , 1, text
