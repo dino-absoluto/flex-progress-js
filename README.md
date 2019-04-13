@@ -36,14 +36,17 @@ const loop = setInterval(() => {
 ```
 
 <img width="450" height="50"
-src="docs/media/demo-1-cropped.gif" />
+src="docs/media/demo-1-edited.gif" />
 
 <img width="450" height="50"
-src="docs/media/demo-2-cropped.gif" />
+src="docs/media/demo-2-edited.gif" />
 
-**NOTE:** The two images above are screen capture of the demos in folder examples.
+<img width="450" height="50"
+src="docs/media/demo-3-edited.gif" />
 
-## Concept: why is it **flex**-progress?
+**NOTE:** The images above are screen captures of the demos in folder examples.
+
+## Concept: Why is it *flex*-progress?
 This was inspired by CSS Flexbox concept, although much simpler.
 
 Basically, all elements have `flexShrink` and `flexGrow` properties,
