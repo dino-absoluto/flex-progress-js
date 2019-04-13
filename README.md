@@ -35,14 +35,14 @@ const loop = setInterval(() => {
 }, 40)
 ```
 
-<img width="430" height="40"
-src="docs/media/demo-1.gif" />
+<img width="450" height="50"
+src="docs/media/demo-1-edited.gif" />
 
-<img width="430" height="40"
-src="docs/media/demo-2.gif" />
+<img width="450" height="50"
+src="docs/media/demo-2-edited.gif" />
 
-<img width="430" height="40"
-src="docs/media/demo-3.gif" />
+<img width="450" height="50"
+src="docs/media/demo-3-edited.gif" />
 
 **NOTE:** The images above are screen captures of the demos in folder examples.
 
