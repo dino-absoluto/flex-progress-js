@@ -43,19 +43,19 @@ src="docs/media/demo-2-cropped.gif" />
 
 **NOTE:** The two images above are screen capture of the demos in folder examples.
 
-## Concept: why is it «flex»-progress?
+## Concept: why is it **flex**-progress?
 This was inspired by CSS Flexbox concept, although much simpler.
 
 Basically, all elements have `flexShrink` and `flexGrow` properties,
 which controls how much they shrink/grow. (`flex` is a shorthand for both)
 
 In most case, you'll want your progress `Bar` to have fixed width and a `Text`
-element with `flexShrink` set to 1. This way, your text will fill up the
+with `flexShrink` set to 1. This way, your text will fill up the
 CLI width, but will truncate at the end of the line.
 
 ## Usage
 See [documents](docs/index.md) for more details.
-The module has the following elements:
+The module has the following basic elements:
 * `Group` - A group of elements. Child elements are rendered together.
 A `Group` can contain other groups.
 * `Output` - Write text to screen, derived from `Group`.
