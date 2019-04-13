@@ -46,7 +46,7 @@ src="docs/media/demo-3.gif" />
 
 **NOTE:** The images above are screen captures of the demos in folder examples.
 
-## Concept: why is it **flex**-progress?
+## Concept: Why is it *flex*-progress?
 This was inspired by CSS Flexbox concept, although much simpler.
 
 Basically, all elements have `flexShrink` and `flexGrow` properties,
