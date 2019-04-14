@@ -128,7 +128,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   private pTarget: Target
   private pLastText = ''
   private pIsOutdated = false
-  private pLeftOver = 0
+  private pLeftOver?: number
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
@@ -211,7 +211,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   private pScheduleFrame = once(this.pProcessFrame)
 
   protected rendered (texts: string[] & { leftOver?: number }) {
-    this.pLeftOver = texts.leftOver || 0
+    this.pLeftOver = texts.leftOver
     return super.rendered(texts)
   }
 
