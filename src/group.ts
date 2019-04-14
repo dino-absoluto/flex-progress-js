@@ -60,9 +60,11 @@ implements ParentElement, Container {
       return this.children.map(item => item.render())
     }
     const states = flex(this.children, maxWidth)
-    return states.map(state => {
+    const results: string[] & { leftOver?: number } = states.map(state => {
       return state.item.render(state.width)
     })
+    results.leftOver = states.leftOver
+    return results
   }
 
   nextFrame (cb: (frame: number) => void) {

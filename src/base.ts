@@ -232,7 +232,7 @@ implements ChildElement {
     return this.enabled
   }
 
-  protected rendered (...texts: string[]): string {
+  protected rendered (texts: string[]): string {
     const { postProcess } = this
     if (postProcess) {
       texts = castArray(postProcess(...texts))
@@ -253,7 +253,7 @@ implements ChildElement {
     if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }
-    return this.rendered(...castArray(this.handleRender(maxWidth)))
+    return this.rendered(castArray(this.handleRender(maxWidth)))
   }
 
 }

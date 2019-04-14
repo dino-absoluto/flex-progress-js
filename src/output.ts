@@ -49,7 +49,7 @@ type FrameCB = (frame: number) => void
 interface Target {
   columns: number
   clearLine (): void
-  update (text: string): void
+  update (text: string, leftOver?: number): void
 }
 
 export class TargetWriteOnly implements Target {
@@ -96,7 +96,7 @@ export class TargetTTY implements Target {
     return this.stream.columns || 40
   }
 
-  update (text: string) {
+  update (text: string, leftOver?: number) {
     const { stream, columns, pLastColumns } = this
     {
       const width = stringWidth(text)
@@ -111,9 +111,9 @@ export class TargetTTY implements Target {
       clearScreenDown(stream)
     }
     stream.write(text)
-    // if (!this.flexGrow) {
-    //   clearLine(stream, 1)
-    // }
+    if (leftOver) {
+      clearLine(stream, 1)
+    }
     cursorTo(stream, 0)
     return text
   }
@@ -128,6 +128,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
   private pTarget: Target
   private pLastText = ''
   private pIsOutdated = false
+  private pLeftOver = 0
   renderedCount = 0
 
   constructor (options?: OutputOptions) {
@@ -209,6 +210,11 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
 
   private pScheduleFrame = once(this.pProcessFrame)
 
+  protected rendered (texts: string[] & { leftOver?: number }) {
+    this.pLeftOver = texts.leftOver || 0
+    return super.rendered(texts)
+  }
+
   protected update () {
     this.renderedCount++
     const { pTarget, pLastText } = this
@@ -217,6 +223,6 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
       return
     }
     this.pLastText = text
-    this.pTarget.update(text)
+    this.pTarget.update(text, this.pLeftOver)
   }
 }

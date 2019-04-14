@@ -17,6 +17,7 @@
  *
  */
 /* imports */
+// import * as FlexProgress from '..'
 import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()

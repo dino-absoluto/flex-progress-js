@@ -76,6 +76,7 @@ const grow = <T extends FlexItem>(
       }
     }
   }
+  return deltaW
 }
 
 const shrink = <T extends FlexItem>(
@@ -110,10 +111,11 @@ const shrink = <T extends FlexItem>(
       }
     }
   }
+  return deltaW
 }
 
 export const flex = <T extends FlexItem>(children: T[], maxWidth: number) => {
-  let states: FlexState<T>[]
+  let states: FlexState<T>[] & { leftOver?: number }
   let growSum = 0
   let shrinkSum = 0
   let widthSum = 0
@@ -136,9 +138,9 @@ export const flex = <T extends FlexItem>(children: T[], maxWidth: number) => {
     }
   })
   if (widthSum < maxWidth) {
-    grow(states, maxWidth - widthSum, growSum)
+    states.leftOver = grow(states, maxWidth - widthSum, growSum)
   } else if (widthSum > maxWidth) {
-    shrink(states, widthSum - maxWidth, shrinkSum)
+    states.leftOver = shrink(states, widthSum - maxWidth, shrinkSum)
   }
   return states
 }
