@@ -102,7 +102,7 @@ module.exports = (env = {}) => {
   } else {
     cfg = dev(env)
   }
-  if (env.bundleAnalyze) {
+  if (env.analyzeBundle) {
     merge(cfg, {
       plugins: [
         new BundleAnalyzerPlugin()
