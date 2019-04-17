@@ -42,7 +42,6 @@ describe('BaseElement', () => {
       }
       handleFlush () {
         this.count++
-        return
       }
     }
     const node = new TestE({

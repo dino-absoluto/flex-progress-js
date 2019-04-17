@@ -29,11 +29,11 @@ import { Output } from './output'
 /* exports */
 
 export { Base
-, Group
-, Space
-, Text, TextAlignment
-, Static
-, Spinner
-, Bar
-, HideCursor
-, Output }
+  , Group
+  , Space
+  , Text, TextAlignment
+  , Static
+  , Spinner
+  , Bar
+  , HideCursor
+  , Output }

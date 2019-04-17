@@ -20,8 +20,8 @@
 import { Group, GroupData, GroupOptions } from './group'
 import {
   clearLine
-, clearScreenDown
-, cursorTo } from 'readline'
+  , clearScreenDown
+  , cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
 import { SYNCING_INTERVAL } from './shared'
 import once from 'lodash-es/once'
@@ -70,7 +70,6 @@ export class TargetWriteOnly implements Target {
   update (text: string) {
     const { stream } = this
     stream.write(text + '\n')
-    return
   }
 }
 

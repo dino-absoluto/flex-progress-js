@@ -43,16 +43,16 @@ export const themeDefault: SpinnerThemeSized = {
   width: 1,
   interval: 80,
   frames:
-  [ '⠋'
-  , '⠙'
-  , '⠹'
-  , '⠸'
-  , '⠼'
-  , '⠴'
-  , '⠦'
-  , '⠧'
-  , '⠇'
-  , '⠏'
+  [ '⠋',
+    '⠙',
+    '⠹',
+    '⠸',
+    '⠼',
+    '⠴',
+    '⠦',
+    '⠧',
+    '⠇',
+    '⠏'
   ]
 }
 
@@ -63,10 +63,10 @@ export const themeLine = {
   width: 1,
   interval: 120,
   frames:
-  [ '~'
-  , '\\'
-  , '|'
-  , '/'
+  [ '~',
+    '\\',
+    '|',
+    '/'
   ]
 }
 
@@ -117,8 +117,8 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
       (interval >= 0 ? interval : SYNCING_INTERVAL)
     this.time = time
     this.frame =
-      Math.floor(Math.round(time / SYNCING_INTERVAL)
-        / Math.round((theme.interval / SYNCING_INTERVAL)))
+      Math.floor(Math.round(time / SYNCING_INTERVAL) /
+        Math.round((theme.interval / SYNCING_INTERVAL)))
   }
 
   get autoTicking () {

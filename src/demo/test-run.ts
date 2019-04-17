@@ -38,14 +38,14 @@ const bar1 = new FlexBar.Bar({
   postProcess:
     overArgs(
       (...i: string[]) => i.join('')
-    , chalk.green, chalk.yellow, chalk.gray)
+      , chalk.green, chalk.yellow, chalk.gray)
 })
 const bar2 = new FlexBar.Bar({
   width: 20,
   postProcess:
     overArgs(
       flip((...i: string[]) => i.join(''))
-    , chalk.green, chalk.yellow, chalk.gray)
+      , chalk.green, chalk.yellow, chalk.gray)
 })
 const message = new FlexBar.Text({
   flex: 1,
@@ -56,17 +56,17 @@ const spin1 = new FlexBar.Spinner({ postProcess: chalk.yellow })
 
 out.append(
   new FlexBar.HideCursor()
-, 2
-, spin1
-, new FlexBar.Spinner({ postProcess: chalk.red })
-, new FlexBar.Spinner({ postProcess: chalk.cyan })
-, 1 , message , 1
-, new FlexBar.Spinner({ postProcess: chalk.cyan })
-, new FlexBar.Spinner({ postProcess: chalk.red })
-, new FlexBar.Spinner({ postProcess: chalk.yellow })
-, 1 , '[' , bar1 , ']', 1
-, new FlexBar.Spinner({ postProcess: chalk.magenta })
-, 1 , '⸨' , bar2 , '⸩'
+  , 2
+  , spin1
+  , new FlexBar.Spinner({ postProcess: chalk.red })
+  , new FlexBar.Spinner({ postProcess: chalk.cyan })
+  , 1, message, 1
+  , new FlexBar.Spinner({ postProcess: chalk.cyan })
+  , new FlexBar.Spinner({ postProcess: chalk.red })
+  , new FlexBar.Spinner({ postProcess: chalk.yellow })
+  , 1, '[', bar1, ']', 1
+  , new FlexBar.Spinner({ postProcess: chalk.magenta })
+  , 1, '⸨', bar2, '⸩'
 )
 
 let count = 0

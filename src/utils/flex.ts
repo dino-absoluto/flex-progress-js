@@ -46,8 +46,8 @@ interface FlexState<T extends FlexItem> {
 
 const grow = <T extends FlexItem>(
   states: FlexState<T>[]
-, deltaW: number
-, flexSum: number) => {
+  , deltaW: number
+  , flexSum: number) => {
   const perFlex = deltaW / flexSum
   const sortedFractions: FlexState<T>[] = []
   for (const state of states) {
@@ -81,8 +81,8 @@ const grow = <T extends FlexItem>(
 
 const shrink = <T extends FlexItem>(
   states: FlexState<T>[]
-, deltaW: number
-, flexSum: number) => {
+  , deltaW: number
+  , flexSum: number) => {
   const perFlex = deltaW / flexSum
   const sortedFractions: FlexState<T>[] = []
   for (const state of states) {

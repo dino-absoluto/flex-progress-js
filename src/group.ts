@@ -41,8 +41,8 @@ interface Container {
 }
 
 export class Group<T extends GroupData = GroupData>
-extends Base<T>
-implements ParentElement, Container {
+  extends Base<T>
+  implements ParentElement, Container {
   readonly children: ChildElement[] = []
 
   constructor (options?: BaseOptions) {
@@ -142,6 +142,5 @@ implements ParentElement, Container {
     if (parent) {
       parent.notify(this, this.data, {})
     }
-    return
   }
 }

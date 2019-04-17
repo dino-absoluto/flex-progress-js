@@ -56,7 +56,7 @@ describe('flex', () => {
         flexShrink: 0,
         calculateWidth () { return 3 }
       }, {
-        flexGrow: .01,
+        flexGrow: 0.01,
         flexShrink: 0,
         calculateWidth () { return 5 }
       }
@@ -149,7 +149,7 @@ describe('flex', () => {
         calculateWidth () { return 1 }
       }, {
         flexGrow: 1,
-        flexShrink: .1,
+        flexShrink: 0.1,
         calculateWidth () { return 40 }
       }
     ], 20)

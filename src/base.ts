@@ -76,7 +76,6 @@ export abstract class BaseElement<T extends object = {}> {
   }
 
   protected abstract handleFlush (data: Partial<T>): void
-
 }
 
 export type PostProcessFn = (...values: string[]) => string | string[]
@@ -109,8 +108,8 @@ export interface BaseOptions {
 }
 
 export abstract class Base<T extends BaseData = BaseData>
-extends BaseElement<T>
-implements ChildElement {
+  extends BaseElement<T>
+  implements ChildElement {
   private pParent?: ParentElement
   outdated = false
 
@@ -168,11 +167,11 @@ implements ChildElement {
   }
 
   protected mounted () {
-    return
+
   }
 
   protected beforeUnmount () {
-    return
+
   }
 
   handleFlush (data: Partial<BaseData>) {
@@ -181,7 +180,6 @@ implements ChildElement {
       parent.notify(this, this.data, data)
     }
     this.outdated = true
-    return
   }
 
   get width () { throw new Error('width has no fixed value') }
@@ -255,5 +253,4 @@ implements ChildElement {
     }
     return this.rendered(castArray(this.handleRender(maxWidth)))
   }
-
 }

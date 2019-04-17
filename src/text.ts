@@ -90,7 +90,6 @@ export class Text<T extends TextData = TextData> extends Base<T> {
       }
       default: {
         this.proxy.align = TextAlignment.Left
-        return
       }
     }
   }

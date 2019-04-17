@@ -36,17 +36,17 @@ describe('SortedItems', () => {
     array.add(7, 'seven')
     const values = [...array.values()]
     const samples = [
-      'zero'
-    , 'one'
-    , 'two'
-    , 'three'
-    , 'four'
-    , 'five'
-    , 'six'
-    , 'seven'
-    , 'eight'
-    , 'nine'
-    , 'ten'
+      'zero',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+      'ten'
     ]
     for (const [ index, { id, item } ] of values.entries()) {
       expect(id).toBe(index)
