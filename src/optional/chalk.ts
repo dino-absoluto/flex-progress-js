@@ -20,15 +20,11 @@
 import optionalChalk = require('chalk')
 
 /* code */
-// █████▒░░░░░░░░░
-// ██████▓░░░░░░░░
-// █████████████▓░
-// █▓▒░▒▓█
 /** Get a string display width */
 const chalk = ((): typeof optionalChalk => {
   try {
-    const chalk: typeof optionalChalk =
-    require('chalk') // eslint-disable-line @typescript-eslint/no-var-requires
+    /* eslint-disable-next-line @typescript-eslint/no-var-requires */
+    const chalk: typeof optionalChalk = require('chalk')
     return chalk
   } catch {
     const obj = {}

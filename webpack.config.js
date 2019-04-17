@@ -17,6 +17,7 @@
  *
  */
 /* imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const merge = require('lodash/merge')
@@ -62,38 +63,44 @@ const defaultConfigs = {
   ]
 }
 
-const dev = (_env) => merge(defaultConfigs, {
-  entry: './src/demo/test-run.ts',
-  output: {
-    filename: 'test-run.js',
-    path: path.resolve(__dirname, '__tmp__/bin')
-  },
-  optimization: {
-    removeAvailableModules: false,
-    removeEmptyChunks: false,
-    splitChunks: false,
-  }
-})
+const dev = (env) => {
+  void (env)
+  merge(defaultConfigs, {
+    entry: './src/demo/test-run.ts',
+    output: {
+      filename: 'test-run.js',
+      path: path.resolve(__dirname, '__tmp__/bin')
+    },
+    optimization: {
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false
+    }
+  })
+}
 
-const mini = (_env) => merge({}, defaultConfigs, {
-  mode: 'production',
-  output: {
-    path: path.resolve(__dirname, 'lib/')
-  },
-  module: {
-    rules: [
-      {
-        use: {
-          options: {
-            compilerOptions: {
-              removeComments: true
+const mini = (env) => {
+  void (env)
+  merge({}, defaultConfigs, {
+    mode: 'production',
+    output: {
+      path: path.resolve(__dirname, 'lib/')
+    },
+    module: {
+      rules: [
+        {
+          use: {
+            options: {
+              compilerOptions: {
+                removeComments: true
+              }
             }
           }
         }
-      }
-    ]
-  }
-})
+      ]
+    }
+  })
+}
 
 module.exports = (env = {}) => {
   let cfg
