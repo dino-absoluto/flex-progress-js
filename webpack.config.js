@@ -21,19 +21,11 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const merge = require('lodash/merge')
+const webpack = require('webpack')
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const defaultConfigs = {
-  mode: 'development',
-  target: 'node',
-  entry: './src/index.ts',
-  output: {
-    pathinfo: false,
-    filename: 'index.js',
-    libraryTarget: 'commonjs',
-    path: path.resolve(__dirname, '__tmp__/lib')
-  },
+const setupTypescript = (env) => ({
   devtool: 'source-map',
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js']
@@ -46,7 +38,10 @@ const defaultConfigs = {
           loader: 'ts-loader',
           options: {
             transpileOnly: true,
-            experimentalWatchApi: true
+            experimentalWatchApi: true,
+            compilerOptions: {
+              removeComments: !!env.prod
+            }
           }
         }
       }, {
@@ -61,60 +56,42 @@ const defaultConfigs = {
       whitelist: [ /^lodash/ ]
     })
   ]
-}
+})
 
-const dev = (env) => {
-  void (env)
-  merge(defaultConfigs, {
-    entry: './src/demo/test-run.ts',
-    output: {
-      filename: 'test-run.js',
-      path: path.resolve(__dirname, '__tmp__/bin')
-    },
-    optimization: {
-      removeAvailableModules: false,
-      removeEmptyChunks: false,
-      splitChunks: false
-    }
-  })
-}
+const setupProductionMode = (env) => !env.prod ? ({
+  mode: 'development',
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false
+  }
+}) : ({
+  mode: 'production'
+})
 
-const mini = (env) => {
-  void (env)
-  merge({}, defaultConfigs, {
-    mode: 'production',
-    output: {
-      path: path.resolve(__dirname, 'lib/')
-    },
-    module: {
-      rules: [
-        {
-          use: {
-            options: {
-              compilerOptions: {
-                removeComments: true
-              }
-            }
-          }
-        }
-      ]
-    }
-  })
-}
+const setupAnalyzeBundle = (env) => env.analyzeBundle ? ({
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
+}) : {}
+
+const configLib = (env) => ({
+  target: 'node',
+  entry: './src/index.ts',
+  output: {
+    pathinfo: false,
+    filename: 'index.js',
+    libraryTarget: 'commonjs',
+    path: path.resolve(__dirname, env.prod ? 'lib' : '__tmp__/lib')
+  }
+})
 
 module.exports = (env = {}) => {
-  let cfg
-  if (env.prod) {
-    cfg = mini(env)
-  } else {
-    cfg = dev(env)
-  }
-  if (env.analyzeBundle) {
-    merge(cfg, {
-      plugins: [
-        new BundleAnalyzerPlugin()
-      ]
-    })
-  }
-  return cfg
+  const lib = merge({}
+    , configLib(env)
+    , setupTypescript(env)
+    , setupProductionMode(env)
+    , setupAnalyzeBundle(env)
+  )
+  return lib
 }
