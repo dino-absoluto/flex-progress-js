@@ -28,7 +28,8 @@ import { HideCursor } from './hide-cursor'
 import { Output } from './output'
 /* exports */
 
-export { Base
+export {
+  Base
   , Group
   , Space
   , Text, TextAlignment
@@ -36,4 +37,5 @@ export { Base
   , Spinner
   , Bar
   , HideCursor
-  , Output }
+  , Output
+}

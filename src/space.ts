@@ -30,18 +30,18 @@ export type SpaceOptions = BaseOptions
 
 /** Empty space element */
 export class Space<T extends SpaceData = SpaceData> extends Base<T> {
-  constructor (options: BaseOptions | number = 1) {
+  public constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {
       this.width = options
     }
   }
 
-  protected handleCalculateWidth () {
+  protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
-  protected handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number): string {
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink
     maxWidth = Math.min(

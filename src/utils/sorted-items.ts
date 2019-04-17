@@ -27,14 +27,14 @@ import sortedLastIndex from 'lodash-es/sortedLastIndex'
 // █▓▒░▒▓█
 
 class SortedWrapper<T> {
-  id: number
-  item: T
-  constructor (id: number, item: T) {
-    this.id = id,
+  public id: number
+  public item: T
+  public constructor (id: number, item: T) {
+    this.id = id
     this.item = item
   }
 
-  [Symbol.toPrimitive] () {
+  public [Symbol.toPrimitive] (): number {
     return this.id
   }
 }
@@ -42,7 +42,7 @@ class SortedWrapper<T> {
 export class SortedItems<T> {
   private $data: SortedWrapper<T>[] = []
 
-  indexOf (id: number, item: T) {
+  public indexOf (id: number, item: T): number {
     const { $data } = this
     const wrapper = new SortedWrapper(id, item)
     const index = sortedIndex($data, wrapper)
@@ -55,7 +55,7 @@ export class SortedItems<T> {
     return -1
   }
 
-  add (id: number, item: T) {
+  public add (id: number, item: T): this {
     const { $data } = this
     const wrapper = new SortedWrapper(id, item)
     const index = sortedIndex($data, wrapper)
@@ -63,7 +63,7 @@ export class SortedItems<T> {
     return this
   }
 
-  remove (id: number, item: T) {
+  public remove (id: number, item: T): T {
     const { $data } = this
     const index = this.indexOf(id, item)
     if (index >= 0) {
@@ -73,21 +73,21 @@ export class SortedItems<T> {
     return item
   }
 
-  get length () { return this.$data.length }
-  clear () {
+  public get length (): number { return this.$data.length }
+  public clear (): void {
     this.$data.length = 0
   }
 
-  values () {
-    return (function * ($data) {
+  public values (): IterableIterator<SortedWrapper<T>> {
+    return (function * ($data): IterableIterator<SortedWrapper<T>> {
       for (const item of $data) {
         yield item
       }
     })(this.$data)
   }
 
-  valuesRight () {
-    return (function * ($data) {
+  public valuesRight (): IterableIterator<SortedWrapper<T>> {
+    return (function * ($data): IterableIterator<SortedWrapper<T>> {
       const length = $data.length
       for (let i = length - 1; i >= 0; --i) {
         yield $data[i]

@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { Bar } from '../bar'
 
@@ -24,8 +25,8 @@ import { Bar } from '../bar'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Bar', () => {
-  test('render() min/maxWidth', async () => {
+describe('Bar', (): void => {
+  test('render() min/maxWidth', async (): Promise<void> => {
     const bar = new Bar()
     expect(bar.render(10)).toBe('░'.repeat(5))
     bar.minWidth = 3
@@ -37,7 +38,7 @@ describe('Bar', () => {
     expect(bar.render(20)).toBe('░'.repeat(10))
     expect(bar.render(5)).toBe('░'.repeat(5))
   })
-  test('render() flex', async () => {
+  test('render() flex', async (): Promise<void> => {
     const bar = new Bar()
     bar.flex = 1
     bar.maxWidth = 10
@@ -58,11 +59,11 @@ describe('Bar', () => {
       [ 13, 10 ],
       [ 14, 10 ],
       [ 15, 10 ]
-    ].forEach(([width, exp]) => {
+    ].forEach(([width, exp]): void => {
       expect(bar.render(width)).toBe('░'.repeat(exp))
     })
   })
-  test('render() ratio', async () => {
+  test('render() ratio', async (): Promise<void> => {
     const bar = new Bar({ ratio: 0.2 })
     expect(bar.render(10)).toBe('█'.repeat(1) + '░'.repeat(4))
     bar.minWidth = 10
@@ -77,7 +78,7 @@ describe('Bar', () => {
     bar.ratio = 0.29
     expect(bar.render(10)).toBe('█'.repeat(2) + '▓' + '░'.repeat(7))
   })
-  test('theme', async () => {
+  test('theme', async (): Promise<void> => {
     const bar = new Bar({
       theme: {
         symbols: ['.', '-', '#']
@@ -94,7 +95,7 @@ describe('Bar', () => {
     }
     expect(bar.render(20)).toBe('2'.repeat(2) + '1' + '0'.repeat(7))
   })
-  test('shrink', async () => {
+  test('shrink', async (): Promise<void> => {
     const bar = new Bar({ minWidth: 5 })
     expect(bar.render(1)).toBe('░')
     expect(bar.render()).toBe('░'.repeat(5))

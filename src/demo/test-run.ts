@@ -37,14 +37,14 @@ const bar1 = new FlexBar.Bar({
   flex: 1,
   postProcess:
     overArgs(
-      (...i: string[]) => i.join('')
+      (...i: string[]): string => i.join('')
       , chalk.green, chalk.yellow, chalk.gray)
 })
 const bar2 = new FlexBar.Bar({
   width: 20,
   postProcess:
     overArgs(
-      flip((...i: string[]) => i.join(''))
+      flip((...i: string[]): string => i.join(''))
       , chalk.green, chalk.yellow, chalk.gray)
 })
 const message = new FlexBar.Text({
@@ -70,35 +70,35 @@ out.append(
 )
 
 let count = 0
-const int = setInterval(async () => {
+const int = setInterval(async (): Promise<void> => {
   count++
   message.text = text + ' ' + count
   bar1.ratio = (count % 100) / 100
   bar2.ratio = (count * 2 / 3 % 100) / 100
 }, 20)
 
-delay(() => {
+delay((): void => {
   spin1.enabled = false
   message.enabled = false
 }, 1000)
-delay(() => {
+delay((): void => {
   spin1.enabled = true
   message.enabled = true
 }, 3000)
-delay(() => {
+delay((): void => {
   out.enabled = false
 }, 5000)
-delay(() => {
+delay((): void => {
   out.enabled = true
 }, 7000)
 
-process.on('SIGINT', () => {
+process.on('SIGINT', (): void => {
   out.clear(false)
   console.log()
   process.exit(0)
 })
 
-delay(() => {
+delay((): void => {
   clearInterval(int)
   out.clear()
   const elapsed = out.elapsed

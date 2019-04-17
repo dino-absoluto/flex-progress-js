@@ -48,7 +48,7 @@ export interface BarData extends BaseData {
 
 /** A progress bar */
 export class Bar<T extends BarData> extends Base<T> {
-  constructor (options: BarOptions = {}) {
+  public constructor (options: BarOptions = {}) {
     super(options)
     if (options.theme != null) {
       this.theme = options.theme
@@ -61,19 +61,19 @@ export class Bar<T extends BarData> extends Base<T> {
     }
   }
 
-  get theme () { return this.proxy.theme || themeDefault }
-  set theme (theme: BarTheme) {
+  public get theme (): BarTheme { return this.proxy.theme || themeDefault }
+  public set theme (theme: BarTheme) {
     this.proxy.theme = theme
   }
 
   /** Completion ratio, range from 0 to 1 */
-  get ratio () { return this.proxy.ratio || 0 }
-  set ratio (value: number) {
+  public get ratio (): number { return this.proxy.ratio || 0 }
+  public set ratio (value: number) {
     this.proxy.ratio = clamp(value, 0, 1)
   }
 
   /** Turn data to display string */
-  static renderBar (symbols: string[], ratio: number, width: number): string[] {
+  public static renderBar (symbols: string[], ratio: number, width: number): string[] {
     const stage = symbols.length - 1
     const count = Math.floor(width * stage * ratio)
     const progress = count % stage
@@ -81,16 +81,16 @@ export class Bar<T extends BarData> extends Base<T> {
     const empty = width - ((progress && 1) || 0) - fill
     return [
       symbols[symbols.length - 1].repeat(fill),
-      (progress && symbols[progress] || ''),
+      ((progress && symbols[progress]) || ''),
       symbols[0].repeat(empty)
     ]
   }
 
-  protected handleCalculateWidth () {
+  protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
-  protected handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number): string | string[] {
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)
     /* Dead code */

@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 
 /* code */
@@ -23,11 +24,11 @@
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-test('no string-width', () => {
-  jest.doMock('string-width', () => {
+test('no string-width', (): void => {
+  jest.doMock('string-width', (): void => {
     throw new Error('no string-width')
   })
-  expect(() => require('string-width')).toThrow()
+  expect((): void => void require('string-width')).toThrow()
   const stringWidth = require('../string-width').default
   expect(stringWidth('abc')).toBe(3)
   expect(stringWidth('古')).toBe('古'.length)
@@ -35,8 +36,8 @@ test('no string-width', () => {
   jest.dontMock('string-width')
 })
 
-test('with string-width', () => {
-  expect(() => require('string-width')).not.toThrow()
+test('with string-width', (): void => {
+  expect((): void => void require('string-width')).not.toThrow()
   const stringWidth = require('../string-width').default
   expect(stringWidth('abc')).toBe(3)
   expect(stringWidth('古')).toBe(1)

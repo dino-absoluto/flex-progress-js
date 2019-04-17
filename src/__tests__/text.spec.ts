@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { Text, TextAlignment } from '../text'
 
@@ -24,43 +25,43 @@ import { Text, TextAlignment } from '../text'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Text', () => {
-  test('render() flex.1', async () => {
+describe('Text', (): void => {
+  test('render() flex.1', async (): Promise<void> => {
     const text = new Text({ text: 'a'.repeat(10), flex: 1 })
     expect(text.render(8)).toBe('a'.repeat(7) + '…')
   })
-  test('render() flex.2', async () => {
+  test('render() flex.2', async (): Promise<void> => {
     const text = new Text({ text: 'a'.repeat(10) })
     expect(text.render(8)).toBe('a'.repeat(10))
     text.flex = 1
     expect(text.render(8)).toBe('a'.repeat(7) + '…')
   })
-  test('align default', async () => {
+  test('align default', async (): Promise<void> => {
     const text = new Text({ text: 'abc', flex: 1 })
     expect(text.align).toBe(TextAlignment.Left)
     expect(text.render(10)).toBe('abc' + ' '.repeat(7))
-    text.align = 'random' as any
+    text.align = 'random' as unknown as TextAlignment
     expect(text.render(10)).toBe('abc' + ' '.repeat(7))
   })
-  test('align center', async () => {
+  test('align center', async (): Promise<void> => {
     const text = new Text({ text: 'abc', flex: 1, align: TextAlignment.Center })
     expect(text.render(10)).toBe(' '.repeat(3) + 'abc' + ' '.repeat(4))
   })
-  test('align right', async () => {
+  test('align right', async (): Promise<void> => {
     const text = new Text({ text: 'abc', flex: 1, align: TextAlignment.Right })
     expect(text.render(10)).toBe(' '.repeat(7) + 'abc')
   })
-  test('more', async () => {
+  test('more', async (): Promise<void> => {
     const text = new Text({ text: 'a'.repeat(10), flex: 1, more: '++' })
     expect(text.render(8)).toBe('a'.repeat(6) + '++')
     text.more = '+++'
     expect(text.render(8)).toBe('a'.repeat(5) + '+++')
     expect(text.render(2)).toBe('  ')
     expect(text.render(0)).toBe('')
-    text.more = null as any
+    text.more = null as unknown as string
     expect(text.render(4)).toBe('aaa…')
   })
-  test('set text', async () => {
+  test('set text', async (): Promise<void> => {
     {
       const text = new Text({ text: 'a'.repeat(4), flex: 1 })
       expect(text.render(8)).toBe('a'.repeat(4) + ' '.repeat(4))
@@ -72,9 +73,9 @@ describe('Text', () => {
       expect(t.text).toBe('')
       t.text = 'ABC'
       expect(t.render(8)).toBe('ABC')
-      t.text = 10 as any
+      t.text = 10 as unknown as string
       expect(t.render(8)).toBe('10')
-      t.text = null as any
+      t.text = null as unknown as string
       expect(t.render(8)).toBe('')
     }
   })

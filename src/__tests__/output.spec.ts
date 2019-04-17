@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { SYNCING_INTERVAL } from '../shared'
 import { Output, TargetTTY } from '../output'
@@ -23,34 +24,36 @@ import { Spinner } from '../spinner'
 import { Writable } from 'stream'
 import stripANSI from 'strip-ansi'
 
-const delay = (time: number) => {
-  return new Promise(resolve => setTimeout(resolve, time))
+const delay = (time: number): Promise<void> => {
+  return new Promise((resolve): void => void setTimeout(resolve, time))
 }
 
 class TestStream extends Writable {
-  data = ''
-  _write (chunk: string | Buffer, _enc: string, cb: (err: Error | null) => void) {
+  public data = ''
+  public _write (chunk: string | Buffer,
+    _enc: string,
+    cb: (err: Error | null) => void): void {
     this.data += chunk.toString()
     cb(null)
   }
 }
 
 class TestStreamTTY extends TestStream {
-  isTTY = true
+  public readonly isTTY = true
 }
 
 class TestOutput extends Output {
-  i = 0
-  end = false
-  scheduled = false
-  nextFrame (cb: any) {
+  public i = 0
+  public end = false
+  public scheduled = false
+  public nextFrame (cb: (frame: number) => void): boolean {
     this.scheduled = true
     if (this.end) {
       return false
     }
     return super.nextFrame(cb)
   }
-  update () {
+  public update (): void {
     this.i++
     if (this.end) {
       return
@@ -69,24 +72,24 @@ class TestOutput extends Output {
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Output as TTY', () => {
-  test('constructor', async () => {
+describe('Output as TTY', (): void => {
+  test('constructor', async (): Promise<void> => {
     const isTTY = process.stderr.isTTY
     process.stderr.isTTY = true
     const out = new Output()
     process.stderr.isTTY = isTTY
     out.clear()
   })
-  test('simple', async () => {
+  test('simple', async (): Promise<void> => {
     class Test1 extends TestOutput {
-      eCounter = 0
-      get elapsed () {
+      public eCounter = 0
+      public get elapsed (): number {
         this.eCounter += SYNCING_INTERVAL
         return this.eCounter
       }
     }
     const stream = new TestStreamTTY()
-    const p = new Promise(resolve => stream.on('finish', resolve))
+    const p = new Promise((resolve): void => void stream.on('finish', resolve))
     const out = new Test1({ stream })
     out.append('ABC')
     out.append(new Spinner())
@@ -95,18 +98,18 @@ describe('Output as TTY', () => {
     expect(stripANSI(stream.data)).toBe(
       'ABC⠋ABC⠙ABC⠹ABC⠸ABC⠼ABC⠴ABC⠦ABC⠧ABC⠇ABC⠏ABC⠋')
   })
-  test('timer', async () => {
+  test('timer', async (): Promise<void> => {
     const stream = new TestStreamTTY()
     const out = new TestOutput({ stream })
     const elapsed = out.elapsed
     await delay(10)
     expect(elapsed).toBeLessThan(out.elapsed)
   })
-  test('parent & children', async () => {
+  test('parent & children', async (): Promise<void> => {
     const stream = new TestStreamTTY()
-    const p = new Promise(resolve => stream.on('finish', resolve))
+    const p = new Promise((resolve): void => void stream.on('finish', resolve))
     const out = new TestOutput({ stream })
-    expect(() => { out.parent = {} as any }).toThrow()
+    expect((): void => { out.parent = {} as unknown as undefined }).toThrow()
     out.append(1, 'ABC', 1)
     out.clear()
     out.append(1, '#ABC#', 1)
@@ -114,9 +117,9 @@ describe('Output as TTY', () => {
     expect(stripANSI(stream.data)).toBe(
       ' #ABC# ')
   })
-  test('enabled', async () => {
+  test('enabled', async (): Promise<void> => {
     const stream = new TestStreamTTY()
-    const p = new Promise(resolve => stream.on('finish', resolve))
+    const p = new Promise((resolve): void => void stream.on('finish', resolve))
     const out = new TestOutput({ stream })
     out.flexGrow = 0
     out.append('ABC')
@@ -133,17 +136,17 @@ describe('Output as TTY', () => {
   })
 })
 
-describe('Output as write-only', () => {
-  test('simple', async () => {
+describe('Output as write-only', (): void => {
+  test('simple', async (): Promise<void> => {
     class Test1 extends TestOutput {
-      eCounter = 0
-      get elapsed () {
+      public eCounter = 0
+      public get elapsed (): number {
         this.eCounter += SYNCING_INTERVAL
         return this.eCounter
       }
     }
     const stream = new TestStream()
-    const p = new Promise(resolve => stream.on('finish', resolve))
+    const p = new Promise((resolve): void => void stream.on('finish', resolve))
     const out = new Test1({ stream })
     out.append('ABC')
     out.append(new Spinner())
@@ -154,8 +157,8 @@ describe('Output as write-only', () => {
   })
 })
 
-describe('TargetTTY', () => {
-  test('constructor', async () => {
-    expect(() => new TargetTTY(new TestStream())).toThrow()
+describe('TargetTTY', (): void => {
+  test('constructor', async (): Promise<void> => {
+    expect((): TargetTTY => new TargetTTY(new TestStream())).toThrow()
   })
 })

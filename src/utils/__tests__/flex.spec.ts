@@ -16,193 +16,194 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { flex } from '../flex'
 
 /* code */
-describe('flex', () => {
-  test('grow.1', async () => {
+describe('flex', (): void => {
+  test('grow.1', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 0,
         flexShrink: 0,
-        calculateWidth () { return 3 }
+        calculateWidth (): number { return 3 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 5 }
+        calculateWidth (): number { return 5 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('grow.2', async () => {
+  test('grow.2', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1000,
         flexShrink: 0,
-        calculateWidth () { return 3 }
+        calculateWidth (): number { return 3 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 5 }
+        calculateWidth (): number { return 5 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('grow.3', async () => {
+  test('grow.3', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 3 }
+        calculateWidth (): number { return 3 }
       }, {
         flexGrow: 0.01,
         flexShrink: 0,
-        calculateWidth () { return 5 }
+        calculateWidth (): number { return 5 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('grow.4', async () => {
+  test('grow.4', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 3 }
+        calculateWidth (): number { return 3 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 0 }
+        calculateWidth (): number { return 0 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('grow.5', async () => {
+  test('grow.5', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 6 }
+        calculateWidth (): number { return 6 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 6 }
+        calculateWidth (): number { return 6 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 6 }
+        calculateWidth (): number { return 6 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('grow.6', async () => {
+  test('grow.6', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 6 }
+        calculateWidth (): number { return 6 }
       }, {
         flexGrow: 1,
         flexShrink: 0,
-        calculateWidth () { return 6 }
+        calculateWidth (): number { return 6 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.1', async () => {
+  test('shrink.1', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 0,
         flexShrink: 0,
-        calculateWidth () { return 3 }
+        calculateWidth (): number { return 3 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 10 }
+        calculateWidth (): number { return 10 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.2', async () => {
+  test('shrink.2', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 10,
-        calculateWidth () { return 1 }
+        calculateWidth (): number { return 1 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 40 }
+        calculateWidth (): number { return 40 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.3', async () => {
+  test('shrink.3', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 1 }
+        calculateWidth (): number { return 1 }
       }, {
         flexGrow: 1,
         flexShrink: 0.1,
-        calculateWidth () { return 40 }
+        calculateWidth (): number { return 40 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.4', async () => {
+  test('shrink.4', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 1 }
+        calculateWidth (): number { return 1 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 100000 }
+        calculateWidth (): number { return 100000 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.5', async () => {
+  test('shrink.5', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
-  test('shrink.6', async () => {
+  test('shrink.6', async (): Promise<void> => {
     const results = flex([
       {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 7 }
+        calculateWidth (): number { return 7 }
       }, {
         flexGrow: 1,
         flexShrink: 1,
-        calculateWidth () { return 8 }
+        calculateWidth (): number { return 8 }
       }
     ], 20)
-    expect(results.reduce((acc, item) => acc + item.width, 0)).toBe(20)
+    expect(results.reduce((acc, item): number => acc + item.width, 0)).toBe(20)
   })
 })

@@ -47,7 +47,7 @@ interface FlexState<T extends FlexItem> {
 const grow = <T extends FlexItem>(
   states: FlexState<T>[]
   , deltaW: number
-  , flexSum: number) => {
+  , flexSum: number): number => {
   const perFlex = deltaW / flexSum
   const sortedFractions: FlexState<T>[] = []
   for (const state of states) {
@@ -58,7 +58,7 @@ const grow = <T extends FlexItem>(
     const round = Math.round(adjust)
     const fraction = adjust - round
     if (fraction > 0 && state.growRoom > round) {
-      state[Symbol.toPrimitive] = () => -fraction
+      state[Symbol.toPrimitive] = (): number => -fraction
       sortedFractions.splice(sortedIndex(sortedFractions, state), 0, state)
     }
     deltaW -= round
@@ -82,7 +82,7 @@ const grow = <T extends FlexItem>(
 const shrink = <T extends FlexItem>(
   states: FlexState<T>[]
   , deltaW: number
-  , flexSum: number) => {
+  , flexSum: number): number => {
   const perFlex = deltaW / flexSum
   const sortedFractions: FlexState<T>[] = []
   for (const state of states) {
@@ -93,7 +93,7 @@ const shrink = <T extends FlexItem>(
     let round = Math.round(adjust)
     const fraction = adjust - round
     if (fraction > 0 && state.shrinkRoom > round) {
-      state[Symbol.toPrimitive] = () => -fraction
+      state[Symbol.toPrimitive] = (): number => -fraction
       sortedFractions.splice(sortedIndex(sortedFractions, state), 0, state)
     }
     deltaW -= round
@@ -114,12 +114,15 @@ const shrink = <T extends FlexItem>(
   return deltaW
 }
 
-export const flex = <T extends FlexItem>(children: T[], maxWidth: number) => {
-  let states: FlexState<T>[] & { leftOver?: number }
+type FlexResult<T extends FlexItem> = FlexState<T>[] & { leftOver?: number }
+
+export const flex = <T extends FlexItem>(children: T[], maxWidth: number):
+FlexResult<T> => {
+  let states: FlexResult<T>
   let growSum = 0
   let shrinkSum = 0
   let widthSum = 0
-  states = children.map((item) => {
+  states = children.map((item): FlexState<T> => {
     const width = item.calculateWidth()
     const growRoom = Math.min(item.maxWidth || maxWidth, maxWidth) - width
     const shrinkRoom = width - Math.max(item.minWidth || 0, 0)

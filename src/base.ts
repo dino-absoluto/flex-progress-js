@@ -34,9 +34,9 @@ export abstract class BaseElement<T extends object = {}> {
   private pUpdate: Partial<T> = {}
   private pUpdateTimer?: ReturnType<typeof setImmediate>
 
-  constructor () {
+  public constructor () {
     this.proxy = new Proxy(this.data, {
-      get: ($, prop: keyof T) => {
+      get: ($, prop: keyof T): unknown => {
         const { pUpdate } = this
         if (pUpdate[prop] !== undefined) {
           return pUpdate[prop]
@@ -44,23 +44,23 @@ export abstract class BaseElement<T extends object = {}> {
           return $[prop]
         }
       },
-      set: ($, prop: keyof T, value: any) => {
+      set: ($, prop: keyof T, value: unknown): boolean => {
         if ($[prop] === value ||
           ($[prop] === this.pUpdate[prop] && $[prop] != null)) {
           return true
         }
-        this.pUpdate[prop] = value
+        this.pUpdate[prop] = value as T[keyof T]
         this.pSchedule()
         return true
       }
     })
   }
 
-  private pSchedule = once(() => {
+  private pSchedule = once((): void => {
     this.pUpdateTimer = setImmediate(this.flush)
   })
 
-  protected flush = () => {
+  protected flush = (): void => {
     let pUpdateTimer
     ;[ pUpdateTimer, this.pUpdateTimer ] = [ this.pUpdateTimer, undefined ]
     if (pUpdateTimer) {
@@ -70,7 +70,7 @@ export abstract class BaseElement<T extends object = {}> {
     ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
     this.handleFlush(data)
     Object.assign(this.data, data)
-    this.pSchedule = once(() => {
+    this.pSchedule = once((): void => {
       this.pUpdateTimer = setImmediate(this.flush)
     })
   }
@@ -111,9 +111,9 @@ export abstract class Base<T extends BaseData = BaseData>
   extends BaseElement<T>
   implements ChildElement {
   private pParent?: ParentElement
-  outdated = false
+  protected outdated = false
 
-  constructor (options?: BaseOptions) {
+  public constructor (options?: BaseOptions) {
     super()
     if (!options) {
       return
@@ -145,13 +145,13 @@ export abstract class Base<T extends BaseData = BaseData>
     }
   }
 
-  get postProcess () { return this.proxy.postProcess }
-  set postProcess (fn: PostProcessFn | undefined) {
+  public get postProcess (): PostProcessFn | undefined { return this.proxy.postProcess }
+  public set postProcess (fn: PostProcessFn | undefined) {
     this.proxy.postProcess = fn
   }
 
-  get parent () { return this.pParent }
-  set parent (parent: ParentElement | undefined) {
+  public get parent (): ParentElement | undefined { return this.pParent }
+  public set parent (parent: ParentElement | undefined) {
     if (this.pParent != null) {
       this.beforeUnmount()
     }
@@ -162,19 +162,18 @@ export abstract class Base<T extends BaseData = BaseData>
     }
   }
 
-  protected beforeMount (_parent: ParentElement) {
+  protected beforeMount (_parent: ParentElement): void {
+    void (_parent)
     this.flush()
   }
 
-  protected mounted () {
-
+  protected mounted (): void {
   }
 
-  protected beforeUnmount () {
-
+  protected beforeUnmount (): void {
   }
 
-  handleFlush (data: Partial<BaseData>) {
+  protected handleFlush (data: Partial<BaseData>): void {
     const { parent } = this
     if (parent) {
       parent.notify(this, this.data, data)
@@ -182,44 +181,52 @@ export abstract class Base<T extends BaseData = BaseData>
     this.outdated = true
   }
 
-  get width () { throw new Error('width has no fixed value') }
-  set width (value: number) {
+  public get width (): number { throw new Error('width has no fixed value') }
+  public set width (value: number) {
     this.minWidth = value
     this.maxWidth = value
   }
 
-  get minWidth () { return this.proxy.minWidth || 0 }
-  set minWidth (value: number) {
+  public get minWidth (): number { return this.proxy.minWidth || 0 }
+  public set minWidth (value: number) {
     this.proxy.minWidth = value >= 0 ? value : 0
   }
 
-  get maxWidth () { return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER }
-  set maxWidth (value: number) {
+  public get maxWidth (): number {
+    return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER
+  }
+  public set maxWidth (value: number) {
     this.proxy.maxWidth = Math.min(value >= 0 ? value : Number.MAX_SAFE_INTEGER,
       Number.MAX_SAFE_INTEGER)
   }
 
-  set flex (value: number) {
+  public set flex (value: number) {
     this.flexGrow = value
     this.flexShrink = value
   }
 
   /** Check if item is flexible */
-  get isFlexible () {
+  public get isFlexible (): boolean {
     return this.minWidth < this.maxWidth
   }
 
-  get flexGrow () { return this.enabled && this.proxy.flexGrow || 0 }
-  set flexGrow (value: number) {
+  public get flexGrow (): number {
+    return (this.enabled && this.proxy.flexGrow) || 0
+  }
+  public set flexGrow (value: number) {
     this.proxy.flexGrow = value >= 0 ? value : 0
   }
-  get flexShrink () { return this.enabled && this.proxy.flexShrink || 0 }
-  set flexShrink (value: number) {
+  public get flexShrink (): number {
+    return (this.enabled && this.proxy.flexShrink) || 0
+  }
+  public set flexShrink (value: number) {
     this.proxy.flexShrink = value >= 0 ? value : 0
   }
 
-  get enabled () { return this.proxy.enabled != null ? this.proxy.enabled : true }
-  set enabled (value: boolean) {
+  public get enabled (): boolean {
+    return this.proxy.enabled != null ? this.proxy.enabled : true
+  }
+  public set enabled (value: boolean) {
     this.proxy.enabled = value
   }
 
@@ -227,6 +234,7 @@ export abstract class Base<T extends BaseData = BaseData>
   protected abstract handleRender (maxWidth?: number): string | string[]
 
   protected beforeRender (_maxWidth?: number): boolean {
+    void (_maxWidth)
     return this.enabled
   }
 
@@ -238,7 +246,7 @@ export abstract class Base<T extends BaseData = BaseData>
     return texts.join('')
   }
 
-  calculateWidth (): number {
+  public calculateWidth (): number {
     if (!this.enabled) {
       return 0
     }
@@ -247,7 +255,7 @@ export abstract class Base<T extends BaseData = BaseData>
       this.maxWidth)
   }
 
-  render (maxWidth?: number): string {
+  public render (maxWidth?: number): string {
     if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }

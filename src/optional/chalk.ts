@@ -25,20 +25,21 @@ import optionalChalk = require('chalk')
 // █████████████▓░
 // █▓▒░▒▓█
 /** Get a string display width */
-const chalk = (() => {
+const chalk = ((): typeof optionalChalk => {
   try {
-    const chalk: typeof optionalChalk = require('chalk')
+    const chalk: typeof optionalChalk =
+    require('chalk') // eslint-disable-line @typescript-eslint/no-var-requires
     return chalk
   } catch {
     const obj = {}
-    const join = (...argv: string[]) => argv.join()
+    const join = (...argv: string[]): string => argv.join()
     const proxy = new Proxy(obj, {
-      get () { return join },
-      apply (_target, _thisArgv, argv: string[]) {
+      get (): typeof join { return join },
+      apply (_target, _thisArgv, argv: string[]): string {
         return argv.join()
       }
-    }) as any
-    return proxy
+    })
+    return proxy as unknown as typeof optionalChalk
   }
 })()
 

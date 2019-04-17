@@ -22,10 +22,10 @@ import stringWidth from './optional/string-width'
 /* exports */
 
 export class Static implements ChildElement {
-  parent?: ParentElement
-  readonly text: string
-  readonly width: number
-  constructor (text: string | number, width?: number) {
+  public parent?: ParentElement
+  public readonly text: string
+  public readonly width: number
+  public constructor (text: string | number, width?: number) {
     if (typeof text === 'number') {
       width = text
       text = ' '.repeat(text)
@@ -37,19 +37,20 @@ export class Static implements ChildElement {
     this.text = text
   }
 
-  render (_maxWidth?: number): string {
+  public render (_maxWidth?: number): string {
+    void (_maxWidth)
     return this.text
   }
 
-  calculateWidth (): number {
+  public calculateWidth (): number {
     return this.width
   }
-  get enabled () { return true }
-  get flexShrink () { return 0 }
-  get flexGrow () { return 0 }
-  get maxWidth () { return this.width }
-  get minWidth () { return this.width }
-  set flex (_value: number) {
+  public get enabled (): true { return true }
+  public get flexShrink (): 0 { return 0 }
+  public get flexGrow (): 0 { return 0 }
+  public get maxWidth (): number { return this.width }
+  public get minWidth (): number { return this.width }
+  public set flex (_value: number) {
     throw new Error('static cannot set flex')
   }
 }

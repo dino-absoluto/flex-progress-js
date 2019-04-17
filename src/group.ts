@@ -43,42 +43,44 @@ interface Container {
 export class Group<T extends GroupData = GroupData>
   extends Base<T>
   implements ParentElement, Container {
-  readonly children: ChildElement[] = []
+  public readonly children: ChildElement[] = []
 
-  constructor (options?: BaseOptions) {
+  public constructor (options?: BaseOptions) {
     super(Object.assign({
       flex: 1
     }, options))
   }
 
-  handleCalculateWidth () {
-    return this.children.reduce((acc, child) => acc + child.calculateWidth(), 0)
+  protected handleCalculateWidth (): number {
+    return this.children.reduce(
+      (acc, child): number => acc + child.calculateWidth(), 0)
   }
 
-  handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number): string | string[] {
     if (maxWidth == null) {
-      return this.children.map(item => item.render())
+      return this.children.map((item): string => item.render())
     }
     const states = flex(this.children, maxWidth)
-    const results: string[] & { leftOver?: number } = states.map(state => {
+    const results: string[] & { leftOver?: number } =
+    states.map((state): string => {
       return state.item.render(state.width)
     })
     results.leftOver = states.leftOver
     return results
   }
 
-  nextFrame (cb: (frame: number) => void) {
+  public nextFrame (cb: (frame: number) => void): boolean {
     if (this.parent) {
       return this.parent.nextFrame(cb)
     }
     return false
   }
 
-  private pItemAdded (item: ChildElement) {
+  private pItemAdded (item: ChildElement): void {
     item.parent = this
   }
 
-  private pItemRemoved (item: ChildElement) {
+  private pItemRemoved (item: ChildElement): void {
     item.parent = undefined
   }
 
@@ -92,7 +94,7 @@ export class Group<T extends GroupData = GroupData>
     return item
   }
 
-  add (item: FlexChild, atIndex?: number) {
+  public add (item: FlexChild, atIndex?: number): ChildElement {
     item = Group.pCastChild(item)
     const { children } = this
     if (atIndex != null && Number.isInteger(atIndex) && Math.abs(atIndex) < children.length) {
@@ -106,7 +108,7 @@ export class Group<T extends GroupData = GroupData>
     return item
   }
 
-  remove (item: ChildElement) {
+  public remove (item: ChildElement): ChildElement | undefined {
     if (item.parent !== this) {
       return
     }
@@ -118,7 +120,7 @@ export class Group<T extends GroupData = GroupData>
     return item
   }
 
-  clear () {
+  public clear (): void {
     const { children } = this
     for (const item of children) {
       this.pItemRemoved(item)
@@ -127,7 +129,7 @@ export class Group<T extends GroupData = GroupData>
     this.notify()
   }
 
-  append (...items: FlexChild[]) {
+  public append (...items: FlexChild[]): void {
     const { children } = this
     for (const item of items) {
       const child = Group.pCastChild(item)
@@ -137,7 +139,7 @@ export class Group<T extends GroupData = GroupData>
     this.notify()
   }
 
-  notify (_child?: ChildElement) {
+  public notify (): void {
     const { parent } = this
     if (parent) {
       parent.notify(this, this.data, {})

@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { Text } from '../text'
 import { Group } from '../group'
@@ -25,8 +26,8 @@ import { Group } from '../group'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Group', () => {
-  test('flex.1', async () => {
+describe('Group', (): void => {
+  test('flex.1', async (): Promise<void> => {
     const group = new Group()
     const text = new Text({ text: 'a'.repeat(25), flex: 1 })
     group.append('abc')
@@ -36,7 +37,7 @@ describe('Group', () => {
     group2.append(group)
     expect(group2.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
   })
-  test('flex.2', async () => {
+  test('flex.2', async (): Promise<void> => {
     const group = new Group()
     const group2 = new Group()
     group2.append(group)
@@ -46,7 +47,7 @@ describe('Group', () => {
     expect(group.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
     expect(group2.render(20)).toBe('abc' + 'a'.repeat(16) + '…')
   })
-  test('add/remove', async () => {
+  test('add/remove', async (): Promise<void> => {
     const group = new Group()
     group.add('ABC')
     group.add(1)
@@ -66,16 +67,16 @@ describe('Group', () => {
     group.clear()
     expect(group.children.length).toBe(0)
   })
-  test('timing', () => {
+  test('timing', (): void => {
     const group = new Group()
-    expect(group.nextFrame(() => undefined)).toBe(false)
+    expect(group.nextFrame((): undefined => undefined)).toBe(false)
     const parent = new Group()
     parent.add(group)
     const mockFn = jest.fn(parent.nextFrame)
     const mockNotify = jest.fn(parent.notify)
     parent.nextFrame = mockFn
     parent.notify = mockNotify
-    expect(group.nextFrame(() => undefined)).toBe(false)
+    expect(group.nextFrame((): undefined => undefined)).toBe(false)
     expect(mockFn.mock.calls.length).toBe(1)
     group.notify()
     expect(mockNotify.mock.calls.length).toBe(1)

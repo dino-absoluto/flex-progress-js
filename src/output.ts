@@ -53,31 +53,31 @@ interface Target {
 }
 
 export class TargetWriteOnly implements Target {
-  readonly stream: OutputStream
-  constructor (stream: OutputStream) {
+  public readonly stream: OutputStream
+  public constructor (stream: OutputStream) {
     this.stream = stream
   }
 
-  get columns () {
+  public get columns (): number {
     return 72
   }
 
-  clearLine () {
+  public clearLine (): void {
     const { stream } = this
     stream.write('\n')
   }
 
-  update (text: string) {
+  public update (text: string): void {
     const { stream } = this
     stream.write(text + '\n')
   }
 }
 
 export class TargetTTY implements Target {
-  readonly stream: OutputStream
+  public readonly stream: OutputStream
   private pLastColumns = 0
   private pLastWidth = 0
-  constructor (stream: OutputStream) {
+  public constructor (stream: OutputStream) {
     this.stream = stream
     if (!stream.isTTY) {
       throw new Error('stream is not TTY')
@@ -85,17 +85,17 @@ export class TargetTTY implements Target {
   }
 
   /** Clear display line */
-  clearLine () {
+  public clearLine (): void {
     const { stream } = this
     clearLine(stream, 0)
     cursorTo(stream, 0)
   }
 
-  get columns () {
+  public get columns (): number {
     return this.stream.columns || 40
   }
 
-  update (text: string, leftOver?: number) {
+  public update (text: string, leftOver?: number): void {
     const { stream, columns, pLastColumns } = this
     {
       const width = stringWidth(text)
@@ -114,23 +114,22 @@ export class TargetTTY implements Target {
       clearLine(stream, 1)
     }
     cursorTo(stream, 0)
-    return text
   }
 }
 
 /** Actual output to stderr */
 export class Output<T extends OutputData = OutputData> extends Group<T> {
-  readonly stream: OutputStream
-  readonly isTTY: boolean = true
+  public readonly stream: OutputStream
+  public readonly isTTY: boolean = true
   private pCreatedTime = Date.now()
   private pNextFrameCBs = new Set<FrameCB>()
   private pTarget: Target
   private pLastText = ''
   private pIsOutdated = false
   private pLeftOver?: number
-  renderedCount = 0
+  public renderedCount = 0
 
-  constructor (options?: OutputOptions) {
+  public constructor (options?: OutputOptions) {
     super(options)
     if (options && options.stream) {
       const { stream } = options
@@ -147,13 +146,13 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     }
   }
 
-  get parent () { return undefined }
-  set parent (_value: undefined) {
+  public get parent (): undefined { return undefined }
+  public set parent (_value: undefined) {
     throw new Error('class Output cannot have parent')
   }
 
-  get enabled () { return super.enabled }
-  set enabled (value: boolean) {
+  public get enabled (): boolean { return super.enabled }
+  public set enabled (value: boolean) {
     if (!value) {
       this.pTarget.clearLine()
     } else {
@@ -162,36 +161,36 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     super.enabled = value
   }
 
-  notify () {
+  public notify (): void {
     this.pIsOutdated = true
     this.pScheduleFrame()
   }
 
   /** Elapsed time since creation */
-  get elapsed () {
+  public get elapsed (): number {
     return Date.now() - this.pCreatedTime
   }
 
-  clear (clearLine = true) {
+  public clear (clearLine = true): void {
     super.clear()
     if (clearLine) {
       this.pTarget.clearLine()
     }
   }
 
-  clearLine () {
+  public clearLine (): void {
     this.pTarget.clearLine()
   }
 
-  nextFrame (cb: (frame: number) => void) {
+  public nextFrame (cb: (frame: number) => void): boolean {
     const { pNextFrameCBs } = this
     pNextFrameCBs.add(cb)
     this.pScheduleFrame()
     return true
   }
 
-  private pProcessFrame = () => {
-    setTimeout(() => {
+  private pProcessFrame = (): void => {
+    setTimeout((): void => {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
       for (const cb of pNextFrameCBs) {
@@ -209,12 +208,12 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
 
   private pScheduleFrame = once(this.pProcessFrame)
 
-  protected rendered (texts: string[] & { leftOver?: number }) {
+  protected rendered (texts: string[] & { leftOver?: number }): string {
     this.pLeftOver = texts.leftOver
     return super.rendered(texts)
   }
 
-  protected update () {
+  protected update (): void {
     this.renderedCount++
     const { pTarget, pLastText } = this
     const text = this.render(pTarget.columns)

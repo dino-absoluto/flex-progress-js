@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { Space } from '../space'
 
@@ -24,27 +25,27 @@ import { Space } from '../space'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Space', () => {
-  test('constructor', async () => {
+describe('Space', (): void => {
+  test('constructor', async (): Promise<void> => {
     const sp = new Space()
     expect(sp.render()).toBe(' ')
     expect(sp.render(2)).toBe(' ')
     expect(sp.render(0)).toBe('')
   })
-  test('render() flex.1', async () => {
+  test('render() flex.1', async (): Promise<void> => {
     const sp = new Space(10)
     expect(sp.render(6)).toBe(' '.repeat(10))
     expect(sp.render(8)).toBe(' '.repeat(10))
     sp.flex = 1
     expect(sp.render(8)).toBe(' '.repeat(8))
   })
-  test('render() flex.2', async () => {
+  test('render() flex.2', async (): Promise<void> => {
     const sp = new Space({ flex: 1 })
     expect(sp.render(8)).toBe(' '.repeat(8))
     sp.flex = 1
     expect(sp.render(20)).toBe(' '.repeat(20))
   })
-  test('render() flex.3', async () => {
+  test('render() flex.3', async (): Promise<void> => {
     const sp = new Space({ minWidth: 5 })
     expect(sp.render(1)).toBe(' '.repeat(5))
     expect(sp.render(8)).toBe(' '.repeat(5))

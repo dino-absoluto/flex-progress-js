@@ -49,7 +49,7 @@ export interface TextData extends BaseData {
 
 /** A text element */
 export class Text<T extends TextData = TextData> extends Base<T> {
-  constructor (options: TextOptions | string = '') {
+  public constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
     if (typeof options === 'string') {
       this.text = options
@@ -67,18 +67,18 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   }
 
   /** Text to display */
-  get text () { return this.proxy.text || '' }
-  set text (value: string) {
+  public get text (): string { return this.proxy.text || '' }
+  public set text (value: string) {
     this.proxy.text = toString(value) || ''
   }
 
-  get more () { return this.proxy.more || '…' }
-  set more (value: string) {
+  public get more (): string { return this.proxy.more || '…' }
+  public set more (value: string) {
     this.proxy.more = toString(value) || '…'
   }
 
-  get align () { return this.proxy.align || TextAlignment.Left }
-  set align (value: TextAlignment) {
+  public get align (): TextAlignment { return this.proxy.align || TextAlignment.Left }
+  public set align (value: TextAlignment) {
     switch (value) {
       case TextAlignment.Center: {
         this.proxy.align = TextAlignment.Center
@@ -95,13 +95,13 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   }
 
   /** The raw text width */
-  get length () { return stringWidth(this.text) }
+  public get length (): number { return stringWidth(this.text) }
 
-  protected handleCalculateWidth () {
+  protected handleCalculateWidth (): number {
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
 
-  protected handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number): string {
     let { text } = this
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink
@@ -117,7 +117,7 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   }
 
   /** Grow text to width */
-  private grow (width: number) {
+  private grow (width: number): string {
     let { text, align } = this
     const space = width - this.length
     let left = 0
@@ -131,7 +131,7 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   }
 
   /** Shrink text to width */
-  private shrink (width: number) {
+  private shrink (width: number): string {
     const { more } = this
     const length = stringWidth(more)
     if (width <= length) {

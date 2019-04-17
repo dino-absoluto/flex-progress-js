@@ -16,31 +16,32 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { BaseElement, Base, BaseData } from '../base'
 import { Group } from '../group'
 
 /* code */
-const immediate = () => {
-  return new Promise(resolve => setImmediate(resolve))
+const immediate = (): Promise<void> => {
+  return new Promise((resolve): void => void setImmediate(resolve))
 }
 
-describe('BaseElement', () => {
-  test('simple', async () => {
+describe('BaseElement', (): void => {
+  test('simple', async (): Promise<void> => {
     interface TestI {
       a: number
       b: number
       c: number
     }
     class TestE<T extends TestI> extends BaseElement<T> {
-      count = 0
-      tProxy = this.proxy
-      tFlush = this.flush
-      constructor (opts: TestI) {
+      public count = 0
+      public tProxy = this.proxy
+      public tFlush = this.flush
+      public constructor (opts: TestI) {
         super()
         Object.assign(this.data, opts)
       }
-      handleFlush () {
+      public handleFlush (): void {
         this.count++
       }
     }
@@ -80,25 +81,28 @@ describe('BaseElement', () => {
     expect(node.count).toBe(2)
     await immediate()
     expect(node.count).toBe(2)
-    tProxy.a = tProxy.a
+    {
+      const temp = tProxy.a
+      tProxy.a = temp
+    }
     await immediate()
     expect(node.count).toBe(2)
   })
 })
 
-describe('Base', () => {
+describe('Base', (): void => {
   class TestBase extends Base<BaseData> {
-    handleCalculateWidth () {
+    public handleCalculateWidth (): number {
       return 1
     }
-    handleRender () {
+    public handleRender (): string[] {
       return ['abc', '#']
     }
   }
-  test('simple', async () => {
+  test('simple', async (): Promise<void> => {
     const b = new TestBase()
     expect(b.render()).toBe('abc#')
-    b.postProcess = (a, b) => [ b, a ].join('')
+    b.postProcess = (a, b): string => [ b, a ].join('')
     expect(b.render()).toBe('#abc')
     b.enabled = false
     expect(b.render()).toBe('')
@@ -106,7 +110,7 @@ describe('Base', () => {
     expect(b.render()).toBe('#abc')
     expect(b.render(0)).toBe('')
   })
-  test('options', async () => {
+  test('options', async (): Promise<void> => {
     {
       const b = new TestBase({
         width: 10,
@@ -134,23 +138,23 @@ describe('Base', () => {
     {
       const b = new TestBase({
         width: 10,
-        postProcess: (a, b) => [ b, a ].join('')
+        postProcess: (a, b): string => [ b, a ].join('')
       })
       expect(b.calculateWidth()).toBe(10)
       expect(b.render()).toBe('#abc')
     }
   })
-  test('incorrect value', async () => {
+  test('incorrect value', async (): Promise<void> => {
     const b = new TestBase({
       width: 10
     })
     expect(b.minWidth).toBe(10)
-    b.minWidth = 'zero' as any
+    b.minWidth = 'zero' as unknown as number
     expect(b.minWidth).toBe(0)
     expect(b.maxWidth).toBe(10)
-    b.maxWidth = 'infinity' as any
+    b.maxWidth = 'infinity' as unknown as number
     expect(b.maxWidth).toBe(Number.MAX_SAFE_INTEGER)
-    expect(() => b.width).toThrow()
+    expect((): void => void b.width).toThrow()
     b.flex = 1
     expect(b.flexGrow).toBe(1)
     expect(b.flexShrink).toBe(1)
@@ -158,7 +162,7 @@ describe('Base', () => {
     expect(b.flexGrow).toBe(0)
     expect(b.flexShrink).toBe(0)
   })
-  test('notify', async () => {
+  test('notify', async (): Promise<void> => {
     const b = new TestBase({
       width: 10
     })

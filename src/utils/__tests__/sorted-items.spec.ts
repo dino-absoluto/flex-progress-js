@@ -16,12 +16,13 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { SortedItems } from '../sorted-items'
 
 /* code */
-describe('SortedItems', () => {
-  test('simple', async () => {
+describe('SortedItems', (): void => {
+  test('simple', async (): Promise<void> => {
     let array = new SortedItems()
     array.add(5, 'five')
     array.add(2, 'two')

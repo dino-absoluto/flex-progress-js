@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+/* eslint-env jest */
 /* imports */
 import { Spinner, themeDefault, themeLine } from '../spinner'
 import { Group } from '../group'
@@ -26,8 +27,8 @@ import { SYNCING_INTERVAL } from '../shared'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-describe('Spinner', () => {
-  test('render()', async () => {
+describe('Spinner', (): void => {
+  test('render()', async (): Promise<void> => {
     const spin = new Spinner()
     expect(spin.calculateWidth()).toBe(1)
     expect(spin.autoTicking).toBe(true)
@@ -38,7 +39,7 @@ describe('Spinner', () => {
       }
     }
   })
-  test('render() offset', async () => {
+  test('render() offset', async (): Promise<void> => {
     const spin = new Spinner({ frameOffset: 1 })
     const frames = Array.from(themeDefault.frames)
     frames.push(frames[0])
@@ -51,7 +52,7 @@ describe('Spinner', () => {
       }
     }
   })
-  test('theme', async () => {
+  test('theme', async (): Promise<void> => {
     const spin = new Spinner({ theme: themeLine })
     expect(spin.calculateWidth()).toBe(1)
     for (let i = 0; i < 5; ++i) {
@@ -72,8 +73,8 @@ describe('Spinner', () => {
       }
     }
   })
-  test('theme invalid', async () => {
-    const frames = themeLine.frames.map(i => i + i)
+  test('theme invalid', async (): Promise<void> => {
+    const frames = themeLine.frames.map((i): string => i + i)
     const spin = new Spinner({
       theme: {
         interval: themeLine.interval,
@@ -89,7 +90,7 @@ describe('Spinner', () => {
     }
     expect(spin.render(1)).toBe('')
   })
-  test('values invalid', async () => {
+  test('values invalid', async (): Promise<void> => {
     const spin = new Spinner()
     spin.time = -themeDefault.interval
     expect(spin.render()).toBe(themeDefault.frames[0])
@@ -101,10 +102,10 @@ describe('Spinner', () => {
     spin.tick(-themeDefault.interval)
     expect(spin.render()).toBe(themeDefault.frames[1])
   })
-  test('nextFrame', () => {
+  test('nextFrame', async (): Promise<void> => {
     const group = new Group()
     let i = 0
-    group.nextFrame = (cb: (frame: number) => void) => {
+    group.nextFrame = (cb: (frame: number) => void): boolean => {
       i++
       if (i > 10) {
         return false

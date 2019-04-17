@@ -86,7 +86,7 @@ export interface SpinnerData extends BaseData {
 
 /** Busy Spinner */
 export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
-  constructor (options: SpinnerOptions = {}) {
+  public constructor (options: SpinnerOptions = {}) {
     super(options)
     if (options.theme != null) {
       this.theme = options.theme
@@ -96,22 +96,22 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     }
   }
 
-  get time () { return this.proxy.time || 0 }
-  set time (time: number) {
+  public get time (): number { return this.proxy.time || 0 }
+  public set time (time: number) {
     this.proxy.time = time
   }
 
-  get frame () { return this.proxy.frame || 0 }
-  set frame (frame: number) {
+  public get frame (): number { return this.proxy.frame || 0 }
+  public set frame (frame: number) {
     this.proxy.frame = frame
   }
 
-  get frameOffset () { return this.proxy.frameOffset || 0 }
-  set frameOffset (offset: number) {
+  public get frameOffset (): number { return this.proxy.frameOffset || 0 }
+  public set frameOffset (offset: number) {
     this.proxy.frameOffset = offset
   }
 
-  tick (interval: number = SYNCING_INTERVAL) {
+  public tick (interval: number = SYNCING_INTERVAL): void {
     const theme = this.theme as SpinnerThemeSized
     const time = (this.time >= 0 ? this.time : 0) +
       (interval >= 0 ? interval : SYNCING_INTERVAL)
@@ -121,21 +121,18 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
         Math.round((theme.interval / SYNCING_INTERVAL)))
   }
 
-  get autoTicking () {
+  public get autoTicking (): boolean {
     const auto = this.proxy.autoTicking
     return this.enabled &&
       (auto != null ? auto : true)
   }
-  set autoTicking (auto: boolean) {
+  public set autoTicking (auto: boolean) {
     this.proxy.autoTicking = auto
-    // if (auto) {
-    //   this.pStart()
-    // }
   }
 
   /** Style to display spinner as */
-  get theme () { return this.proxy.theme || themeDefault }
-  set theme (spinner: SpinnerTheme) {
+  public get theme (): SpinnerTheme { return this.proxy.theme || themeDefault }
+  public set theme (spinner: SpinnerTheme) {
     if (!spinner.width) {
       spinner.width = stringWidth(spinner.frames[0])
     }
@@ -143,7 +140,7 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     // this.pFrame = 0
   }
 
-  private pHandleSync = (frame: number) => {
+  private pHandleSync = (frame: number): void => {
     if (this.parent && this.autoTicking) {
       const { frame: oldFrame, theme } = this
       frame = Math.floor(frame / Math.round((theme.interval / SYNCING_INTERVAL)))
@@ -158,7 +155,7 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     return (this.theme as SpinnerThemeSized).width
   }
 
-  protected handleRender (maxWidth?: number) {
+  protected handleRender (maxWidth?: number): string {
     const { frame, frameOffset, parent } = this
     const theme = this.theme as SpinnerThemeSized
     if (maxWidth != null && maxWidth < theme.width) {

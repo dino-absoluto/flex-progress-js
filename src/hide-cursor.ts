@@ -29,12 +29,12 @@ import { Output, OutputStream } from './output'
 /** Hide console cursor, this can only work when added to an Output stream. */
 export class HideCursor extends Base<BaseData> {
   /** HideCursor doesn't accept any options */
-  constructor () {
-    super()
+  public constructor () {
+    super(undefined)
   }
 
   /** Set cursor visible state */
-  static setCursor (stream: OutputStream, visible: boolean) {
+  public static setCursor (stream: OutputStream, visible: boolean): void {
     if (!stream.isTTY) {
       return
     }
@@ -45,25 +45,25 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
-  mounted () {
+  protected mounted (): void {
     const { parent } = this
     if (parent instanceof Output) {
       HideCursor.setCursor(parent.stream, false)
     }
   }
 
-  beforeUnmount () {
+  protected beforeUnmount (): void {
     const { parent } = this
     if (parent instanceof Output) {
       HideCursor.setCursor(parent.stream, true)
     }
   }
 
-  protected handleCalculateWidth () {
+  protected handleCalculateWidth (): 0 {
     return 0
   }
 
-  protected handleRender (_maxWidth?: number) {
+  protected handleRender (): '' {
     return ''
   }
 }

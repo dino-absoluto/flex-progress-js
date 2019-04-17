@@ -25,12 +25,13 @@ import optionalStringWidth = require('string-width')
 // █████████████▓░
 // █▓▒░▒▓█
 /** Get a string display width */
-const stringWidth = (() => {
+const stringWidth = ((): (text: string) => number => {
   try {
-    const getLength: typeof optionalStringWidth = require('string-width')
+    const getLength: typeof optionalStringWidth =
+    require('string-width') // eslint-disable-line @typescript-eslint/no-var-requires
     return getLength
   } catch {
-    return (text: string) => text.length
+    return (text: string): number => text.length
   }
 })()
 
