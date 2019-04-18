@@ -17,8 +17,8 @@
  *
  */
 /* imports */
-import clamp from 'lodash-es/clamp'
-import sortedIndex from 'lodash-es/sortedIndex'
+import clamp = require('lodash/clamp')
+import sortedIndex = require('lodash/sortedIndex')
 
 /* code */
 // █████▒░░░░░░░░░

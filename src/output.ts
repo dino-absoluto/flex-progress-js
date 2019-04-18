@@ -24,7 +24,7 @@ import {
   , cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
 import { SYNCING_INTERVAL } from './shared'
-import once from 'lodash-es/once'
+import once = require('lodash/once')
 
 /* code */
 // █████▒░░░░░░░░░

@@ -19,8 +19,8 @@
 /* imports */
 import { Base, BaseOptions } from './base'
 import stringWidth from './optional/string-width'
-import clamp from 'lodash-es/clamp'
-import toString from 'lodash-es/toString'
+import clamp = require('lodash/clamp')
+import toString = require('lodash/toString')
 
 /* code */
 // █████▒░░░░░░░░░

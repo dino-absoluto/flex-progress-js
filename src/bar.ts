@@ -18,7 +18,7 @@
  */
 /* imports */
 import { Base, BaseOptions } from './base'
-import clamp from 'lodash-es/clamp'
+import clamp = require('lodash/clamp')
 
 /* code */
 // █████▒░░░░░░░░░

@@ -18,9 +18,9 @@
  */
 /* imports */
 import { ChildElement, ParentElement } from './shared'
-import once from 'lodash-es/once'
-import clamp from 'lodash-es/clamp'
-import castArray from 'lodash-es/castArray'
+import once = require('lodash/once')
+import clamp = require('lodash/clamp')
+import castArray = require('lodash/castArray')
 
 /* code */
 // █████▒░░░░░░░░░

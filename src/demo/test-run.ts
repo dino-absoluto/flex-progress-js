@@ -17,12 +17,12 @@
  *
  */
 /* imports */
-import delay from 'lodash-es/delay'
-import round from 'lodash-es/round'
-import flip from 'lodash-es/flip'
-import overArgs from 'lodash-es/overArgs'
-import chalk from 'chalk'
 import * as FlexBar from '..'
+import chalk from 'chalk'
+import delay = require('lodash/delay')
+import round = require('lodash/round')
+import flip = require('lodash/flip')
+import overArgs = require('lodash/overArgs')
 /* exports */
 
 const text =

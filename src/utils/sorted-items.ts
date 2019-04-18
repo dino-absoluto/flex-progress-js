@@ -17,8 +17,8 @@
  *
  */
 /* imports */
-import sortedIndex from 'lodash-es/sortedIndex'
-import sortedLastIndex from 'lodash-es/sortedLastIndex'
+import sortedIndex = require('lodash/sortedIndex')
+import sortedLastIndex = require('lodash/sortedLastIndex')
 
 /* code */
 // █████▒░░░░░░░░░
