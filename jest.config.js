@@ -43,8 +43,8 @@ module.exports = {
     '<rootDir>/node_modules/(?!lodash-es/.*)'
   ],
   testMatch: [
-    "**/?(*.)+(spec|test).(js)",
-    "**/?(*.)+(spec|test).(ts|tsx)"
+    '**/?(*.)+(spec|test).(js)',
+    '**/?(*.)+(spec|test).(ts|tsx)'
   ],
   moduleFileExtensions: [
     'js',
