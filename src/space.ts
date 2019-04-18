@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
+import { Base, BaseOptions } from './base'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -25,11 +25,13 @@ import { Base, BaseOptions, BaseData } from './base'
 // █████████████▓░
 // █▓▒░▒▓█
 
-export type SpaceData = BaseData
+/** @public */
 export type SpaceOptions = BaseOptions
 
-/** Empty space element */
-export class Space<T extends SpaceData = SpaceData> extends Base<T> {
+/** @public
+ * Empty space element
+ */
+export class Space extends Base {
   public constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {
@@ -37,10 +39,12 @@ export class Space<T extends SpaceData = SpaceData> extends Base<T> {
     }
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string {
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink

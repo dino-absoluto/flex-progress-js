@@ -17,41 +17,43 @@
  *
  */
 /* imports */
-import { Group, GroupData, GroupOptions } from './group'
+import { Group, GroupOptions } from './group'
 import {
   clearLine
   , clearScreenDown
   , cursorTo } from 'readline'
 import stringWidth from './optional/string-width'
 import { SYNCING_INTERVAL } from './shared'
-import once from 'lodash-es/once'
+import once = require('lodash/once')
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
+/** @public */
 export interface OutputStream extends NodeJS.WritableStream {
   isTTY?: boolean
   columns?: number
   rows?: number
 }
 
-/** Describe options to class Output constructor() */
+/** @public Describe options to class Output constructor() */
 export interface OutputOptions extends GroupOptions {
   stream?: OutputStream
 }
 
-export type OutputData = GroupData
-
+/** @public Frame callback function */
 type FrameCB = (frame: number) => void
 
+/** @internal */
 interface Target {
   columns: number
   clearLine (): void
   update (text: string, leftOver?: number): void
 }
 
+/** @internal */
 export class TargetWriteOnly implements Target {
   public readonly stream: OutputStream
   public constructor (stream: OutputStream) {
@@ -73,6 +75,7 @@ export class TargetWriteOnly implements Target {
   }
 }
 
+/** @internal */
 export class TargetTTY implements Target {
   public readonly stream: OutputStream
   private pLastColumns = 0
@@ -117,8 +120,8 @@ export class TargetTTY implements Target {
   }
 }
 
-/** Actual output to stderr */
-export class Output<T extends OutputData = OutputData> extends Group<T> {
+/** @public Actual output to stderr */
+export class Output extends Group {
   public readonly stream: OutputStream
   public readonly isTTY: boolean = true
   private pCreatedTime = Date.now()
@@ -189,6 +192,7 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     return true
   }
 
+  /** @internal */
   private pProcessFrame = (): void => {
     setTimeout((): void => {
       const { pNextFrameCBs } = this
@@ -206,13 +210,16 @@ export class Output<T extends OutputData = OutputData> extends Group<T> {
     }, SYNCING_INTERVAL).unref()
   }
 
+  /** @internal */
   private pScheduleFrame = once(this.pProcessFrame)
 
+  /** @internal */
   protected rendered (texts: string[] & { leftOver?: number }): string {
     this.pLeftOver = texts.leftOver
     return super.rendered(texts)
   }
 
+  /** @internal */
   protected update (): void {
     this.renderedCount++
     const { pTarget, pLastText } = this

@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseData } from './base'
+import { Base } from './base'
 import { Output, OutputStream } from './output'
 
 /* code */
@@ -26,8 +26,10 @@ import { Output, OutputStream } from './output'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Hide console cursor, this can only work when added to an Output stream. */
-export class HideCursor extends Base<BaseData> {
+/** @public
+ * Hide console cursor, this can only work when added to an Output stream.
+ */
+export class HideCursor extends Base {
   /** HideCursor doesn't accept any options */
   public constructor () {
     super(undefined)
@@ -45,6 +47,7 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected mounted (): void {
     const { parent } = this
     if (parent instanceof Output) {
@@ -52,6 +55,7 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected beforeUnmount (): void {
     const { parent } = this
     if (parent instanceof Output) {
@@ -59,10 +63,12 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected handleCalculateWidth (): 0 {
     return 0
   }
 
+  /** @internal */
   protected handleRender (): '' {
     return ''
   }

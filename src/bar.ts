@@ -17,16 +17,16 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
-import clamp from 'lodash-es/clamp'
+import { Base, BaseOptions } from './base'
+import clamp = require('lodash/clamp')
 
 /* code */
 // █████▒░░░░░░░░░
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** Describe a progress theme to class Bar constructor() */
-interface BarTheme {
+/** @public Describe a progress theme to class Bar constructor() */
+export interface BarTheme {
   symbols: string[]
 }
 
@@ -35,19 +35,16 @@ const themeDefault: BarTheme = {
   symbols: [ '░', '▒', '▓', '█' ]
 }
 
-/** Describe options to class Bar constructor() */
+/** @public Describe options to class Bar constructor() */
 export interface BarOptions extends BaseOptions {
   theme?: BarTheme
   ratio?: number
 }
 
-export interface BarData extends BaseData {
-  ratio: number
-  theme: BarTheme
-}
-
-/** A progress bar */
-export class Bar<T extends BarData> extends Base<T> {
+/** @public
+ * A progress bar
+ */
+export class Bar extends Base {
   public constructor (options: BarOptions = {}) {
     super(options)
     if (options.theme != null) {
@@ -61,13 +58,18 @@ export class Bar<T extends BarData> extends Base<T> {
     }
   }
 
-  public get theme (): BarTheme { return this.proxy.theme || themeDefault }
+  /** Bar rendering theme */
+  public get theme (): BarTheme {
+    return this.proxy.theme as BarTheme || themeDefault
+  }
   public set theme (theme: BarTheme) {
     this.proxy.theme = theme
   }
 
   /** Completion ratio, range from 0 to 1 */
-  public get ratio (): number { return this.proxy.ratio || 0 }
+  public get ratio (): number {
+    return this.proxy.ratio as number || 0
+  }
   public set ratio (value: number) {
     this.proxy.ratio = clamp(value, 0, 1)
   }
@@ -86,10 +88,12 @@ export class Bar<T extends BarData> extends Base<T> {
     ]
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string | string[] {
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)

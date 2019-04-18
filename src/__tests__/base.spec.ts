@@ -18,7 +18,7 @@
  */
 /* eslint-env jest */
 /* imports */
-import { BaseElement, Base, BaseData } from '../base'
+import { AbstractElement, Base } from '../base'
 import { Group } from '../group'
 
 /* code */
@@ -26,14 +26,14 @@ const immediate = (): Promise<void> => {
   return new Promise((resolve): void => void setImmediate(resolve))
 }
 
-describe('BaseElement', (): void => {
+describe('AbstractElement', (): void => {
   test('simple', async (): Promise<void> => {
     interface TestI {
       a: number
       b: number
       c: number
     }
-    class TestE<T extends TestI> extends BaseElement<T> {
+    class TestE extends AbstractElement {
       public count = 0
       public tProxy = this.proxy
       public tFlush = this.flush
@@ -91,7 +91,7 @@ describe('BaseElement', (): void => {
 })
 
 describe('Base', (): void => {
-  class TestBase extends Base<BaseData> {
+  class TestBase extends Base {
     public handleCalculateWidth (): number {
       return 1
     }
