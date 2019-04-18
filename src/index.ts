@@ -19,12 +19,28 @@
 /* imports */
 
 /* exports */
+export {
+  AbstractData,
+  AbstractElement,
+  Base,
+  BaseOptions,
+  PostProcessFn
+} from './base'
+export {
+  Element,
+  ChildElement,
+  ParentElement,
+  FlexChild
+} from './shared'
 export { Static } from './static'
 export { HideCursor } from './hide-cursor'
-export { Base, BaseOptions } from './base'
 export { Group, GroupOptions } from './group'
 export { Space, SpaceOptions } from './space'
 export { Text, TextAlignment, TextOptions } from './text'
 export { Spinner, SpinnerOptions, SpinnerTheme } from './spinner'
 export { Bar, BarOptions, BarTheme } from './bar'
-export { Output, OutputOptions } from './output'
+export {
+  Output,
+  OutputOptions,
+  OutputStream
+} from './output'

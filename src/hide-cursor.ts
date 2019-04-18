@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseData } from './base'
+import { Base } from './base'
 import { Output, OutputStream } from './output'
 
 /* code */
@@ -29,7 +29,7 @@ import { Output, OutputStream } from './output'
 /** @public
  * Hide console cursor, this can only work when added to an Output stream.
  */
-export class HideCursor extends Base<BaseData> {
+export class HideCursor extends Base {
   /** HideCursor doesn't accept any options */
   public constructor () {
     super(undefined)

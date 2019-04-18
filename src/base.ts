@@ -28,16 +28,23 @@ import castArray from 'lodash-es/castArray'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** @internal */
-export abstract class BaseElement<T extends object = {}> {
-  protected proxy: Partial<T>
-  protected data: Partial<T> = {}
-  private pUpdate: Partial<T> = {}
+/** @public */
+export interface AbstractData {
+  [ key: string ]: unknown
+}
+
+/** @public */
+export abstract class AbstractElement {
+  protected proxy: AbstractData
+  protected data: AbstractData = {}
+  /** @internal */
+  private pUpdate: AbstractData = {}
+  /** @internal */
   private pUpdateTimer?: ReturnType<typeof setImmediate>
 
   public constructor () {
     this.proxy = new Proxy(this.data, {
-      get: ($, prop: keyof T): unknown => {
+      get: ($, prop: string): unknown => {
         const { pUpdate } = this
         if (pUpdate[prop] !== undefined) {
           return pUpdate[prop]
@@ -45,18 +52,19 @@ export abstract class BaseElement<T extends object = {}> {
           return $[prop]
         }
       },
-      set: ($, prop: keyof T, value: unknown): boolean => {
+      set: ($, prop: string, value: unknown): boolean => {
         if ($[prop] === value ||
           ($[prop] === this.pUpdate[prop] && $[prop] != null)) {
           return true
         }
-        this.pUpdate[prop] = value as T[keyof T]
+        this.pUpdate[prop] = value
         this.pSchedule()
         return true
       }
     })
   }
 
+  /** @internal */
   private pSchedule = once((): void => {
     this.pUpdateTimer = setImmediate(this.flush)
   })
@@ -67,7 +75,7 @@ export abstract class BaseElement<T extends object = {}> {
     if (pUpdateTimer) {
       clearImmediate(pUpdateTimer)
     }
-    let data: Partial<T>
+    let data: AbstractData
     ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
     this.handleFlush(data)
     Object.assign(this.data, data)
@@ -76,21 +84,12 @@ export abstract class BaseElement<T extends object = {}> {
     })
   }
 
-  protected abstract handleFlush (data: Partial<T>): void
+  /** @internal */
+  protected abstract handleFlush (data: AbstractData): void
 }
 
-/** Post processing function */
+/** @public Post processing function */
 export type PostProcessFn = (...values: string[]) => string | string[]
-
-/** @internal data */
-export interface BaseData {
-  minWidth: number
-  maxWidth: number
-  flexGrow: number
-  flexShrink: number
-  enabled: boolean
-  postProcess?: PostProcessFn
-}
 
 /** @public Basic options elements should accept */
 export interface BaseOptions {
@@ -112,8 +111,8 @@ export interface BaseOptions {
 }
 
 /** @public Base class for element */
-export abstract class Base<T extends BaseData = BaseData>
-  extends BaseElement<T>
+export abstract class Base
+  extends AbstractElement
   implements ChildElement {
   /** @internal */
   private pParent?: ParentElement
@@ -153,7 +152,9 @@ export abstract class Base<T extends BaseData = BaseData>
   }
 
   /** Post process the rendered output */
-  public get postProcess (): PostProcessFn | undefined { return this.proxy.postProcess }
+  public get postProcess (): PostProcessFn | undefined {
+    return this.proxy.postProcess as PostProcessFn
+  }
   public set postProcess (fn: PostProcessFn | undefined) {
     this.proxy.postProcess = fn
   }
@@ -194,7 +195,7 @@ export abstract class Base<T extends BaseData = BaseData>
   /** @internal
    * Handle flush event
    */
-  protected handleFlush (data: Partial<BaseData>): void {
+  protected handleFlush (data: AbstractData): void {
     const { parent } = this
     if (parent) {
       parent.notify(this, this.data, data)
@@ -210,14 +211,14 @@ export abstract class Base<T extends BaseData = BaseData>
   }
 
   /** Minimum necessary width */
-  public get minWidth (): number { return this.proxy.minWidth || 0 }
+  public get minWidth (): number { return this.proxy.minWidth as number || 0 }
   public set minWidth (value: number) {
     this.proxy.minWidth = value >= 0 ? value : 0
   }
 
   /** Maximum necessary width */
   public get maxWidth (): number {
-    return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER
+    return this.proxy.maxWidth as number || Number.MAX_SAFE_INTEGER
   }
   public set maxWidth (value: number) {
     this.proxy.maxWidth = Math.min(value >= 0 ? value : Number.MAX_SAFE_INTEGER,
@@ -236,7 +237,7 @@ export abstract class Base<T extends BaseData = BaseData>
 
   /** How much the element will grow */
   public get flexGrow (): number {
-    return (this.enabled && this.proxy.flexGrow) || 0
+    return (this.enabled && this.proxy.flexGrow as number) || 0
   }
   public set flexGrow (value: number) {
     this.proxy.flexGrow = value >= 0 ? value : 0
@@ -244,7 +245,7 @@ export abstract class Base<T extends BaseData = BaseData>
 
   /** How much the element will shrink */
   public get flexShrink (): number {
-    return (this.enabled && this.proxy.flexShrink) || 0
+    return (this.enabled && this.proxy.flexShrink as number) || 0
   }
   public set flexShrink (value: number) {
     this.proxy.flexShrink = value >= 0 ? value : 0
@@ -252,7 +253,7 @@ export abstract class Base<T extends BaseData = BaseData>
 
   /** Is the element enabled? */
   public get enabled (): boolean {
-    return this.proxy.enabled != null ? this.proxy.enabled : true
+    return this.proxy.enabled != null ? !!this.proxy.enabled : true
   }
   public set enabled (value: boolean) {
     this.proxy.enabled = value

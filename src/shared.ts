@@ -54,6 +54,9 @@ export interface ChildElement extends Element {
   parent?: ParentElement
 }
 
+/** @public */
+export type FlexChild = string | number | ChildElement
+
 /** @public Describe a parent element */
 export interface ParentElement extends Element {
   /** Array of child elements */
@@ -62,4 +65,12 @@ export interface ParentElement extends Element {
   nextFrame (cb: (frame: number) => void): boolean
   /** Notify this element that its children have been updated */
   notify (child: ChildElement, before: unknown, patch: unknown): void
+  /** Add item */
+  add (item: FlexChild, atIndex?: number): void
+  /** Remove item */
+  remove (item: ChildElement): void
+  /** Add items at the end */
+  append (...items: FlexChild[]): void
+  /** Remove all items */
+  clear (): void
 }

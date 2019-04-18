@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
+import { Base, BaseOptions } from './base'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -25,15 +25,13 @@ import { Base, BaseOptions, BaseData } from './base'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** @internal */
-export type SpaceData = BaseData
 /** @public */
 export type SpaceOptions = BaseOptions
 
 /** @public
  * Empty space element
  */
-export class Space<T extends SpaceData = SpaceData> extends Base<T> {
+export class Space extends Base {
   public constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
     if (typeof options === 'number') {

@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
+import { Base, BaseOptions } from './base'
 import { SYNCING_INTERVAL } from './shared'
 import stringWidth from './optional/string-width'
 // import once from 'lodash-es/once'
@@ -76,19 +76,10 @@ export interface SpinnerOptions extends BaseOptions {
   frameOffset?: number
 }
 
-/** @internal data */
-export interface SpinnerData extends BaseData {
-  theme: SpinnerThemeSized
-  autoTicking: boolean
-  time: number
-  frame: number
-  frameOffset: number
-}
-
 /** @public
  * Busy Spinner
  */
-export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
+export class Spinner extends Base {
   public constructor (options: SpinnerOptions = {}) {
     super(options)
     if (options.theme != null) {
@@ -99,17 +90,19 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     }
   }
 
-  public get time (): number { return this.proxy.time || 0 }
+  public get time (): number { return this.proxy.time as number || 0 }
   public set time (time: number) {
     this.proxy.time = time
   }
 
-  public get frame (): number { return this.proxy.frame || 0 }
+  public get frame (): number { return this.proxy.frame as number || 0 }
   public set frame (frame: number) {
     this.proxy.frame = frame
   }
 
-  public get frameOffset (): number { return this.proxy.frameOffset || 0 }
+  public get frameOffset (): number {
+    return this.proxy.frameOffset as number || 0
+  }
   public set frameOffset (offset: number) {
     this.proxy.frameOffset = offset
   }
@@ -127,14 +120,16 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
   public get autoTicking (): boolean {
     const auto = this.proxy.autoTicking
     return this.enabled &&
-      (auto != null ? auto : true)
+      (auto != null ? !!auto : true)
   }
   public set autoTicking (auto: boolean) {
     this.proxy.autoTicking = auto
   }
 
   /** Style to display spinner as */
-  public get theme (): SpinnerTheme { return this.proxy.theme || themeDefault }
+  public get theme (): SpinnerTheme {
+    return this.proxy.theme as SpinnerTheme || themeDefault
+  }
   public set theme (spinner: SpinnerTheme) {
     if (!spinner.width) {
       spinner.width = stringWidth(spinner.frames[0])

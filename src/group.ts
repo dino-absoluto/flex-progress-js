@@ -17,8 +17,8 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from './shared'
-import { Base, BaseData, BaseOptions } from './base'
+import { ChildElement, ParentElement, FlexChild } from './shared'
+import { Base, BaseOptions } from './base'
 import { Static } from './static'
 import { flex } from './utils/flex'
 
@@ -28,27 +28,15 @@ import { flex } from './utils/flex'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** @internal */
-export type GroupData = BaseData
 /** @public */
 export type GroupOptions = BaseOptions
-
-type FlexChild = string | number | ChildElement
-
-/** @public elements container */
-export interface Container {
-  add (item: FlexChild, atIndex?: number): void
-  remove (item: ChildElement): void
-  append (...items: FlexChild[]): void
-  clear (): void
-}
 
 /** @public
  * A group of elements
  */
-export class Group<T extends GroupData = GroupData>
-  extends Base<T>
-  implements ParentElement, Container {
+export class Group
+  extends Base
+  implements ParentElement {
   public readonly children: ChildElement[] = []
 
   public constructor (options?: BaseOptions) {

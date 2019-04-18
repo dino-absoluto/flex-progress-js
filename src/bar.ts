@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
+import { Base, BaseOptions } from './base'
 import clamp from 'lodash-es/clamp'
 
 /* code */
@@ -25,7 +25,7 @@ import clamp from 'lodash-es/clamp'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** Describe a progress theme to class Bar constructor() */
+/** @public Describe a progress theme to class Bar constructor() */
 export interface BarTheme {
   symbols: string[]
 }
@@ -41,16 +41,10 @@ export interface BarOptions extends BaseOptions {
   ratio?: number
 }
 
-/** @internal data */
-export interface BarData extends BaseData {
-  ratio: number
-  theme: BarTheme
-}
-
 /** @public
  * A progress bar
  */
-export class Bar<T extends BarData> extends Base<T> {
+export class Bar extends Base {
   public constructor (options: BarOptions = {}) {
     super(options)
     if (options.theme != null) {
@@ -65,13 +59,17 @@ export class Bar<T extends BarData> extends Base<T> {
   }
 
   /** Bar rendering theme */
-  public get theme (): BarTheme { return this.proxy.theme || themeDefault }
+  public get theme (): BarTheme {
+    return this.proxy.theme as BarTheme || themeDefault
+  }
   public set theme (theme: BarTheme) {
     this.proxy.theme = theme
   }
 
   /** Completion ratio, range from 0 to 1 */
-  public get ratio (): number { return this.proxy.ratio || 0 }
+  public get ratio (): number {
+    return this.proxy.ratio as number || 0
+  }
   public set ratio (value: number) {
     this.proxy.ratio = clamp(value, 0, 1)
   }

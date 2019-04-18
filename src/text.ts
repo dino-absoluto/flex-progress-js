@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Base, BaseOptions, BaseData } from './base'
+import { Base, BaseOptions } from './base'
 import stringWidth from './optional/string-width'
 import clamp from 'lodash-es/clamp'
 import toString from 'lodash-es/toString'
@@ -41,17 +41,10 @@ export interface TextOptions extends BaseOptions {
   align?: TextAlignment
 }
 
-/** @internal */
-export interface TextData extends BaseData {
-  text: string
-  more: string
-  align: TextAlignment
-}
-
 /** @public
  * A text element
  */
-export class Text<T extends TextData = TextData> extends Base<T> {
+export class Text extends Base {
   public constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
     if (typeof options === 'string') {
@@ -70,19 +63,21 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   }
 
   /** Text to display */
-  public get text (): string { return this.proxy.text || '' }
+  public get text (): string { return this.proxy.text as string || '' }
   public set text (value: string) {
     this.proxy.text = toString(value) || ''
   }
 
   /** Symbol to indicate that text has been truncated */
-  public get more (): string { return this.proxy.more || '…' }
+  public get more (): string { return this.proxy.more as string || '…' }
   public set more (value: string) {
     this.proxy.more = toString(value) || '…'
   }
 
   /** Text alignement */
-  public get align (): TextAlignment { return this.proxy.align || TextAlignment.Left }
+  public get align (): TextAlignment {
+    return this.proxy.align as TextAlignment || TextAlignment.Left
+  }
   public set align (value: TextAlignment) {
     switch (value) {
       case TextAlignment.Center: {

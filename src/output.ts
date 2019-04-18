@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Group, GroupData, GroupOptions } from './group'
+import { Group, GroupOptions } from './group'
 import {
   clearLine
   , clearScreenDown
@@ -31,7 +31,7 @@ import once from 'lodash-es/once'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** @internal */
+/** @public */
 export interface OutputStream extends NodeJS.WritableStream {
   isTTY?: boolean
   columns?: number
@@ -42,9 +42,6 @@ export interface OutputStream extends NodeJS.WritableStream {
 export interface OutputOptions extends GroupOptions {
   stream?: OutputStream
 }
-
-/** @internal */
-export type OutputData = GroupData
 
 /** @public Frame callback function */
 type FrameCB = (frame: number) => void
@@ -124,7 +121,7 @@ export class TargetTTY implements Target {
 }
 
 /** @public Actual output to stderr */
-export class Output<T extends OutputData = OutputData> extends Group<T> {
+export class Output extends Group {
   public readonly stream: OutputStream
   public readonly isTTY: boolean = true
   private pCreatedTime = Date.now()
