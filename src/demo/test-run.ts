@@ -21,7 +21,7 @@ import delay from 'lodash-es/delay'
 import round from 'lodash-es/round'
 import flip from 'lodash-es/flip'
 import overArgs from 'lodash-es/overArgs'
-import chalk from '../optional/chalk'
+import chalk from 'chalk'
 import * as FlexBar from '..'
 /* exports */
 
