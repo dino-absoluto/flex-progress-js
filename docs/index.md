@@ -8,7 +8,7 @@ Use in code.
 import * as FlexProgress from '@dinoabsoluto/flex-progress'
 ```
 
-**NOTE:** See [api/flex-progress](./api/flex-progress) for automatically generated documents.
+**NOTE:** See [api/flex-progress](./api/flex-progress.md) for automatically generated documents.
 
 ## Options
 All elements accept 1 optional object as options.
