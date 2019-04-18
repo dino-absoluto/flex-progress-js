@@ -68,7 +68,7 @@ const HSY = (h: number, s: number, y: number) => {
 /* NOTE: need true color supports */
 const colors: typeof chalk.red[] = []
 for (let h = 0; h <= 120; h += 10) {
-  const [r, g, b ] = HSY(h, .5, .5).map(c => Math.floor(c * 255))
+  const [ r, g, b ] = HSY(h, 0.5, 0.5).map(c => Math.floor(c * 255))
   colors.push(chalk.rgb(r, g, b))
 }
 
@@ -86,12 +86,12 @@ const text = new FlexProgress.Text({
 })
 
 out.append(
-  new FlexProgress.HideCursor()
-, 1, new FlexProgress.Spinner({ postProcess: chalk.cyan })
-, 1, new FlexProgress.Text({ text: 'Hello World!', postProcess: chalk.green })
-, 1, new FlexProgress.Spinner({ postProcess: chalk.magenta })
-, 1, '⸨', bar , '⸩'
-, 1, text
+  new FlexProgress.HideCursor(),
+  1, new FlexProgress.Spinner({ postProcess: chalk.cyan }),
+  1, new FlexProgress.Text({ text: 'Hello World!', postProcess: chalk.green }),
+  1, new FlexProgress.Spinner({ postProcess: chalk.magenta }),
+  1, '⸨', bar, '⸩',
+  1, text
 )
 
 text.text = 'abc!'
@@ -109,3 +109,12 @@ process.on('SIGINT', () => {
   console.log()
   process.exit(0)
 })
+
+/* End the loop */
+if (!(process.argv.indexOf('--loop') >= 0)) {
+  setTimeout(() => {
+    clearInterval(loop)
+    /* Clear elements from output */
+    out.clear()
+  }, 10000)
+}

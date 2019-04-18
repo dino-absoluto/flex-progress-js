@@ -48,17 +48,17 @@ const bar2 = new FlexProgress.Bar({
 /* Add elements to output */
 out.append(
   /* HideCursor make the cursor invisible */
-  new FlexProgress.HideCursor()
-/* Add 1 space, brackets and progress bar no.1 */
-, 1, '⸨', bar1 , '⸩'
-/* Add 1 space, a spinner in cyan color */
-, 1, new FlexProgress.Spinner({ postProcess: chalk.cyan })
-/* Add 1 space, a simple text message */
-, 1, msg
-/* Add 1 space, a spinner in magenta color */
-, 1, new FlexProgress.Spinner({ postProcess: chalk.magenta })
+  new FlexProgress.HideCursor(),
+  /* Add 1 space, brackets and progress bar no.1 */
+  1, '⸨', bar1, '⸩',
+  /* Add 1 space, a spinner in cyan color */
+  1, new FlexProgress.Spinner({ postProcess: chalk.cyan }),
+  /* Add 1 space, a simple text message */
+  1, msg,
+  /* Add 1 space, a spinner in magenta color */
+  1, new FlexProgress.Spinner({ postProcess: chalk.magenta }),
   /* Add 1 space, brackets and progress bar no.2 */
-, 1, '⸨', bar2 , '⸩'
+  1, '⸨', bar2, '⸩'
 )
 
 /* Simulate progress in a loop */

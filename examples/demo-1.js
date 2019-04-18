@@ -17,8 +17,12 @@
  *
  */
 /* imports */
-// import * as FlexProgress from '..'
-import * as FlexProgress from '@dinoabsoluto/flex-progress'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const FlexProgress = require('@dinoabsoluto/flex-progress')
+// ESModule
+// import FlexProgress from '@dinoabsoluto/flex-progress'
+// Typescript
+// import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })
@@ -31,14 +35,14 @@ out.append(
 )
 
 let count = 0
-const loop = setInterval((): void => {
+const loop = setInterval(() => {
   count++
   bar.ratio = (count % 39) / 38
 }, 80)
 
 /* End the loop */
 if (!(process.argv.indexOf('--loop') >= 0)) {
-  setTimeout((): void => {
+  setTimeout(() => {
     clearInterval(loop)
     /* Clear elements from output */
     out.clear()

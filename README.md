@@ -15,24 +15,29 @@ you're good to go.
 updating the output.
 No need to care about what other elements are doing.
 
-```typescript
-import * as FlexProgress from '@dinoabsoluto/flex-progress'
+```javascript
+const FlexProgress = require('@dinoabsoluto/flex-progress')
+// ESModule
+// import FlexProgress from '@dinoabsoluto/flex-progress'
+// Typescript
+// import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })
 
 out.append(
-  1, new FlexProgress.Spinner()
-, 1, 'Hello World!'
-, 1, new FlexProgress.Spinner()
-, 1, '⸨', bar , '⸩'
+  1, new FlexProgress.Spinner(),
+  1, 'Hello World!',
+  1, new FlexProgress.Spinner(),
+  1, '⸨', bar, '⸩'
 )
 
 let count = 0
 const loop = setInterval(() => {
   count++
   bar.ratio = (count % 39) / 38
-}, 40)
+}, 80)
+
 ```
 
 <img width="450" height="50"

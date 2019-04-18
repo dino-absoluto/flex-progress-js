@@ -17,32 +17,34 @@
  *
  */
 /* imports */
+// import * as FlexProgress from '..'
+import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
-/* exports */
-export {
-  AbstractData,
-  AbstractElement,
-  Base,
-  BaseOptions,
-  PostProcessFn
-} from './base'
-export {
-  Element,
-  ChildElement,
-  ParentElement,
-  FlexChild
-} from './shared'
-export { Static } from './static'
-export { HideCursor } from './hide-cursor'
-export { Group, GroupOptions } from './group'
-export { Space, SpaceOptions } from './space'
-export { Text, TextAlignment, TextOptions } from './text'
-export { Spinner, SpinnerOptions, SpinnerTheme } from './spinner'
-export { Bar, BarOptions, BarTheme } from './bar'
-export {
-  Output,
-  OutputOptions,
-  OutputStream
-} from './output'
+const out = new FlexProgress.Output()
+const text = new FlexProgress.Text('ABC!')
 
-export default {}
+out.append(
+  1, new FlexProgress.Spinner(),
+  1, 'Hello World!',
+  1, new FlexProgress.Spinner(),
+  1, text
+)
+
+text.text = 'abc!'
+
+let count = 0
+const loop = setInterval(() => {
+  count++
+}, 80)
+
+setTimeout(() => {
+  clearInterval(loop)
+}, 2000)
+
+process.on('SIGINT', () => {
+  process.exit(0)
+})
+
+process.on('exit', () => {
+  console.log()
+})
