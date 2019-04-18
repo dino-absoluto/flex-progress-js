@@ -82,7 +82,7 @@ const configLib = (env) => ({
     pathinfo: false,
     filename: 'index.js',
     libraryTarget: 'commonjs',
-    path: path.resolve(__dirname, env.prod ? 'lib' : '__tmp__/lib')
+    path: path.resolve(__dirname, env.prod ? 'dist' : '__tmp__/dist')
   }
 })
 

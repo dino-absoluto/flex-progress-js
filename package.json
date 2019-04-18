@@ -2,18 +2,21 @@
   "name": "@dinoabsoluto/flex-progress",
   "version": "2.0.1",
   "description": "Progress indicator for Node.js",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "typings": "dist/flex-progress-beta.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint --ext .js,.ts src",
-    "prepublishOnly": "webpack --env.prod && npm run dts-bundle",
+    "prepublishOnly": "webpack --env.prod && npm run build:extract-api",
     "build": "webpack",
-    "dts-bundle": "dts-bundle-generator -o lib/index.d.ts src/index.ts",
-    "dts": "tsc -d --emitDeclarationOnly --outDir 'lib/'"
+    "build:dts": "tsc -d --emitDeclarationOnly --outDir 'built/dts/'",
+    "build:extract-api": "api-extractor run --local --verbose",
+    "build:docs": "api-documenter markdown --input-folder __tmp__/docModel --output-folder docs/api",
+    "build:etc": "npm run build:dts && npm run build:extract-api && npm run build:docs"
   },
   "files": [
-    "lib/index.js",
-    "lib/**/*.d.ts"
+    "dist/index.js",
+    "dist/flex-progress-beta.d.ts"
   ],
   "repository": {
     "type": "git",
@@ -36,6 +39,8 @@
   },
   "homepage": "https://github.com/dino-absoluto/flex-progress-js#readme",
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.1.1",
+    "@microsoft/api-extractor": "^7.1.0",
     "@types/jest": "^24.0.11",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^11.13.4",
@@ -45,7 +50,6 @@
     "@typescript-eslint/parser": "^1.6.0",
     "chalk": "^2.4.2",
     "coveralls": "^3.0.3",
-    "dts-bundle-generator": "^3.0.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",
