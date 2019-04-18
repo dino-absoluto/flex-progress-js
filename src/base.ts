@@ -28,6 +28,7 @@ import castArray from 'lodash-es/castArray'
 // █████████████▓░
 // █▓▒░▒▓█
 
+/** @internal */
 export abstract class BaseElement<T extends object = {}> {
   protected proxy: Partial<T>
   protected data: Partial<T> = {}
@@ -78,8 +79,10 @@ export abstract class BaseElement<T extends object = {}> {
   protected abstract handleFlush (data: Partial<T>): void
 }
 
+/** Post processing function */
 export type PostProcessFn = (...values: string[]) => string | string[]
 
+/** @internal data */
 export interface BaseData {
   minWidth: number
   maxWidth: number
@@ -89,6 +92,7 @@ export interface BaseData {
   postProcess?: PostProcessFn
 }
 
+/** @public Basic options elements should accept */
 export interface BaseOptions {
   /** Fixed width element */
   width?: number
@@ -107,11 +111,14 @@ export interface BaseOptions {
   postProcess?: PostProcessFn
 }
 
+/** @public Base class for element */
 export abstract class Base<T extends BaseData = BaseData>
   extends BaseElement<T>
   implements ChildElement {
+  /** @internal */
   private pParent?: ParentElement
-  protected outdated = false
+  /** @internal */
+  // protected outdated = false
 
   public constructor (options?: BaseOptions) {
     super()
@@ -145,11 +152,13 @@ export abstract class Base<T extends BaseData = BaseData>
     }
   }
 
+  /** Post process the rendered output */
   public get postProcess (): PostProcessFn | undefined { return this.proxy.postProcess }
   public set postProcess (fn: PostProcessFn | undefined) {
     this.proxy.postProcess = fn
   }
 
+  /** Parent element */
   public get parent (): ParentElement | undefined { return this.pParent }
   public set parent (parent: ParentElement | undefined) {
     if (this.pParent != null) {
@@ -162,36 +171,51 @@ export abstract class Base<T extends BaseData = BaseData>
     }
   }
 
+  /** @internal
+   * Call before mounting
+   */
   protected beforeMount (_parent: ParentElement): void {
     void (_parent)
     this.flush()
   }
 
+  /** @internal
+   * Call after mounting
+   */
   protected mounted (): void {
   }
 
+  /** @internal
+   * Call before unmounting
+   */
   protected beforeUnmount (): void {
   }
 
+  /** @internal
+   * Handle flush event
+   */
   protected handleFlush (data: Partial<BaseData>): void {
     const { parent } = this
     if (parent) {
       parent.notify(this, this.data, data)
     }
-    this.outdated = true
+    // this.outdated = true
   }
 
+  /** The wanted width of the element */
   public get width (): number { throw new Error('width has no fixed value') }
   public set width (value: number) {
     this.minWidth = value
     this.maxWidth = value
   }
 
+  /** Minimum necessary width */
   public get minWidth (): number { return this.proxy.minWidth || 0 }
   public set minWidth (value: number) {
     this.proxy.minWidth = value >= 0 ? value : 0
   }
 
+  /** Maximum necessary width */
   public get maxWidth (): number {
     return this.proxy.maxWidth || Number.MAX_SAFE_INTEGER
   }
@@ -210,12 +234,15 @@ export abstract class Base<T extends BaseData = BaseData>
     return this.minWidth < this.maxWidth
   }
 
+  /** How much the element will grow */
   public get flexGrow (): number {
     return (this.enabled && this.proxy.flexGrow) || 0
   }
   public set flexGrow (value: number) {
     this.proxy.flexGrow = value >= 0 ? value : 0
   }
+
+  /** How much the element will shrink */
   public get flexShrink (): number {
     return (this.enabled && this.proxy.flexShrink) || 0
   }
@@ -223,6 +250,7 @@ export abstract class Base<T extends BaseData = BaseData>
     this.proxy.flexShrink = value >= 0 ? value : 0
   }
 
+  /** Is the element enabled? */
   public get enabled (): boolean {
     return this.proxy.enabled != null ? this.proxy.enabled : true
   }
@@ -230,14 +258,18 @@ export abstract class Base<T extends BaseData = BaseData>
     this.proxy.enabled = value
   }
 
+  /** @internal */
   protected abstract handleCalculateWidth (): number
+  /** @internal */
   protected abstract handleRender (maxWidth?: number): string | string[]
 
+  /** @internal */
   protected beforeRender (_maxWidth?: number): boolean {
     void (_maxWidth)
     return this.enabled
   }
 
+  /** @internal */
   protected rendered (texts: string[]): string {
     const { postProcess } = this
     if (postProcess) {

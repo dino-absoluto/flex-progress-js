@@ -25,10 +25,14 @@ import { Base, BaseOptions, BaseData } from './base'
 // █████████████▓░
 // █▓▒░▒▓█
 
+/** @internal */
 export type SpaceData = BaseData
+/** @public */
 export type SpaceOptions = BaseOptions
 
-/** Empty space element */
+/** @public
+ * Empty space element
+ */
 export class Space<T extends SpaceData = SpaceData> extends Base<T> {
   public constructor (options: BaseOptions | number = 1) {
     super(typeof options === 'number' ? undefined : options)
@@ -37,10 +41,12 @@ export class Space<T extends SpaceData = SpaceData> extends Base<T> {
     }
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string {
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink

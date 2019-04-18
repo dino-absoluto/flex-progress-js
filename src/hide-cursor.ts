@@ -26,7 +26,9 @@ import { Output, OutputStream } from './output'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Hide console cursor, this can only work when added to an Output stream. */
+/** @public
+ * Hide console cursor, this can only work when added to an Output stream.
+ */
 export class HideCursor extends Base<BaseData> {
   /** HideCursor doesn't accept any options */
   public constructor () {
@@ -45,6 +47,7 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected mounted (): void {
     const { parent } = this
     if (parent instanceof Output) {
@@ -52,6 +55,7 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected beforeUnmount (): void {
     const { parent } = this
     if (parent instanceof Output) {
@@ -59,10 +63,12 @@ export class HideCursor extends Base<BaseData> {
     }
   }
 
+  /** @internal */
   protected handleCalculateWidth (): 0 {
     return 0
   }
 
+  /** @internal */
   protected handleRender (): '' {
     return ''
   }

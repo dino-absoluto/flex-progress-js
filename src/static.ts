@@ -21,6 +21,9 @@ import { ChildElement, ParentElement } from './shared'
 import stringWidth from './optional/string-width'
 /* exports */
 
+/** @public
+ * A static element, rendered content will never change
+ */
 export class Static implements ChildElement {
   public parent?: ParentElement
   public readonly text: string

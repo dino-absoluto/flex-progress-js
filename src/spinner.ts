@@ -28,14 +28,14 @@ import stringWidth from './optional/string-width'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** Describe Spinner theme */
+/** @public Describe Spinner theme */
 export interface SpinnerTheme {
   frames: string[]
   interval: number
   width?: number
 }
 
-export interface SpinnerThemeSized extends SpinnerTheme {
+interface SpinnerThemeSized extends SpinnerTheme {
   width: number
 }
 
@@ -70,12 +70,13 @@ export const themeLine = {
   ]
 }
 
-/** Describe options to class Spinner constructor() */
+/** @public Describe options to class Spinner constructor() */
 export interface SpinnerOptions extends BaseOptions {
   theme?: SpinnerTheme
   frameOffset?: number
 }
 
+/** @internal data */
 export interface SpinnerData extends BaseData {
   theme: SpinnerThemeSized
   autoTicking: boolean
@@ -84,7 +85,9 @@ export interface SpinnerData extends BaseData {
   frameOffset: number
 }
 
-/** Busy Spinner */
+/** @public
+ * Busy Spinner
+ */
 export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
   public constructor (options: SpinnerOptions = {}) {
     super(options)
@@ -140,6 +143,7 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     // this.pFrame = 0
   }
 
+  /** @internal */
   private pHandleSync = (frame: number): void => {
     if (this.parent && this.autoTicking) {
       const { frame: oldFrame, theme } = this
@@ -151,10 +155,12 @@ export class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> {
     }
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return (this.theme as SpinnerThemeSized).width
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string {
     const { frame, frameOffset, parent } = this
     const theme = this.theme as SpinnerThemeSized

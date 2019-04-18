@@ -26,7 +26,7 @@ import clamp from 'lodash-es/clamp'
 // █████████████▓░
 // █▓▒░▒▓█
 /** Describe a progress theme to class Bar constructor() */
-interface BarTheme {
+export interface BarTheme {
   symbols: string[]
 }
 
@@ -35,18 +35,21 @@ const themeDefault: BarTheme = {
   symbols: [ '░', '▒', '▓', '█' ]
 }
 
-/** Describe options to class Bar constructor() */
+/** @public Describe options to class Bar constructor() */
 export interface BarOptions extends BaseOptions {
   theme?: BarTheme
   ratio?: number
 }
 
+/** @internal data */
 export interface BarData extends BaseData {
   ratio: number
   theme: BarTheme
 }
 
-/** A progress bar */
+/** @public
+ * A progress bar
+ */
 export class Bar<T extends BarData> extends Base<T> {
   public constructor (options: BarOptions = {}) {
     super(options)
@@ -61,6 +64,7 @@ export class Bar<T extends BarData> extends Base<T> {
     }
   }
 
+  /** Bar rendering theme */
   public get theme (): BarTheme { return this.proxy.theme || themeDefault }
   public set theme (theme: BarTheme) {
     this.proxy.theme = theme
@@ -86,10 +90,12 @@ export class Bar<T extends BarData> extends Base<T> {
     ]
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string | string[] {
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)

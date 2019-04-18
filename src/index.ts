@@ -17,25 +17,14 @@
  *
  */
 /* imports */
-import { Base } from './base'
-import { Group } from './group'
-import { Text, TextAlignment } from './text'
-import { Static } from './static'
-import { Space } from './space'
-import { Spinner } from './spinner'
-import { Bar } from './bar'
-import { HideCursor } from './hide-cursor'
-import { Output } from './output'
-/* exports */
 
-export {
-  Base
-  , Group
-  , Space
-  , Text, TextAlignment
-  , Static
-  , Spinner
-  , Bar
-  , HideCursor
-  , Output
-}
+/* exports */
+export { Static } from './static'
+export { HideCursor } from './hide-cursor'
+export { Base, BaseOptions } from './base'
+export { Group, GroupOptions } from './group'
+export { Space, SpaceOptions } from './space'
+export { Text, TextAlignment, TextOptions } from './text'
+export { Spinner, SpinnerOptions, SpinnerTheme } from './spinner'
+export { Bar, BarOptions, BarTheme } from './bar'
+export { Output, OutputOptions } from './output'

@@ -27,27 +27,30 @@ import toString from 'lodash-es/toString'
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** Text alignment */
+/** @public Text alignment */
 export const enum TextAlignment {
   Left = 'left',
   Center = 'center',
   Right = 'right'
 }
 
-/** Describe options to class Text constructor() */
+/** @public Describe options to class Text constructor() */
 export interface TextOptions extends BaseOptions {
   text?: string
   more?: string
   align?: TextAlignment
 }
 
+/** @internal */
 export interface TextData extends BaseData {
   text: string
   more: string
   align: TextAlignment
 }
 
-/** A text element */
+/** @public
+ * A text element
+ */
 export class Text<T extends TextData = TextData> extends Base<T> {
   public constructor (options: TextOptions | string = '') {
     super(typeof options !== 'string' ? options : undefined)
@@ -72,11 +75,13 @@ export class Text<T extends TextData = TextData> extends Base<T> {
     this.proxy.text = toString(value) || ''
   }
 
+  /** Symbol to indicate that text has been truncated */
   public get more (): string { return this.proxy.more || '…' }
   public set more (value: string) {
     this.proxy.more = toString(value) || '…'
   }
 
+  /** Text alignement */
   public get align (): TextAlignment { return this.proxy.align || TextAlignment.Left }
   public set align (value: TextAlignment) {
     switch (value) {
@@ -97,10 +102,12 @@ export class Text<T extends TextData = TextData> extends Base<T> {
   /** The raw text width */
   public get length (): number { return stringWidth(this.text) }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string {
     let { text } = this
     const growable = !!(maxWidth && this.flexGrow)
@@ -116,7 +123,7 @@ export class Text<T extends TextData = TextData> extends Base<T> {
     return text
   }
 
-  /** Grow text to width */
+  /** @internal Grow text to width */
   private grow (width: number): string {
     let { text, align } = this
     const space = width - this.length
@@ -130,7 +137,7 @@ export class Text<T extends TextData = TextData> extends Base<T> {
     return ' '.repeat(left) + text + ' '.repeat(right)
   }
 
-  /** Shrink text to width */
+  /** @internal Shrink text to width */
   private shrink (width: number): string {
     const { more } = this
     const length = stringWidth(more)

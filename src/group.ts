@@ -28,18 +28,24 @@ import { flex } from './utils/flex'
 // █████████████▓░
 // █▓▒░▒▓█
 
+/** @internal */
 export type GroupData = BaseData
+/** @public */
 export type GroupOptions = BaseOptions
 
 type FlexChild = string | number | ChildElement
 
-interface Container {
+/** @public elements container */
+export interface Container {
   add (item: FlexChild, atIndex?: number): void
   remove (item: ChildElement): void
   append (...items: FlexChild[]): void
   clear (): void
 }
 
+/** @public
+ * A group of elements
+ */
 export class Group<T extends GroupData = GroupData>
   extends Base<T>
   implements ParentElement, Container {
@@ -51,11 +57,13 @@ export class Group<T extends GroupData = GroupData>
     }, options))
   }
 
+  /** @internal */
   protected handleCalculateWidth (): number {
     return this.children.reduce(
       (acc, child): number => acc + child.calculateWidth(), 0)
   }
 
+  /** @internal */
   protected handleRender (maxWidth?: number): string | string[] {
     if (maxWidth == null) {
       return this.children.map((item): string => item.render())
@@ -76,14 +84,17 @@ export class Group<T extends GroupData = GroupData>
     return false
   }
 
+  /** @internal */
   private pItemAdded (item: ChildElement): void {
     item.parent = this
   }
 
+  /** @internal */
   private pItemRemoved (item: ChildElement): void {
     item.parent = undefined
   }
 
+  /** @internal */
   private static pCastChild (item: FlexChild): ChildElement {
     if (typeof item === 'string') {
       item = new Static(item)

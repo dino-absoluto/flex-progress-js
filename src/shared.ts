@@ -27,7 +27,7 @@
 /** Control the rendering synchronization rate */
 export const SYNCING_INTERVAL = 40
 
-/** Describe a flex-progress element */
+/** @public Describe a flex-progress element */
 export interface Element {
   /** Fixed width element */
   width?: number
@@ -49,15 +49,17 @@ export interface Element {
   render (maxWidth?: number): string
 }
 
-/** Describe a child element */
+/** @public Describe a child element */
 export interface ChildElement extends Element {
   parent?: ParentElement
 }
 
-/** Describe a parent element */
+/** @public Describe a parent element */
 export interface ParentElement extends Element {
   /** Array of child elements */
   children: ChildElement[]
+  /** Schedule a callback for next frame */
   nextFrame (cb: (frame: number) => void): boolean
+  /** Notify this element that its children have been updated */
   notify (child: ChildElement, before: unknown, patch: unknown): void
 }
