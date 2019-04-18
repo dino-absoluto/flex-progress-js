@@ -9,7 +9,7 @@ A progress bar
 <b>Signature:</b>
 
 ```typescript
-export declare class Bar<T extends BarData> extends Base<T> 
+export declare class Bar extends Base 
 ```
 
 ## Properties

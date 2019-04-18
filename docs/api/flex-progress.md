@@ -8,6 +8,7 @@
 
 |  Class | Description |
 |  --- | --- |
+|  [AbstractElement](./flex-progress.abstractelement.md) |  |
 |  [Bar](./flex-progress.bar.md) | A progress bar |
 |  [Base](./flex-progress.base.md) | Base class for element |
 |  [Group](./flex-progress.group.md) | A group of elements |
@@ -28,10 +29,15 @@
 
 |  Interface | Description |
 |  --- | --- |
+|  [AbstractData](./flex-progress.abstractdata.md) |  |
 |  [BarOptions](./flex-progress.baroptions.md) | Describe options to class Bar constructor() |
 |  [BarTheme](./flex-progress.bartheme.md) | Describe a progress theme to class Bar constructor() |
 |  [BaseOptions](./flex-progress.baseoptions.md) | Basic options elements should accept |
+|  [ChildElement](./flex-progress.childelement.md) | Describe a child element |
+|  [Element](./flex-progress.element.md) | Describe a flex-progress element |
 |  [OutputOptions](./flex-progress.outputoptions.md) | Describe options to class Output constructor() |
+|  [OutputStream](./flex-progress.outputstream.md) |  |
+|  [ParentElement](./flex-progress.parentelement.md) | Describe a parent element |
 |  [SpinnerOptions](./flex-progress.spinneroptions.md) | Describe options to class Spinner constructor() |
 |  [SpinnerTheme](./flex-progress.spinnertheme.md) | Describe Spinner theme |
 |  [TextOptions](./flex-progress.textoptions.md) | Describe options to class Text constructor() |
@@ -40,6 +46,8 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [FlexChild](./flex-progress.flexchild.md) |  |
 |  [GroupOptions](./flex-progress.groupoptions.md) |  |
+|  [PostProcessFn](./flex-progress.postprocessfn.md) | Post processing function |
 |  [SpaceOptions](./flex-progress.spaceoptions.md) |  |
 

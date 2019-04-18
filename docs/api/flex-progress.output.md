@@ -9,7 +9,7 @@ Actual output to stderr
 <b>Signature:</b>
 
 ```typescript
-export declare class Output<T extends OutputData = OutputData> extends Group<T> 
+export declare class Output extends Group 
 ```
 
 ## Properties

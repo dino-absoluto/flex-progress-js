@@ -9,7 +9,7 @@ Busy Spinner
 <b>Signature:</b>
 
 ```typescript
-export declare class Spinner<T extends SpinnerData = SpinnerData> extends Base<T> 
+export declare class Spinner extends Base 
 ```
 
 ## Properties

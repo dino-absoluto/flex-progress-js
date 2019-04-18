@@ -9,5 +9,5 @@ Empty space element
 <b>Signature:</b>
 
 ```typescript
-export declare class Space<T extends SpaceData = SpaceData> extends Base<T> 
+export declare class Space extends Base 
 ```

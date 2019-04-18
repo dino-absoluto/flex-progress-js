@@ -9,7 +9,7 @@ Base class for element
 <b>Signature:</b>
 
 ```typescript
-export declare abstract class Base<T extends BaseData = BaseData> extends BaseElement<T> implements ChildElement 
+export declare abstract class Base extends AbstractElement implements ChildElement 
 ```
 
 ## Properties

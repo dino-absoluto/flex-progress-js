@@ -9,7 +9,7 @@ Hide console cursor, this can only work when added to an Output stream.
 <b>Signature:</b>
 
 ```typescript
-export declare class HideCursor extends Base<BaseData> 
+export declare class HideCursor extends Base 
 ```
 
 ## Methods

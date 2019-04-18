@@ -9,7 +9,7 @@ A group of elements
 <b>Signature:</b>
 
 ```typescript
-export declare class Group<T extends GroupData = GroupData> extends Base<T> implements ParentElement, Container 
+export declare class Group extends Base implements ParentElement 
 ```
 
 ## Properties

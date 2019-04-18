@@ -9,7 +9,7 @@ A text element
 <b>Signature:</b>
 
 ```typescript
-export declare class Text<T extends TextData = TextData> extends Base<T> 
+export declare class Text extends Base 
 ```
 
 ## Properties
