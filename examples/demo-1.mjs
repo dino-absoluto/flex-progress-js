@@ -17,7 +17,8 @@
  *
  */
 /* imports */
-import FlexProgress from '@dinoabsoluto/flex-progress'
+// import * as FlexProgress from '..'
+import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })

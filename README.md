@@ -17,9 +17,7 @@ No need to care about what other elements are doing.
 
 ```javascript
 const FlexProgress = require('@dinoabsoluto/flex-progress')
-// ESModule
-// import FlexProgress from '@dinoabsoluto/flex-progress'
-// Typescript
+// ESModules or Typescript
 // import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
 const out = new FlexProgress.Output()
