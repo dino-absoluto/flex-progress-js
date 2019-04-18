@@ -11,7 +11,7 @@
     "build": "webpack",
     "build:extract-api": "tsc -d --emitDeclarationOnly --outDir 'built/dts/' && api-extractor run --local --verbose",
     "build:docs": "api-documenter markdown -i __tmp__/docModel -o docs/api",
-    "build:etc": "npm run build:extract-api && npm run build:docs",
+    "build:etc": "npm run build:extract-api && npm run build:docs"
   },
   "files": [
     "dist/index.js",
