@@ -20,8 +20,8 @@
 // import * as FlexProgress from '..'
 import * as FlexProgress from '@dinoabsoluto/flex-progress'
 import chalk from 'chalk'
-import flip = require('lodash/flip')
-import overArgs = require('lodash/overArgs')
+import flip from 'lodash/flip'
+import overArgs from 'lodash/overArgs'
 
 const MESSAGE = 'Hello World!'
 /** An output instance */
@@ -36,13 +36,13 @@ const bar1 = new FlexProgress.Bar({
   width: 15,
   /** The output text will be pass to this function */
   postProcess:
-    overArgs((...s: string[]) => s.join(''),
+    overArgs((...texts /*: string[] */) => texts.join(''),
       [chalk.green, chalk.yellow, chalk.gray])
 })
 const bar2 = new FlexProgress.Bar({
   width: 25,
   postProcess:
-    overArgs(flip((...s: string[]) => s.join('')),
+    overArgs(flip((...texts /*: string[] */) => texts.join('')),
       [chalk.green, chalk.yellow, chalk.gray])
 })
 

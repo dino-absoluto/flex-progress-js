@@ -23,7 +23,6 @@ const FlexProgress = require('@dinoabsoluto/flex-progress')
 // ESModules or Typescript
 // import * as FlexProgress from '@dinoabsoluto/flex-progress'
 
-
 const out = new FlexProgress.Output()
 const bar = new FlexProgress.Bar({ width: 25 })
 

@@ -20,16 +20,16 @@
 // import * as FlexProgress from '..'
 import * as FlexProgress from '@dinoabsoluto/flex-progress'
 import chalk from 'chalk'
-import clamp = require('lodash/clamp')
+import clamp from 'lodash/clamp'
 
-const HSY = (h: number, s: number, y: number) => {
+const HSY = (h /*: number */, s /*: number */, y /*: number */) => {
   h = clamp(h, 0, 360) % 360
   s = clamp(s, 0, 1)
   y = clamp(y, 0, 1)
   const c = (1 - Math.abs(2 * y - 1)) * s
   const h1 = h / 60
   const x = c * (1 - Math.abs(h1 % 2 - 1))
-  let r: [number, number, number]
+  let r /*: [number, number, number] */
   switch (Math.floor(h1)) {
     case 0: {
       r = [c, x, 0]
@@ -66,7 +66,7 @@ const HSY = (h: number, s: number, y: number) => {
 }
 
 /* NOTE: need true color supports */
-const colors: typeof chalk.red[] = []
+const colors /*: typeof chalk.red[] */ = []
 for (let h = 0; h <= 120; h += 10) {
   const [ r, g, b ] = HSY(h, 0.5, 0.5).map(c => Math.floor(c * 255))
   colors.push(chalk.rgb(r, g, b))
@@ -74,7 +74,7 @@ for (let h = 0; h <= 120; h += 10) {
 
 let ratio = 0
 
-const colorBar = (fill: string, half: string, empty: string) => {
+const colorBar = (fill /*: string */, half /*: string */, empty /*: string */) => {
   const i = Math.floor(ratio * 1 * (colors.length - 1)) % colors.length
   return [ colors[i](fill), colors[Math.max(0, i)](half), chalk.gray(empty) ].join('')
 }
