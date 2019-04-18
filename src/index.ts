@@ -44,5 +44,3 @@ export {
   OutputOptions,
   OutputStream
 } from './output'
-
-export default {}
