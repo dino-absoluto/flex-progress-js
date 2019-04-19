@@ -31,19 +31,27 @@ import once = require('lodash/once')
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** @public */
+/** @public
+ * The stream to write output to.
+ * The condition is not as strict as WriteStream.
+ */
 export interface OutputStream extends NodeJS.WritableStream {
   isTTY?: boolean
   columns?: number
   rows?: number
 }
 
-/** @public Describe options to class Output constructor() */
+/** @public
+ * Describe options to Output constructor().
+ */
 export interface OutputOptions extends GroupOptions {
+  /** Stream to write its output to */
   stream?: OutputStream
 }
 
-/** @public Frame callback function */
+/** @public
+ * Frame callback function.
+ */
 type FrameCB = (frame: number) => void
 
 /** @internal */
@@ -120,15 +128,25 @@ export class TargetTTY implements Target {
   }
 }
 
-/** @public Actual output to stderr */
+/** @public
+ * Output to stderr.
+ * Unlike other elements that don't do anything on their own.
+ * This element will write its output to a stream (default to stderr).
+ */
 export class Output extends Group {
   public readonly stream: OutputStream
   public readonly isTTY: boolean = true
+  /** @internal */
   private pCreatedTime = Date.now()
+  /** @internal */
   private pNextFrameCBs = new Set<FrameCB>()
+  /** @internal */
   private pTarget: Target
+  /** @internal */
   private pLastText = ''
+  /** @internal */
   private pIsOutdated = false
+  /** @internal */
   private pLeftOver?: number
   public renderedCount = 0
 
@@ -149,6 +167,11 @@ export class Output extends Group {
     }
   }
 
+  /**
+   * This element cannot be added to other element.
+   * Parent is always undefined, and will throw an error if you try
+   * to change its value.
+   */
   public get parent (): undefined { return undefined }
   public set parent (_value: undefined) {
     throw new Error('class Output cannot have parent')
@@ -169,11 +192,17 @@ export class Output extends Group {
     this.pScheduleFrame()
   }
 
-  /** Elapsed time since creation */
+  /**
+   * Elapsed time since creation
+   */
   public get elapsed (): number {
     return Date.now() - this.pCreatedTime
   }
 
+  /**
+   * Remove all sub-elements as well as clear the display.
+   * @param clearLine whether or not to clear the display, default to `true`
+   */
   public clear (clearLine = true): void {
     super.clear()
     if (clearLine) {
@@ -181,6 +210,9 @@ export class Output extends Group {
     }
   }
 
+  /**
+   * Clear the displayed line.
+   */
   public clearLine (): void {
     this.pTarget.clearLine()
   }
