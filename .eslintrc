@@ -26,6 +26,9 @@
     },
     {
       "files": [ "*.test.ts", "*.spec.ts" ],
+      "env": {
+        "jest": true
+      },
       "rules": {
         "@typescript-eslint/explicit-function-return-type": "off"
       }
