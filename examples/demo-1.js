@@ -18,7 +18,6 @@
  */
 /* imports */
 // const FlexProgress = require('..')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const FlexProgress = require('@dinoabsoluto/flex-progress')
 // ESModules or Typescript
 // import * as FlexProgress from '@dinoabsoluto/flex-progress'
