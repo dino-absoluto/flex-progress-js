@@ -27,22 +27,31 @@ import toString = require('lodash/toString')
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** @public Text alignment */
+/** @public
+ * Text alignment, have the same meaning as most text editor.
+ * This only have meaning of `Text` is flexible and there's more spaces
+ * than the set text string.
+ */
 export const enum TextAlignment {
   Left = 'left',
   Center = 'center',
   Right = 'right'
 }
 
-/** @public Describe options to class Text constructor() */
+/** @public
+ * Describe options to Text constructor().
+ */
 export interface TextOptions extends BaseOptions {
+  /** Initial text value */
   text?: string
+  /** Use this to show that text has been truncated, default to '…' */
   more?: string
+  /** Text alignment */
   align?: TextAlignment
 }
 
 /** @public
- * A text element
+ * A text element.
  */
 export class Text extends Base {
   public constructor (options: TextOptions | string = '') {
@@ -62,19 +71,25 @@ export class Text extends Base {
     }
   }
 
-  /** Text to display */
+  /**
+   * Text to display.
+   */
   public get text (): string { return this.proxy.text as string || '' }
   public set text (value: string) {
     this.proxy.text = toString(value) || ''
   }
 
-  /** Symbol to indicate that text has been truncated */
+  /**
+   * Symbol to indicate that text has been truncated.
+   */
   public get more (): string { return this.proxy.more as string || '…' }
   public set more (value: string) {
     this.proxy.more = toString(value) || '…'
   }
 
-  /** Text alignement */
+  /**
+   * Text alignement.
+   */
   public get align (): TextAlignment {
     return this.proxy.align as TextAlignment || TextAlignment.Left
   }
@@ -94,7 +109,9 @@ export class Text extends Base {
     }
   }
 
-  /** The raw text width */
+  /**
+   * The raw text width.
+   */
   public get length (): number { return stringWidth(this.text) }
 
   /** @internal */
