@@ -25,8 +25,17 @@ import clamp = require('lodash/clamp')
 // ██████▓░░░░░░░░
 // █████████████▓░
 // █▓▒░▒▓█
-/** @public Describe a progress theme to class Bar constructor() */
+/** @public
+ * Describe a progress `Bar` theme.
+ */
 export interface BarTheme {
+  /**
+   * Symbols used to render the bar.
+   * - Symbol at 0 index means this block is empty.
+   * - Symbol at the end means this block is completely filled.
+   * - Other symbols in between are divided evenly.
+   * NOTE: all symbols must have rendered width equal to `1`.
+   */
   symbols: string[]
 }
 
@@ -35,14 +44,18 @@ const themeDefault: BarTheme = {
   symbols: [ '░', '▒', '▓', '█' ]
 }
 
-/** @public Describe options to class Bar constructor() */
+/** @public
+ * Describe options to `Bar` constructor().
+ */
 export interface BarOptions extends BaseOptions {
   theme?: BarTheme
   ratio?: number
 }
 
 /** @public
- * A progress bar
+ * A progress bar.
+ * @property ratio the completion progress, clamped to [0, 1]
+ * @property theme the theme to apply
  */
 export class Bar extends Base {
   public constructor (options: BarOptions = {}) {
@@ -58,7 +71,10 @@ export class Bar extends Base {
     }
   }
 
-  /** Bar rendering theme */
+  /**
+   * Theme to use.
+   * @see BarTheme
+   */
   public get theme (): BarTheme {
     return this.proxy.theme as BarTheme || themeDefault
   }
@@ -66,7 +82,9 @@ export class Bar extends Base {
     this.proxy.theme = theme
   }
 
-  /** Completion ratio, range from 0 to 1 */
+  /**
+   * The completion ratio, clamped to range from 0 to 1
+   */
   public get ratio (): number {
     return this.proxy.ratio as number || 0
   }
@@ -74,7 +92,9 @@ export class Bar extends Base {
     this.proxy.ratio = clamp(value, 0, 1)
   }
 
-  /** Turn data to display string */
+  /** @internal
+   * Turn data to display string.
+   */
   public static renderBar (symbols: string[], ratio: number, width: number): string[] {
     const stage = symbols.length - 1
     const count = Math.floor(width * stage * ratio)
