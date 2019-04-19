@@ -34,6 +34,11 @@ export type SpaceOptions = BaseOptions
  * going to use this element.
  *
  * If you want a fixed space that will always render, use `Static` instead.
+ *
+ * Recommended properties:
+ * - `minWidth`
+ * - `maxWidth`
+ * - `flex`
  */
 export class Space extends Base {
   public constructor (options: BaseOptions | number = 1) {

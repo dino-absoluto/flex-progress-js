@@ -52,6 +52,10 @@ export interface TextOptions extends BaseOptions {
 
 /** @public
  * A text element.
+ * Recommended properties:
+ * - `flex` make it stretch
+ * - `text` show this
+ * - `align` make it center, left or right
  */
 export class Text extends Base {
   public constructor (options: TextOptions | string = '') {
