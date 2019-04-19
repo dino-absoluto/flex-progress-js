@@ -25,6 +25,11 @@ import stringWidth from './optional/string-width'
  * A static element, rendered content will never change.
  * This element implements `ChildElement` interface.
  * All calculation is forgone. The rendered result is always the same.
+ *
+ * Static accept a `string` or `number` as its value, which as the same meaning
+ * as `FlexChild`.
+ * Optionally, you can provide a visual width of this string. This is
+ * useful when you're using Escape code.
  */
 export class Static implements ChildElement {
   public parent?: ParentElement
