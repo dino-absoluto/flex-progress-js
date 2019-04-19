@@ -29,48 +29,109 @@ export const SYNCING_INTERVAL = 40
 
 /** @public Describe a flex-progress element */
 export interface Element {
-  /** Fixed width element */
+  /**
+   * Fixed width element. This is substantially the same as setting
+   * `minWidth` and `maxWidth` to the same value
+   */
   width?: number
-  /** Mimimum width */
+  /**
+   * Mimimum width. This element should not be shorter than this.
+   */
   minWidth?: number
-  /** Maximum width */
+  /**
+   * Maximum width. This element should not be longer than this.
+   */
   maxWidth?: number
-  /** Flexing factor, set both grow and shrink */
+  /**
+   * Flexing factor, set both grow and shrink.
+   * Value should be >= 0 and <= `maxWidth`.
+   */
   flex: number
-  /** Grow factor */
+  /** Grow factor. */
   flexGrow: number
-  /** Shrink factor */
+  /** Shrink factor. */
   flexShrink: number
-  /** The active state of the element */
+  /**
+   * The active state of the element.
+   * Setting this to false stop the element from rendering.
+   */
   enabled: boolean
-  /** Calculate uninhibited width */
+  /**
+   * Calculate the uninhibited width of this element.
+   *
+   * This function will return the desired width if there's no restriction
+   * to its length.
+   *
+   * If there's no desired width, or if it can grow to infinity if necessary,
+   * it returns `minWidth`.
+   */
   calculateWidth (): number
-  /** Render item with max-width */
+  /**
+   * Render item with `maxWidth`.
+   * The visual length of the returned string will not exceed maxWidth.
+   */
   render (maxWidth?: number): string
 }
 
-/** @public Describe a child element */
+/** @public
+ * Describe a child element.
+ * ChildElement is meant to be added as sub-element.
+ */
 export interface ChildElement extends Element {
   parent?: ParentElement
 }
 
-/** @public */
+/** @public
+ * Describe a value that can be use in place of ChildElement.
+ * - a `string` will be converted to a text element.
+ * - a `number` will be converted to a empty spaces equaling its value.
+ */
 export type FlexChild = string | number | ChildElement
 
-/** @public Describe a parent element */
+/** @public
+ * Describe a parent element.
+ * A parent element contains ChildElement and render them together.
+ */
 export interface ParentElement extends Element {
-  /** Array of child elements */
+  /** Array of child elements. */
   children: ChildElement[]
-  /** Schedule a callback for next frame */
+  /**
+   * Schedule a callback for next frame.
+   * The scheduled function will be called before next frame is rendered.
+   *
+   * The callback function receive a number representing that frame.
+   * This number is usually equal to the previous value + 1.
+   * Since all callbacks before rendering will be called with the same
+   * value, you can use it as hint to synchronize animation.
+   */
   nextFrame (cb: (frame: number) => void): boolean
-  /** Notify this element that its children have been updated */
-  notify (child: ChildElement, before: unknown, patch: unknown): void
-  /** Add item */
+  /**
+   * Notify this element that it should be updated.
+   * This function schedule an update.
+   * This feature has not been completed yet and should not be relied upon.
+   */
+  notify (): void
+  /**
+   * Add a sub element.
+   * @param item element to be added
+   * @param atIndex the position to be added, zero-based, at the end if not specified
+   */
   add (item: FlexChild, atIndex?: number): void
-  /** Remove item */
-  remove (item: ChildElement): void
-  /** Add items at the end */
+  /**
+   * Remove a sub element.
+   * @param item element to be removed
+   * @returns the removed element, undefined if not found.
+   */
+  remove (item: ChildElement): ChildElement | undefined
+  /**
+   * Add items at the end
+   * This is the same as `add` but without `atIndex` and many elements
+   * can be added instead.
+   * @param {...FlexChild[]} items elements to be added.
+   */
   append (...items: FlexChild[]): void
-  /** Remove all items */
+  /**
+   * Remove all sub-elements.
+   */
   clear (): void
 }
