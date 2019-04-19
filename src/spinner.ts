@@ -88,8 +88,8 @@ export interface SpinnerOptions extends BaseOptions {
 
 /** @public
  * Busy Spinner.
- * @property theme theme used to render
- * @property frameOffset the offset value to be added
+ * Recommended properties:
+ * - `theme` theme used to render
  */
 export class Spinner extends Base {
   public constructor (options: SpinnerOptions = {}) {
@@ -130,7 +130,7 @@ export class Spinner extends Base {
 
   /**
    * Tick the element internal clock.
-   * @param interval the passage of time, in `ms`
+   * @param interval - the passage of time, in `ms`
    */
   public tick (interval: number = SYNCING_INTERVAL): void {
     const theme = this.theme as SpinnerThemeSized

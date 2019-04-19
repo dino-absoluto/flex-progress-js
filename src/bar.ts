@@ -54,8 +54,9 @@ export interface BarOptions extends BaseOptions {
 
 /** @public
  * A progress bar.
- * @property ratio the completion progress, clamped to [0, 1]
- * @property theme the theme to apply
+ * Recommended properties:
+ * - `ratio` the completion progress, clamped to [0, 1]
+ * - `theme` the theme to apply
  */
 export class Bar extends Base {
   public constructor (options: BarOptions = {}) {
@@ -73,7 +74,7 @@ export class Bar extends Base {
 
   /**
    * Theme to use.
-   * @see BarTheme
+   * See `BarTheme` for the details.
    */
   public get theme (): BarTheme {
     return this.proxy.theme as BarTheme || themeDefault
@@ -83,7 +84,7 @@ export class Bar extends Base {
   }
 
   /**
-   * The completion ratio, clamped to range from 0 to 1
+   * The completion ratio, clamped to range from 0 to 1.
    */
   public get ratio (): number {
     return this.proxy.ratio as number || 0

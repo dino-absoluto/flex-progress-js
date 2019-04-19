@@ -201,7 +201,7 @@ export class Output extends Group {
 
   /**
    * Remove all sub-elements as well as clear the display.
-   * @param clearLine whether or not to clear the display, default to `true`
+   * @param clearLine - whether or not to clear the display, default to `true`
    */
   public clear (clearLine = true): void {
     super.clear()

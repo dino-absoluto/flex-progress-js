@@ -27,7 +27,9 @@
 /** Control the rendering synchronization rate */
 export const SYNCING_INTERVAL = 40
 
-/** @public Describe a flex-progress element */
+/** @public
+ * Describe a flex-progress element.
+ */
 export interface Element {
   /**
    * Fixed width element. This is substantially the same as setting
@@ -44,7 +46,7 @@ export interface Element {
   maxWidth?: number
   /**
    * Flexing factor, set both grow and shrink.
-   * Value should be >= 0 and <= `maxWidth`.
+   * Value should be greater than 0 and less than `maxWidth`.
    */
   flex: number
   /** Grow factor. */
@@ -69,6 +71,7 @@ export interface Element {
   /**
    * Render item with `maxWidth`.
    * The visual length of the returned string will not exceed maxWidth.
+   * @param maxWidth - maximum allowed width, undefined for unlimited
    */
   render (maxWidth?: number): string
 }
@@ -103,6 +106,9 @@ export interface ParentElement extends Element {
    * This number is usually equal to the previous value + 1.
    * Since all callbacks before rendering will be called with the same
    * value, you can use it as hint to synchronize animation.
+   *
+   * @param frame - callback function
+   * @returns `true` if the callback has been scheduled, false otherwise
    */
   nextFrame (cb: (frame: number) => void): boolean
   /**
@@ -113,13 +119,13 @@ export interface ParentElement extends Element {
   notify (): void
   /**
    * Add a sub element.
-   * @param item element to be added
-   * @param atIndex the position to be added, zero-based, at the end if not specified
+   * @param item - element to be added
+   * @param atIndex - the position to be added, zero-based, at the end if not specified
    */
   add (item: FlexChild, atIndex?: number): void
   /**
    * Remove a sub element.
-   * @param item element to be removed
+   * @param item - element to be removed
    * @returns the removed element, undefined if not found.
    */
   remove (item: ChildElement): ChildElement | undefined
@@ -127,7 +133,7 @@ export interface ParentElement extends Element {
    * Add items at the end
    * This is the same as `add` but without `atIndex` and many elements
    * can be added instead.
-   * @param {...FlexChild[]} items elements to be added.
+   * @param items - elements to be added.
    */
   append (...items: FlexChild[]): void
   /**
