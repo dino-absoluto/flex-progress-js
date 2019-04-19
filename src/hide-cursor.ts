@@ -27,15 +27,19 @@ import { Output, OutputStream } from './output'
 // █▓▒░▒▓█
 
 /** @public
- * Hide console cursor, this can only work when added to an Output stream.
+ * Hide console cursor, this only works when added to `Output` element.
+ * When added, this will emit the Escape sequence to hide the cursor.
+ * The Escape sequence to show the cursor will be emitted when it's removed.
  */
 export class HideCursor extends Base {
-  /** HideCursor doesn't accept any options */
+  /** HideCursor doesn't accept any options. */
   public constructor () {
     super(undefined)
   }
 
-  /** Set cursor visible state */
+  /** @internal
+   * Set cursor visible state.
+   */
   public static setCursor (stream: OutputStream, visible: boolean): void {
     if (!stream.isTTY) {
       return
