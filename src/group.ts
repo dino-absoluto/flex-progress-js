@@ -23,16 +23,12 @@ import { Static } from './static'
 import { flex } from './utils/flex'
 
 /* code */
-// █████▒░░░░░░░░░
-// ██████▓░░░░░░░░
-// █████████████▓░
-// █▓▒░▒▓█
-
 /** @public */
 export type GroupOptions = BaseOptions
 
 /** @public
- * A group of elements
+ * A group of elements.
+ * `Group` handle how elements are rendered together.
  */
 export class Group
   extends Base

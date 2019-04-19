@@ -118,19 +118,19 @@ export interface ParentElement extends Element {
    */
   notify (): void
   /**
-   * Add a sub element.
+   * Add a sub-element.
    * @param item - element to be added
    * @param atIndex - the position to be added, zero-based, at the end if not specified
    */
   add (item: FlexChild, atIndex?: number): void
   /**
-   * Remove a sub element.
+   * Remove a sub-element.
    * @param item - element to be removed
    * @returns the removed element, undefined if not found.
    */
   remove (item: ChildElement): ChildElement | undefined
   /**
-   * Add items at the end
+   * Add elements at the end
    * This is the same as `add` but without `atIndex` and many elements
    * can be added instead.
    * @param items - elements to be added.
