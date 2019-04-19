@@ -180,12 +180,10 @@ export class Spinner extends Base {
     }
   }
 
-  /** @internal */
   protected handleCalculateWidth (): number {
     return (this.theme as SpinnerThemeSized).width
   }
 
-  /** @internal */
   protected handleRender (maxWidth?: number): string {
     const { frame, frameOffset, parent } = this
     const theme = this.theme as SpinnerThemeSized

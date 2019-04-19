@@ -114,12 +114,10 @@ export class Text extends Base {
    */
   public get length (): number { return stringWidth(this.text) }
 
-  /** @internal */
   protected handleCalculateWidth (): number {
     return clamp(this.length, this.minWidth, this.maxWidth)
   }
 
-  /** @internal */
   protected handleRender (maxWidth?: number): string {
     let { text } = this
     const growable = !!(maxWidth && this.flexGrow)

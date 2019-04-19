@@ -45,13 +45,11 @@ export class Group
     }, options))
   }
 
-  /** @internal */
   protected handleCalculateWidth (): number {
     return this.children.reduce(
       (acc, child): number => acc + child.calculateWidth(), 0)
   }
 
-  /** @internal */
   protected handleRender (maxWidth?: number): string | string[] {
     if (maxWidth == null) {
       return this.children.map((item): string => item.render())

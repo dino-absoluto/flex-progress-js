@@ -67,12 +67,10 @@ export class HideCursor extends Base {
     }
   }
 
-  /** @internal */
   protected handleCalculateWidth (): 0 {
     return 0
   }
 
-  /** @internal */
   protected handleRender (): '' {
     return ''
   }

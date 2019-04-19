@@ -43,12 +43,10 @@ export class Space extends Base {
     }
   }
 
-  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
-  /** @internal */
   protected handleRender (maxWidth?: number): string {
     const growable = !!(maxWidth && this.flexGrow)
     const shrinkable = !!this.flexShrink

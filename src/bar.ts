@@ -108,12 +108,10 @@ export class Bar extends Base {
     ]
   }
 
-  /** @internal */
   protected handleCalculateWidth (): number {
     return this.minWidth
   }
 
-  /** @internal */
   protected handleRender (maxWidth?: number): string | string[] {
     let { ratio } = this
     const growable = !!(maxWidth && this.flexGrow)
