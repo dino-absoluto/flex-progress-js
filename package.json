@@ -1,6 +1,6 @@
 {
   "name": "@dinoabsoluto/flex-progress",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Progress indicator for Node.js",
   "main": "lib/lib",
   "typings": "dist/flex-progress-beta.d.ts",
