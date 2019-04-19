@@ -110,7 +110,13 @@ export interface BaseOptions {
   postProcess?: PostProcessFn
 }
 
-/** @public Base class for element */
+/**
+ * @public Base class for element.
+ *
+ * This implements almost all functionality for elements except rendering.
+ * You need to implement `handleCalculateWidth()` and `handleRender()`
+ * when subclassing this class.
+ */
 export abstract class Base
   extends AbstractElement
   implements ChildElement {
@@ -196,9 +202,10 @@ export abstract class Base
    * Handle flush event
    */
   protected handleFlush (data: AbstractData): void {
+    void (data)
     const { parent } = this
     if (parent) {
-      parent.notify(this, this.data, data)
+      parent.notify()
     }
     // this.outdated = true
   }
@@ -259,18 +266,26 @@ export abstract class Base
     this.proxy.enabled = value
   }
 
-  /** @internal */
+  /** @public
+   * This function should return the desired width of this element.
+   */
   protected abstract handleCalculateWidth (): number
-  /** @internal */
+  /** @public
+   * This function should return the rendered text of this element.
+   */
   protected abstract handleRender (maxWidth?: number): string | string[]
 
-  /** @internal */
+  /** @internal
+   * This function will be called before rendering.
+   */
   protected beforeRender (_maxWidth?: number): boolean {
     void (_maxWidth)
     return this.enabled
   }
 
-  /** @internal */
+  /** @internal
+   * This function will be called after rendered.
+   */
   protected rendered (texts: string[]): string {
     const { postProcess } = this
     if (postProcess) {
