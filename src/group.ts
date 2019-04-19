@@ -141,7 +141,7 @@ export class Group
   public notify (): void {
     const { parent } = this
     if (parent) {
-      parent.notify(this, this.data, {})
+      parent.notify()
     }
   }
 }
