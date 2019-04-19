@@ -29,7 +29,11 @@ import { Base, BaseOptions } from './base'
 export type SpaceOptions = BaseOptions
 
 /** @public
- * Empty space element
+ * Empty space element.
+ * You should specify `minWidth`, `maxWidth` and `flex` if you're
+ * going to use this element.
+ *
+ * If you want a fixed space that will always render, use `Static` instead.
  */
 export class Space extends Base {
   public constructor (options: BaseOptions | number = 1) {
