@@ -22,7 +22,9 @@ import stringWidth from './optional/string-width'
 /* exports */
 
 /** @public
- * A static element, rendered content will never change
+ * A static element, rendered content will never change.
+ * This element implements `ChildElement` interface.
+ * All calculation is forgone. The rendered result is always the same.
  */
 export class Static implements ChildElement {
   public parent?: ParentElement
