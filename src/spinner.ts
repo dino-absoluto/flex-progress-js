@@ -27,7 +27,9 @@ import stringWidth from './optional/string-width'
 // █████████████▓░
 // █▓▒░▒▓█
 
-/** @public Describe Spinner theme */
+/** @public
+ * Describe Spinner theme, this theme is compatible with `cli-spinners` package.
+ */
 export interface SpinnerTheme {
   frames: string[]
   interval: number
@@ -69,14 +71,25 @@ export const themeLine = {
   ]
 }
 
-/** @public Describe options to class Spinner constructor() */
+/** @public
+ * Describe options to Spinner constructor()
+ */
 export interface SpinnerOptions extends BaseOptions {
+  /**
+   * Theme to use.
+   */
   theme?: SpinnerTheme
+  /**
+   * By default, all spinners' animation is synced. Use this to offset
+   * its syncing value.
+   */
   frameOffset?: number
 }
 
 /** @public
- * Busy Spinner
+ * Busy Spinner.
+ * @property theme theme used to render
+ * @property frameOffset the offset value to be added
  */
 export class Spinner extends Base {
   public constructor (options: SpinnerOptions = {}) {
@@ -89,16 +102,25 @@ export class Spinner extends Base {
     }
   }
 
+  /**
+   * Internal clock.
+   */
   public get time (): number { return this.proxy.time as number || 0 }
   public set time (time: number) {
     this.proxy.time = time
   }
 
+  /**
+   * The frame this element is going to be rendered at.
+   */
   public get frame (): number { return this.proxy.frame as number || 0 }
   public set frame (frame: number) {
     this.proxy.frame = frame
   }
 
+  /**
+   * The offset added to the calculated frame.
+   */
   public get frameOffset (): number {
     return this.proxy.frameOffset as number || 0
   }
@@ -106,6 +128,10 @@ export class Spinner extends Base {
     this.proxy.frameOffset = offset
   }
 
+  /**
+   * Tick the element internal clock.
+   * @param interval the passage of time, in `ms`
+   */
   public tick (interval: number = SYNCING_INTERVAL): void {
     const theme = this.theme as SpinnerThemeSized
     const time = (this.time >= 0 ? this.time : 0) +
@@ -116,6 +142,9 @@ export class Spinner extends Base {
         Math.round((theme.interval / SYNCING_INTERVAL)))
   }
 
+  /**
+   * Should Spinner automatically tick according to time passage?
+   */
   public get autoTicking (): boolean {
     const auto = this.proxy.autoTicking
     return this.enabled &&
@@ -125,7 +154,9 @@ export class Spinner extends Base {
     this.proxy.autoTicking = auto
   }
 
-  /** Style to display spinner as */
+  /**
+   * Theme to use.
+   */
   public get theme (): SpinnerTheme {
     return this.proxy.theme as SpinnerTheme || themeDefault
   }
