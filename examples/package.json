@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "private": true,
   "devDependencies": {
-    "@dinoabsoluto/flex-progress": "^2.2.1",
+    "@dinoabsoluto/flex-progress": "^2.2.2",
     "@types/lodash": "^4.14.123",
     "chalk": "^2.4.2",
     "lodash": "^4.17.11"
