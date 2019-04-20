@@ -79,4 +79,18 @@ describe('Text', (): void => {
       expect(t.render(8)).toBe('')
     }
   })
+  test('unicode', () => {
+    const sample = 'A\uD835\uDC68'
+    expect([...sample]).toMatchObject(['A', '\uD835\uDC68'])
+    expect(sample.split('')).toMatchObject(['A', '\uD835', '\uDC68'])
+  })
+  test('length', () => {
+    const t = new Text({ text: '最強最強', flex: { shrink: 1 } })
+    expect(t.length).toBe(8)
+    expect([...'最強最強']).toMatchObject(['最', '強', '最', '強'])
+    expect('最強最強'.split('')).toMatchObject(['最', '強', '最', '強'])
+    expect(t.render(5)).toBe('最強…')
+    expect(t.render(4)).toBe('最… ')
+    expect(t.render(3)).toBe('最…')
+  })
 })

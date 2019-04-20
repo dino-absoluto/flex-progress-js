@@ -20,6 +20,7 @@
 /* imports */
 import { Text } from '../text'
 import { Group } from '../group'
+import stringWidth from 'string-width'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -80,5 +81,20 @@ describe('Group', (): void => {
     expect(mockFn.mock.calls.length).toBe(1)
     group.notify()
     expect(mockNotify.mock.calls.length).toBe(1)
+  })
+  test('sub group', () => {
+    const gp = new Group()
+    const g1 = new Group()
+    gp.append('Hello!')
+    gp.append(g1)
+    g1.append(new Text({
+      text: '最強'.repeat(20),
+      flex: {
+        shrink: 1
+      }
+    }))
+    let t = gp.render(10)
+    expect(stringWidth(t)).toBe(10)
+    expect(t).toBe('Hello!最… ')
   })
 })

@@ -19,6 +19,7 @@
 /* imports */
 import { Base, BaseOptions } from './base'
 import stringWidth from './optional/string-width'
+import truncate from './utils/truncate'
 import clamp = require('lodash/clamp')
 import toString = require('lodash/toString')
 
@@ -154,10 +155,6 @@ export class Text extends Base {
   /** @internal Shrink text to width */
   private shrink (width: number): string {
     const { more } = this
-    const length = stringWidth(more)
-    if (width <= length) {
-      return ' '.repeat(width)
-    }
-    return this.text.substr(0, width - stringWidth(more)) + more
+    return truncate(this.text, width, { more, pad: true })
   }
 }
