@@ -26,6 +26,7 @@ const FlexProgress = require('@dinoabsoluto/flex-progress')
 const c = require('kleur')
 
 // First, create an `Output`.
+// This controls what appears onscreen.
 const out = new FlexProgress.Output()
 
 // Next, create a progress `Bar`.
@@ -48,7 +49,7 @@ out.append(
 
   // Another space and some text, basically, you can add space as text.
   // e.g. ' Hello World! '
-  // But here we're using numbers to show what it does.
+  // But, we're using numbers to show what it does.
   1, 'Hello World!',
 
   // Well, 1 spinner is a little too few I suppose, here's another, with color.
