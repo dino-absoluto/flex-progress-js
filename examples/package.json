@@ -15,5 +15,7 @@
     "chalk": "^2.4.2",
     "lodash": "^4.17.11"
   },
-  "dependencies": {}
+  "dependencies": {
+    "kleur": "^3.0.3"
+  }
 }
