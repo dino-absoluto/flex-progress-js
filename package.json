@@ -1,6 +1,6 @@
 {
   "name": "@dinoabsoluto/flex-progress",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Progress indicator for Node.js",
   "main": "lib/lib",
   "typings": "dist/flex-progress-beta.d.ts",
@@ -41,7 +41,7 @@
     "@microsoft/api-extractor": "^7.1.0",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.123",
-    "@types/node": "^11.13.5",
+    "@types/node": "^11.13.6",
     "@types/webpack-bundle-analyzer": "^2.13.1",
     "@types/webpack-node-externals": "^1.6.3",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
