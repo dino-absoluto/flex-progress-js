@@ -33,8 +33,7 @@ export const truncate =
   if (moreLength > maxLength) {
     return ' '.repeat(maxLength)
   }
-  const fragments = [...text]
-  for (const f of fragments) {
+  for (const f of text) {
     const width = stringWidth(f)
     if (length + width + moreLength > maxLength) {
       length += moreLength
