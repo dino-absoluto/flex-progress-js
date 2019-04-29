@@ -17,8 +17,8 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from './shared'
-import stringWidth from './optional/string-width'
+import { ChildElement, ParentElement } from '../shared'
+import stringWidth from '../optional/string-width'
 /* exports */
 
 /** @public

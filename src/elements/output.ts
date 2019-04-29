@@ -22,8 +22,8 @@ import {
   clearLine
   , clearScreenDown
   , cursorTo } from 'readline'
-import stringWidth from './optional/string-width'
-import { SYNCING_INTERVAL } from './shared'
+import stringWidth from '../optional/string-width'
+import { SYNCING_INTERVAL } from '../shared'
 import once = require('lodash/once')
 
 /* code */

@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from './shared'
+import { ChildElement, ParentElement } from '../shared'
 import once = require('lodash/once')
 import clamp = require('lodash/clamp')
 import castArray = require('lodash/castArray')

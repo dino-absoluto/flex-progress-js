@@ -17,10 +17,10 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement, FlexChild } from './shared'
+import { ChildElement, ParentElement, FlexChild } from '../shared'
 import { Base, BaseOptions } from './base'
 import { Static } from './static'
-import { flex } from './utils/flex'
+import { flex } from '../utils/flex'
 
 /* code */
 /** @public */

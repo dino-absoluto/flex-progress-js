@@ -18,8 +18,8 @@
  */
 /* imports */
 import { Base, BaseOptions } from './base'
-import stringWidth from './optional/string-width'
-import truncate from './utils/truncate'
+import stringWidth from '../optional/string-width'
+import truncate from '../utils/truncate'
 import clamp = require('lodash/clamp')
 import toString = require('lodash/toString')
 
