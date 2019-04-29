@@ -21,7 +21,7 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const merge = require('lodash/merge')
-const webpack = require('webpack')
+// const webpack = require('webpack')
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
@@ -75,6 +75,13 @@ const setupAnalyzeBundle = (env) => env.analyzeBundle ? ({
   ]
 }) : {}
 
+const setupWatch = (env) => env.watch ? ({
+  watch: true,
+  watchOptions: {
+    ignored: [ 'node_modules' ]
+  }
+}) : {}
+
 const configLib = (env) => ({
   target: 'node',
   entry: './src/index.ts',
@@ -92,6 +99,7 @@ module.exports = (env = {}) => {
     , setupTypescript(env)
     , setupProductionMode(env)
     , setupAnalyzeBundle(env)
+    , setupWatch(env)
   )
   return lib
 }
