@@ -17,6 +17,7 @@
  *
  */
 /* imports */
+import { StringLike } from './utils/data-string'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -73,7 +74,7 @@ export interface Element {
    * The visual length of the returned string will not exceed maxWidth.
    * @param maxWidth - maximum allowed width, undefined for unlimited
    */
-  render (maxWidth?: number): string
+  render (maxWidth?: number): StringLike
 }
 
 /** @public

@@ -18,22 +18,28 @@
  */
 /* imports */
 
+export interface StringLike {
+  length: number
+  toString (): string
+  concat (...args: StringLike[]): StringLike
+}
+
 /* code */
-export class TerminalString {
+export class DataString implements StringLike {
   private text: string
-  private width: number
+  public length: number
   public constructor (text: string, width: number) {
     this.text = text
-    this.width = width
+    this.length = width
   }
 
-  public concat (...args: TerminalString[]): TerminalString {
-    let { text, width } = this
+  public concat (...args: DataString[]): DataString {
+    let { text, length } = this
     for (const s of args) {
       text += s.text
-      width += s.width
+      length += s.length
     }
-    return new TerminalString(text, width)
+    return new DataString(text, length)
   }
 
   public toString (): string {
@@ -41,6 +47,6 @@ export class TerminalString {
   }
 
   public [Symbol.toPrimitive] (): string {
-    return this.toString()
+    return this.text
   }
 }
