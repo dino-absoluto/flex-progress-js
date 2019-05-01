@@ -33,7 +33,7 @@ export class DataString implements StringLike {
     this.length = width
   }
 
-  public concat (...args: DataString[]): DataString {
+  public concat (...args: StringLike[]): DataString {
     let { text, length } = this
     for (const s of args) {
       text += s
