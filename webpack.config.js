@@ -17,13 +17,10 @@
  *
  */
 /* imports */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const merge = require('lodash/merge')
 // const webpack = require('webpack')
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const setupTypescript = (env) => ({
   devtool: 'source-map',
@@ -69,11 +66,22 @@ const setupProductionMode = (env) => !env.prod ? ({
   mode: 'production'
 })
 
-const setupAnalyzeBundle = (env) => env.analyzeBundle ? ({
-  plugins: [
-    new BundleAnalyzerPlugin()
-  ]
-}) : {}
+const setupAnalyzeBundle = (env) => {
+  if (!env.analyzeBundle) {
+    return {}
+  }
+  try {
+    const BundleAnalyzerPlugin =
+    require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+    return {
+      plugins: [
+        new BundleAnalyzerPlugin()
+      ]
+    }
+  } catch {
+    return {}
+  }
+}
 
 const setupWatch = (env) => env.watch ? ({
   watch: true,
