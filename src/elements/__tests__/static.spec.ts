@@ -25,9 +25,9 @@ describe('Static', (): void => {
   test('constructor with string', async (): Promise<void> => {
     const TEXT = 'abc'
     const i = new Static(TEXT)
-    expect(i.render(0)).toBe(TEXT)
-    expect(i.render(1)).toBe(TEXT)
-    expect(i.render(2)).toBe(TEXT)
+    expect(i.render(0).toString()).toBe(TEXT)
+    expect(i.render(1).toString()).toBe(TEXT)
+    expect(i.render(2).toString()).toBe(TEXT)
     expect(i.enabled).toBe(true)
     expect((): void => { (i as { enabled: boolean }).enabled = false }).toThrow()
     expect((): void => { i.flex = 1 }).toThrow()
