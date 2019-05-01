@@ -36,7 +36,7 @@ export class DataString implements StringLike {
   public concat (...args: DataString[]): DataString {
     let { text, length } = this
     for (const s of args) {
-      text += s.text
+      text += s
       length += s.length
     }
     return new DataString(text, length)
