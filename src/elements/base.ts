@@ -292,9 +292,9 @@ export abstract class Base
     if (postProcess) {
       texts = castArray(postProcess(...texts.map((i): string => i.toString())))
     }
-    const first = texts.shift()
+    const first = texts[0]
     if (first != null) {
-      return first.concat(...texts)
+      return first.concat(...texts.slice(1))
     } else {
       return ''
     }
