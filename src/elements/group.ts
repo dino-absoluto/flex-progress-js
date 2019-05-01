@@ -21,7 +21,7 @@ import { ChildElement, ParentElement, FlexChild } from '../shared'
 import { Base, BaseOptions } from './base'
 import { Static } from './static'
 import { flex } from '../utils/flex'
-import { StringLike } from '../utils/data-string'
+import { StringLike, DataString } from '../utils/data-string'
 
 /* code */
 /** @public */
@@ -53,9 +53,10 @@ export class Group
     }
     const states = flex(this.children, maxWidth)
     const results: StringLike[] & { leftOver?: number } =
-    states.map((state): StringLike => {
-      return state.item.render(state.width)
-    })
+      states.map((state): StringLike => {
+        return state.item.render(state.width)
+      })
+    results.unshift(new DataString('', 0))
     results.leftOver = states.leftOver
     return results
   }
