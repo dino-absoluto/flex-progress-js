@@ -122,7 +122,7 @@ export class TargetTTY implements Target {
       clearScreenDown(stream)
     }
     stream.write(text.toString())
-    if (leftOver) {
+    if (leftOver || text.length < columns) {
       clearLine(stream, 1)
     }
     cursorTo(stream, 0)
