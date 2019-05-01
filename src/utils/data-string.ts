@@ -18,13 +18,17 @@
  */
 /* imports */
 
+/* code */
+/** @public
+ * Describe a string-like object
+ */
 export interface StringLike {
   length: number
   toString (): string
   concat (...args: StringLike[]): StringLike
 }
 
-/* code */
+/** @internal DataString class */
 export class DataString implements StringLike {
   private text: string
   public length: number

@@ -20,10 +20,7 @@
 import { StringLike } from './utils/data-string'
 
 /* code */
-// █████▒░░░░░░░░░
-// ██████▓░░░░░░░░
-// █████████████▓░
-// █▓▒░▒▓█
+export { StringLike }
 
 /** Control the rendering synchronization rate */
 export const SYNCING_INTERVAL = 40

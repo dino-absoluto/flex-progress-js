@@ -27,6 +27,7 @@ export {
   PostProcessFn
 } from './elements/base'
 export {
+  StringLike,
   Element,
   ChildElement,
   ParentElement,

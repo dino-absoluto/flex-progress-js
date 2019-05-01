@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from '../shared'
+import { ChildElement, ParentElement, StringLike } from '../shared'
 import { DataString } from '../utils/data-string'
 import stringWidth from '../optional/string-width'
 /* exports */
@@ -34,7 +34,7 @@ import stringWidth from '../optional/string-width'
  */
 export class Static implements ChildElement {
   public parent?: ParentElement
-  public readonly text: DataString
+  public readonly text: StringLike
   public constructor (text: string | number, width?: number) {
     if (typeof text === 'number') {
       width = text
@@ -46,7 +46,7 @@ export class Static implements ChildElement {
     this.text = new DataString(text, width)
   }
 
-  public render (_maxWidth?: number): DataString {
+  public render (_maxWidth?: number): StringLike {
     void (_maxWidth)
     return this.text
   }
