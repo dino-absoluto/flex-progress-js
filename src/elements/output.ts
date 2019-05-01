@@ -23,6 +23,7 @@ import {
   , clearScreenDown
   , cursorTo } from 'readline'
 import stringWidth from '../optional/string-width'
+import { StringLike } from '../utils/data-string'
 import { SYNCING_INTERVAL } from '../shared'
 import once = require('lodash/once')
 
@@ -58,7 +59,7 @@ type FrameCB = (frame: number) => void
 interface Target {
   columns: number
   clearLine (): void
-  update (text: string, leftOver?: number): void
+  update (text: StringLike, leftOver?: number): void
 }
 
 /** @internal */
@@ -106,10 +107,10 @@ export class TargetTTY implements Target {
     return this.stream.columns || 40
   }
 
-  public update (text: string, leftOver?: number): void {
+  public update (text: StringLike, leftOver?: number): void {
     const { stream, columns, pLastColumns } = this
     {
-      const width = stringWidth(text)
+      const width = stringWidth(text.toString())
       if (width !== this.pLastWidth) {
         this.clearLine()
       }
@@ -120,7 +121,7 @@ export class TargetTTY implements Target {
       this.clearLine()
       clearScreenDown(stream)
     }
-    stream.write(text)
+    stream.write(text.toString())
     if (leftOver) {
       clearLine(stream, 1)
     }
@@ -143,7 +144,7 @@ export class Output extends Group {
   /** @internal */
   private pTarget: Target
   /** @internal */
-  private pLastText = ''
+  private pLastText: StringLike = ''
   /** @internal */
   private pIsOutdated = false
   /** @internal */
@@ -246,7 +247,7 @@ export class Output extends Group {
   private pScheduleFrame = once(this.pProcessFrame)
 
   /** @internal */
-  protected rendered (texts: string[] & { leftOver?: number }): string {
+  protected rendered (texts: string[] & { leftOver?: number }): StringLike {
     this.pLeftOver = texts.leftOver
     return super.rendered(texts)
   }

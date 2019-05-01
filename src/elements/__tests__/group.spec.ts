@@ -94,7 +94,7 @@ describe('Group', (): void => {
       }
     }))
     let t = gp.render(10)
-    expect(stringWidth(t)).toBe(10)
+    expect(stringWidth(t.toString())).toBe(10)
     expect(t).toBe('Hello!最… ')
   })
 })
