@@ -59,7 +59,7 @@ type FrameCB = (frame: number) => void
 interface Target {
   columns: number
   clearLine (): void
-  update (text: StringLike, leftOver?: number): void
+  update (text: StringLike): void
 }
 
 /** @internal */
@@ -107,7 +107,7 @@ export class TargetTTY implements Target {
     return this.stream.columns || 40
   }
 
-  public update (text: StringLike, leftOver?: number): void {
+  public update (text: StringLike): void {
     const { stream, columns, pLastColumns } = this
     {
       const width = stringWidth(text.toString())
@@ -122,7 +122,7 @@ export class TargetTTY implements Target {
       clearScreenDown(stream)
     }
     stream.write(text.toString())
-    if (leftOver || text.length < columns) {
+    if (text.length < columns) {
       clearLine(stream, 1)
     }
     cursorTo(stream, 0)
@@ -144,11 +144,10 @@ export class Output extends Group {
   /** @internal */
   private pTarget: Target
   /** @internal */
-  private pLastText: StringLike = ''
+  private pLastText: string = ''
   /** @internal */
   private pIsOutdated = false
   /** @internal */
-  private pLeftOver?: number
   public renderedCount = 0
 
   public constructor (options?: OutputOptions) {
@@ -247,20 +246,15 @@ export class Output extends Group {
   private pScheduleFrame = once(this.pProcessFrame)
 
   /** @internal */
-  protected rendered (texts: string[] & { leftOver?: number }): StringLike {
-    this.pLeftOver = texts.leftOver
-    return super.rendered(texts)
-  }
-
-  /** @internal */
   protected update (): void {
     this.renderedCount++
     const { pTarget, pLastText } = this
     const text = this.render(pTarget.columns)
-    if (pLastText === text) {
+    const cache = text.toString()
+    if (pLastText === cache) {
       return
     }
-    this.pLastText = text
-    this.pTarget.update(text, this.pLeftOver)
+    this.pLastText = cache
+    this.pTarget.update(text)
   }
 }
