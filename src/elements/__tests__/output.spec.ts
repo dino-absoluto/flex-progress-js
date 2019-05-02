@@ -18,7 +18,7 @@
  */
 /* eslint-env jest */
 /* imports */
-import { SYNCING_INTERVAL } from '../shared'
+import { SYNCING_INTERVAL } from '../../shared'
 import { Output, TargetTTY } from '../output'
 import { Spinner } from '../spinner'
 import { Writable } from 'stream'

@@ -27,7 +27,7 @@ const immediate = (): Promise<void> => {
 }
 
 describe('AbstractElement', (): void => {
-  test('simple', async (): Promise<void> => {
+  test('simple', async () => {
     interface TestI {
       a: number
       b: number
@@ -92,14 +92,16 @@ describe('AbstractElement', (): void => {
 
 describe('Base', (): void => {
   class TestBase extends Base {
+    public testWidth = 1
+    public data = [ 'abc', '#' ]
     public handleCalculateWidth (): number {
-      return 1
+      return this.testWidth
     }
     public handleRender (): string[] {
-      return ['abc', '#']
+      return this.data
     }
   }
-  test('simple', async (): Promise<void> => {
+  test('simple', async () => {
     const b = new TestBase()
     expect(b.render()).toBe('abc#')
     b.postProcess = (a, b): string => [ b, a ].join('')
@@ -109,8 +111,15 @@ describe('Base', (): void => {
     b.enabled = true
     expect(b.render()).toBe('#abc')
     expect(b.render(0)).toBe('')
+    expect(b.calculateWidth()).toBe(1)
   })
-  test('options', async (): Promise<void> => {
+  test('simple-2', async () => {
+    const b = new TestBase()
+    b.data = []
+    expect(b.render()).toBe('')
+    expect(b.calculateWidth()).toBe(1)
+  })
+  test('options', async () => {
     {
       const b = new TestBase({
         width: 10,
@@ -144,7 +153,7 @@ describe('Base', (): void => {
       expect(b.render()).toBe('#abc')
     }
   })
-  test('incorrect value', async (): Promise<void> => {
+  test('incorrect value', async () => {
     const b = new TestBase({
       width: 10
     })
@@ -162,7 +171,7 @@ describe('Base', (): void => {
     expect(b.flexGrow).toBe(0)
     expect(b.flexShrink).toBe(0)
   })
-  test('notify', async (): Promise<void> => {
+  test('notify', async () => {
     const b = new TestBase({
       width: 10
     })

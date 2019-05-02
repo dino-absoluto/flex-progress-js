@@ -17,10 +17,11 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement, FlexChild } from './shared'
+import { ChildElement, ParentElement, FlexChild } from '../shared'
 import { Base, BaseOptions } from './base'
 import { Static } from './static'
-import { flex } from './utils/flex'
+import { flex } from '../utils/flex'
+import { StringLike, DataString } from '../utils/data-string'
 
 /* code */
 /** @public */
@@ -46,15 +47,16 @@ export class Group
       (acc, child): number => acc + child.calculateWidth(), 0)
   }
 
-  protected handleRender (maxWidth?: number): string | string[] {
+  protected handleRender (maxWidth?: number): StringLike | StringLike[] {
     if (maxWidth == null) {
-      return this.children.map((item): string => item.render())
+      return this.children.map((item): StringLike => item.render())
     }
     const states = flex(this.children, maxWidth)
-    const results: string[] & { leftOver?: number } =
-    states.map((state): string => {
-      return state.item.render(state.width)
-    })
+    const results: StringLike[] & { leftOver?: number } =
+      states.map((state): StringLike => {
+        return state.item.render(state.width)
+      })
+    results.unshift(new DataString('', 0))
     results.leftOver = states.leftOver
     return results
   }

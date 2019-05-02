@@ -17,7 +17,8 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from './shared'
+import { ChildElement, ParentElement } from '../shared'
+import { StringLike } from '../utils/data-string'
 import once = require('lodash/once')
 import clamp = require('lodash/clamp')
 import castArray = require('lodash/castArray')
@@ -273,7 +274,7 @@ export abstract class Base
   /** @public
    * This function should return the rendered text of this element.
    */
-  protected abstract handleRender (maxWidth?: number): string | string[]
+  protected abstract handleRender (maxWidth?: number): StringLike | StringLike[]
 
   /** @internal
    * This function will be called before rendering.
@@ -286,12 +287,17 @@ export abstract class Base
   /** @internal
    * This function will be called after rendered.
    */
-  protected rendered (texts: string[]): string {
+  protected rendered (texts: StringLike[]): StringLike {
     const { postProcess } = this
     if (postProcess) {
-      texts = castArray(postProcess(...texts))
+      texts = castArray(postProcess(...texts.map((i): string => i.toString())))
     }
-    return texts.join('')
+    const first = texts[0]
+    if (first != null) {
+      return first.concat(...texts.slice(1))
+    } else {
+      return ''
+    }
   }
 
   public calculateWidth (): number {
@@ -303,7 +309,7 @@ export abstract class Base
       this.maxWidth)
   }
 
-  public render (maxWidth?: number): string {
+  public render (maxWidth?: number): StringLike {
     if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }

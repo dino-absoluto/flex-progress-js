@@ -18,8 +18,8 @@
  */
 /* imports */
 import { Base, BaseOptions } from './base'
-import { SYNCING_INTERVAL } from './shared'
-import stringWidth from './optional/string-width'
+import { SYNCING_INTERVAL } from '../shared'
+import stringWidth from '../optional/string-width'
 
 /* code */
 // █████▒░░░░░░░░░

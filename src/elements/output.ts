@@ -22,8 +22,9 @@ import {
   clearLine
   , clearScreenDown
   , cursorTo } from 'readline'
-import stringWidth from './optional/string-width'
-import { SYNCING_INTERVAL } from './shared'
+import stringWidth from '../optional/string-width'
+import { StringLike } from '../utils/data-string'
+import { SYNCING_INTERVAL } from '../shared'
 import once = require('lodash/once')
 
 /* code */
@@ -58,7 +59,7 @@ type FrameCB = (frame: number) => void
 interface Target {
   columns: number
   clearLine (): void
-  update (text: string, leftOver?: number): void
+  update (text: StringLike): void
 }
 
 /** @internal */
@@ -106,10 +107,10 @@ export class TargetTTY implements Target {
     return this.stream.columns || 40
   }
 
-  public update (text: string, leftOver?: number): void {
+  public update (text: StringLike): void {
     const { stream, columns, pLastColumns } = this
     {
-      const width = stringWidth(text)
+      const width = stringWidth(text.toString())
       if (width !== this.pLastWidth) {
         this.clearLine()
       }
@@ -120,8 +121,8 @@ export class TargetTTY implements Target {
       this.clearLine()
       clearScreenDown(stream)
     }
-    stream.write(text)
-    if (leftOver) {
+    stream.write(text.toString())
+    if (text.length < columns) {
       clearLine(stream, 1)
     }
     cursorTo(stream, 0)
@@ -143,11 +144,10 @@ export class Output extends Group {
   /** @internal */
   private pTarget: Target
   /** @internal */
-  private pLastText = ''
+  private pLastText: string = ''
   /** @internal */
   private pIsOutdated = false
   /** @internal */
-  private pLeftOver?: number
   public renderedCount = 0
 
   public constructor (options?: OutputOptions) {
@@ -246,20 +246,15 @@ export class Output extends Group {
   private pScheduleFrame = once(this.pProcessFrame)
 
   /** @internal */
-  protected rendered (texts: string[] & { leftOver?: number }): string {
-    this.pLeftOver = texts.leftOver
-    return super.rendered(texts)
-  }
-
-  /** @internal */
   protected update (): void {
     this.renderedCount++
     const { pTarget, pLastText } = this
     const text = this.render(pTarget.columns)
-    if (pLastText === text) {
+    const cache = text.toString()
+    if (pLastText === cache) {
       return
     }
-    this.pLastText = text
-    this.pTarget.update(text, this.pLeftOver)
+    this.pLastText = cache
+    this.pTarget.update(text)
   }
 }

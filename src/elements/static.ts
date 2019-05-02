@@ -17,8 +17,9 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from './shared'
-import stringWidth from './optional/string-width'
+import { ChildElement, ParentElement, StringLike } from '../shared'
+import { DataString } from '../utils/data-string'
+import stringWidth from '../optional/string-width'
 /* exports */
 
 /** @public
@@ -33,8 +34,7 @@ import stringWidth from './optional/string-width'
  */
 export class Static implements ChildElement {
   public parent?: ParentElement
-  public readonly text: string
-  public readonly width: number
+  public readonly text: StringLike
   public constructor (text: string | number, width?: number) {
     if (typeof text === 'number') {
       width = text
@@ -43,23 +43,22 @@ export class Static implements ChildElement {
     if (width == null) {
       width = stringWidth(text)
     }
-    this.width = width
-    this.text = text
+    this.text = new DataString(text, width)
   }
 
-  public render (_maxWidth?: number): string {
+  public render (_maxWidth?: number): StringLike {
     void (_maxWidth)
     return this.text
   }
 
   public calculateWidth (): number {
-    return this.width
+    return this.text.length
   }
   public get enabled (): true { return true }
   public get flexShrink (): 0 { return 0 }
   public get flexGrow (): 0 { return 0 }
-  public get maxWidth (): number { return this.width }
-  public get minWidth (): number { return this.width }
+  public get maxWidth (): number { return this.text.length }
+  public get minWidth (): number { return this.text.length }
   public set flex (_value: number) {
     throw new Error('static cannot set flex')
   }

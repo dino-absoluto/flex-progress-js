@@ -6,7 +6,9 @@
     "moduleResolution": "node",
     "preserveConstEnums": true,
     "sourceMap": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./built/cache/tsbuildinfo"
   },
   "include": [
     "./src/**/*.ts"
