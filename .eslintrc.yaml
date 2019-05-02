@@ -18,6 +18,8 @@ rules:
     - allowExpressions: true
       allowTypedFunctionExpressions: true
 overrides:
+  - files: [ '*.js', '*.mjs' ]
+    parser: 'espree'
   - files: [ '*.js' ]
     rules:
       '@typescript-eslint/no-var-requires': 'off'
