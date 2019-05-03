@@ -18,7 +18,7 @@
  */
 /* imports */
 import { ChildElement, ParentElement } from '../common'
-import { StringLike } from '../utils/data-string'
+import { StringLike, DataString } from '../utils/data-string'
 import once = require('lodash/once')
 import clamp = require('lodash/clamp')
 import castArray = require('lodash/castArray')
@@ -291,6 +291,9 @@ export abstract class Base
     const { postProcess } = this
     if (postProcess) {
       texts = castArray(postProcess(...texts.map((i): string => i.toString())))
+        .map((text, index) => {
+          return new DataString(text, texts[index].length)
+        })
     }
     const first = texts[0]
     if (first != null) {
