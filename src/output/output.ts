@@ -150,6 +150,8 @@ export class Output extends Group {
   /** @internal */
   private pIsOutdated = false
   /** @internal */
+  private pFrame = 0
+  /** @internal */
   public renderedCount = 0
 
   public constructor (options?: OutputOptions) {
@@ -234,7 +236,8 @@ export class Output extends Group {
   private pProcessFrame = (): void => {
     setTimeout((): void => {
       const { pNextFrameCBs } = this
-      const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
+      // const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
+      const frame = this.pFrame++
       this.pNextFrameCBs = new Set()
       this.pScheduleFrame = once(this.pProcessFrame)
       for (const cb of pNextFrameCBs) {
