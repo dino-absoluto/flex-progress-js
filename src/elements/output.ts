@@ -24,6 +24,7 @@ import {
   , cursorTo } from 'readline'
 import stringWidth from '../optional/string-width'
 import { StringLike } from '../utils/data-string'
+import { Console } from 'console'
 import { SYNCING_INTERVAL } from '../shared'
 import once = require('lodash/once')
 
@@ -137,6 +138,7 @@ export class TargetTTY implements Target {
 export class Output extends Group {
   public readonly stream: OutputStream
   public readonly isTTY: boolean = true
+  protected readonly console: Console
   /** @internal */
   private pCreatedTime = Date.now()
   /** @internal */
@@ -165,6 +167,7 @@ export class Output extends Group {
     } else {
       this.pTarget = new TargetWriteOnly(this.stream)
     }
+    this.console = new Console(this.stream)
   }
 
   /**
@@ -255,6 +258,31 @@ export class Output extends Group {
       return
     }
     this.pLastText = cache
-    this.pTarget.update(text)
+    pTarget.update(text)
+  }
+
+  /** @internal */
+  protected redraw (): void {
+    this.renderedCount++
+    const { pTarget, pLastText } = this
+    pTarget.update(pLastText)
+  }
+
+  public log (...args: unknown[]): void {
+    this.clearLine()
+    this.console.log(...args)
+    this.redraw()
+  }
+
+  public error (...args: unknown[]): void {
+    this.clearLine()
+    this.console.error(...args)
+    this.redraw()
+  }
+
+  public warn (...args: unknown[]): void {
+    this.clearLine()
+    this.console.warn(...args)
+    this.redraw()
   }
 }
