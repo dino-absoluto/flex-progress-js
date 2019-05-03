@@ -17,14 +17,15 @@
  *
  */
 /* imports */
-import { Group, GroupOptions } from './group'
+import { Group, GroupOptions } from '../components/group'
 import {
   clearLine
   , clearScreenDown
   , cursorTo } from 'readline'
 import stringWidth from '../optional/string-width'
 import { StringLike } from '../utils/data-string'
-import { SYNCING_INTERVAL } from '../shared'
+import { Console } from 'console'
+import { SYNCING_INTERVAL } from '../common'
 import once = require('lodash/once')
 
 /* code */
@@ -137,6 +138,7 @@ export class TargetTTY implements Target {
 export class Output extends Group {
   public readonly stream: OutputStream
   public readonly isTTY: boolean = true
+  protected readonly console: Console
   /** @internal */
   private pCreatedTime = Date.now()
   /** @internal */
@@ -165,6 +167,7 @@ export class Output extends Group {
     } else {
       this.pTarget = new TargetWriteOnly(this.stream)
     }
+    this.console = new Console(this.stream)
   }
 
   /**
@@ -187,9 +190,12 @@ export class Output extends Group {
     super.enabled = value
   }
 
-  public notify (): void {
+  public markDirty (): void {
     this.pIsOutdated = true
-    this.pScheduleFrame()
+    if (this.pScheduleFrame) {
+      this.pScheduleFrame()
+    }
+    super.markDirty()
   }
 
   /**
@@ -229,11 +235,11 @@ export class Output extends Group {
     setTimeout((): void => {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
+      this.pNextFrameCBs = new Set()
+      this.pScheduleFrame = once(this.pProcessFrame)
       for (const cb of pNextFrameCBs) {
         cb(frame)
       }
-      pNextFrameCBs.clear()
-      this.pScheduleFrame = once(this.pProcessFrame)
       /* Frame has to be updated after callbacks */
       if (this.pIsOutdated) {
         this.update()
@@ -255,6 +261,30 @@ export class Output extends Group {
       return
     }
     this.pLastText = cache
-    this.pTarget.update(text)
+    pTarget.update(text)
+  }
+
+  /** @internal */
+  protected redraw (): void {
+    const { pTarget, pLastText } = this
+    pTarget.update(pLastText)
+  }
+
+  public log (...args: unknown[]): void {
+    this.clearLine()
+    this.console.log(...args)
+    this.redraw()
+  }
+
+  public error (...args: unknown[]): void {
+    this.clearLine()
+    this.console.error(...args)
+    this.redraw()
+  }
+
+  public warn (...args: unknown[]): void {
+    this.clearLine()
+    this.console.warn(...args)
+    this.redraw()
   }
 }

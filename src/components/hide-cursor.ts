@@ -18,7 +18,7 @@
  */
 /* imports */
 import { Base } from './base'
-import { Output, OutputStream } from './output'
+import { Output, OutputStream } from '../output/output'
 
 /* code */
 // █████▒░░░░░░░░░

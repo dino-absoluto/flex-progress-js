@@ -8,6 +8,12 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "tsBuildInfoFile": "./built/cache/tsbuildinfo"
   },
   "include": [

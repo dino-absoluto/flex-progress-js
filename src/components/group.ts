@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement, FlexChild } from '../shared'
+import { ChildElement, ParentElement, FlexChild } from '../common'
 import { Base, BaseOptions } from './base'
 import { Static } from './static'
 import { flex } from '../utils/flex'
@@ -99,7 +99,7 @@ export class Group
       children.push(item)
       this.pItemAdded(item)
     }
-    this.notify()
+    this.markDirty()
     return item
   }
 
@@ -111,7 +111,7 @@ export class Group
     const index = children.indexOf(item)
     children.splice(index, 1)
     this.pItemRemoved(item)
-    this.notify()
+    this.markDirty()
     return item
   }
 
@@ -121,7 +121,7 @@ export class Group
       this.pItemRemoved(item)
     }
     children.length = 0
-    this.notify()
+    this.markDirty()
   }
 
   public append (...items: FlexChild[]): void {
@@ -131,13 +131,14 @@ export class Group
       children.push(child)
       this.pItemAdded(child)
     }
-    this.notify()
+    this.markDirty()
   }
 
-  public notify (): void {
+  public markDirty (): void {
+    super.markDirty()
     const { parent } = this
     if (parent) {
-      parent.notify()
+      parent.markDirty()
     }
   }
 }

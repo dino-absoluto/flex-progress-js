@@ -105,11 +105,13 @@ describe('Base', (): void => {
     const b = new TestBase()
     expect(b.render()).toBe('abc#')
     b.postProcess = (a, b): string => [ b, a ].join('')
-    expect(b.render()).toBe('#abc')
+    expect(b.render().toString()).toBe('#abc')
+    expect(b.render().length).toBe(4)
     b.enabled = false
     expect(b.render()).toBe('')
     b.enabled = true
-    expect(b.render()).toBe('#abc')
+    expect(b.render().toString()).toBe('#abc')
+    expect(b.render().length).toBe(4)
     expect(b.render(0)).toBe('')
     expect(b.calculateWidth()).toBe(1)
   })
@@ -150,7 +152,8 @@ describe('Base', (): void => {
         postProcess: (a, b): string => [ b, a ].join('')
       })
       expect(b.calculateWidth()).toBe(10)
-      expect(b.render()).toBe('#abc')
+      expect(b.render().toString()).toBe('#abc')
+      expect(b.render().length).toBe(4)
     }
   })
   test('incorrect value', async () => {
@@ -178,8 +181,8 @@ describe('Base', (): void => {
     const group = new Group()
     group.append(b)
     expect(b.parent).toBe(group)
-    const mockNotify = jest.fn(group.notify)
-    group.notify = mockNotify
+    const mockNotify = jest.fn(group.markDirty)
+    group.markDirty = mockNotify
     b.width = 15
     await immediate()
     expect(mockNotify.mock.calls.length).toBe(1)

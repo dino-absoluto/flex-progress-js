@@ -4,7 +4,7 @@
   "apiReport": {
     "enabled": false,
     "reportTempFolder": "<projectFolder>/__tmp__/apiReport/",
-    "reportFolder": "<projectFolder>/built/reports/",
+    "reportFolder": "<projectFolder>/built/reports/"
   },
   "dtsRollup": {
     "enabled": true,

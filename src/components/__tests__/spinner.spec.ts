@@ -20,7 +20,7 @@
 /* imports */
 import { Spinner, themeDefault, themeLine } from '../spinner'
 import { Group } from '../group'
-import { SYNCING_INTERVAL } from '../../shared'
+import { SYNCING_INTERVAL } from '../../common'
 
 /* code */
 // █████▒░░░░░░░░░
@@ -115,9 +115,11 @@ describe('Spinner', (): void => {
     }
     const spin = new Spinner()
     group.append(spin)
-    expect(group.render()).toBe(themeDefault.frames[0])
+    let t = group.render()
     expect(i).toBe(11)
+    expect(t).toBe(themeDefault.frames[5])
     i = 0
+    group.markDirty()
     group.render()
     expect(i).toBe(11)
     spin.autoTicking = false

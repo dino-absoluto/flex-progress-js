@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement, StringLike } from '../shared'
+import { ChildElement, ParentElement, StringLike } from '../common'
 import { DataString } from '../utils/data-string'
 import stringWidth from '../optional/string-width'
 /* exports */
@@ -54,6 +54,7 @@ export class Static implements ChildElement {
   public calculateWidth (): number {
     return this.text.length
   }
+  public markDirty (): void {}
   public get enabled (): true { return true }
   public get flexShrink (): 0 { return 0 }
   public get flexGrow (): 0 { return 0 }
