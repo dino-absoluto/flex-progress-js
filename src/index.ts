@@ -25,23 +25,23 @@ export {
   Base,
   BaseOptions,
   PostProcessFn
-} from './elements/base'
+} from './components/base'
 export {
   StringLike,
   Element,
   ChildElement,
   ParentElement,
   FlexChild
-} from './shared'
-export { Static } from './elements/static'
-export { HideCursor } from './elements/hide-cursor'
-export { Group, GroupOptions } from './elements/group'
-export { Space, SpaceOptions } from './elements/space'
-export { Text, TextAlignment, TextOptions } from './elements/text'
-export { Spinner, SpinnerOptions, SpinnerTheme } from './elements/spinner'
-export { Bar, BarOptions, BarTheme } from './elements/bar'
+} from './common'
+export { Static } from './components/static'
+export { HideCursor } from './components/hide-cursor'
+export { Group, GroupOptions } from './components/group'
+export { Space, SpaceOptions } from './components/space'
+export { Text, TextAlignment, TextOptions } from './components/text'
+export { Spinner, SpinnerOptions, SpinnerTheme } from './components/spinner'
+export { Bar, BarOptions, BarTheme } from './components/bar'
 export {
   Output,
   OutputOptions,
   OutputStream
-} from './elements/output'
+} from './output/output'

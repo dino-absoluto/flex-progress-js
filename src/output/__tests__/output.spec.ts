@@ -18,9 +18,9 @@
  */
 /* eslint-env jest */
 /* imports */
-import { SYNCING_INTERVAL } from '../../shared'
+import { SYNCING_INTERVAL } from '../../common'
 import { Output, TargetTTY } from '../output'
-import { Spinner } from '../spinner'
+import { Spinner } from '../../components/spinner'
 import { Writable } from 'stream'
 import stripANSI from 'strip-ansi'
 

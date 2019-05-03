@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement } from '../shared'
+import { ChildElement, ParentElement } from '../common'
 import { StringLike } from '../utils/data-string'
 import once = require('lodash/once')
 import clamp = require('lodash/clamp')

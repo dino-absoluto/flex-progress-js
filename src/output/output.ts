@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Group, GroupOptions } from './group'
+import { Group, GroupOptions } from '../components/group'
 import {
   clearLine
   , clearScreenDown
@@ -25,7 +25,7 @@ import {
 import stringWidth from '../optional/string-width'
 import { StringLike } from '../utils/data-string'
 import { Console } from 'console'
-import { SYNCING_INTERVAL } from '../shared'
+import { SYNCING_INTERVAL } from '../common'
 import once = require('lodash/once')
 
 /* code */

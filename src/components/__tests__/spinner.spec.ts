@@ -20,7 +20,7 @@
 /* imports */
 import { Spinner, themeDefault, themeLine } from '../spinner'
 import { Group } from '../group'
-import { SYNCING_INTERVAL } from '../../shared'
+import { SYNCING_INTERVAL } from '../../common'
 
 /* code */
 // █████▒░░░░░░░░░

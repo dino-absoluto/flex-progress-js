@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ChildElement, ParentElement, StringLike } from '../shared'
+import { ChildElement, ParentElement, StringLike } from '../common'
 import { DataString } from '../utils/data-string'
 import stringWidth from '../optional/string-width'
 /* exports */
