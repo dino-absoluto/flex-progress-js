@@ -18,13 +18,13 @@
  */
 module.exports = {
   root: true,
+  env: {
+    node: true
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json'
   },
-  plugins: [
-    '@typescript-eslint'
-  ],
   extends: [
     'standard',
     'plugin:@typescript-eslint/recommended'
