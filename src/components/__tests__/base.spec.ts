@@ -181,8 +181,8 @@ describe('Base', (): void => {
     const group = new Group()
     group.append(b)
     expect(b.parent).toBe(group)
-    const mockNotify = jest.fn(group.notify)
-    group.notify = mockNotify
+    const mockNotify = jest.fn(group.markDirty)
+    group.markDirty = mockNotify
     b.width = 15
     await immediate()
     expect(mockNotify.mock.calls.length).toBe(1)

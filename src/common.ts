@@ -72,6 +72,10 @@ export interface Element {
    * @param maxWidth - maximum allowed width, undefined for unlimited
    */
   render (maxWidth?: number): StringLike
+  /**
+   * Mark this element as changed.
+   */
+  markDirty (): void
 }
 
 /** @public
@@ -109,12 +113,6 @@ export interface ParentElement extends Element {
    * @returns `true` if the callback has been scheduled, false otherwise
    */
   nextFrame (cb: (frame: number) => void): boolean
-  /**
-   * Notify this element that it should be updated.
-   * This function schedule an update.
-   * This feature has not been completed yet and should not be relied upon.
-   */
-  notify (): void
   /**
    * Add a sub-element.
    * @param item - element to be added

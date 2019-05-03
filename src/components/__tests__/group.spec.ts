@@ -74,12 +74,12 @@ describe('Group', (): void => {
     const parent = new Group()
     parent.add(group)
     const mockFn = jest.fn(parent.nextFrame)
-    const mockNotify = jest.fn(parent.notify)
+    const mockNotify = jest.fn(parent.markDirty)
     parent.nextFrame = mockFn
-    parent.notify = mockNotify
+    parent.markDirty = mockNotify
     expect(group.nextFrame((): undefined => undefined)).toBe(false)
     expect(mockFn.mock.calls.length).toBe(1)
-    group.notify()
+    group.markDirty()
     expect(mockNotify.mock.calls.length).toBe(1)
   })
   test('sub group', () => {

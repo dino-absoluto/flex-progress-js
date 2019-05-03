@@ -19,7 +19,6 @@
 /* imports */
 import { ChildElement, ParentElement } from '../common'
 import { StringLike, DataString } from '../utils/data-string'
-import once = require('lodash/once')
 import clamp = require('lodash/clamp')
 import castArray = require('lodash/castArray')
 
@@ -59,16 +58,17 @@ export abstract class AbstractElement {
           return true
         }
         this.pUpdate[prop] = value
-        this.pSchedule()
+        this.handleSchedule()
         return true
       }
     })
   }
 
-  /** @internal */
-  private pSchedule = once((): void => {
-    this.pUpdateTimer = setImmediate(this.flush)
-  })
+  protected handleSchedule (): void {
+    if (!this.pUpdateTimer) {
+      this.pUpdateTimer = setImmediate(this.flush)
+    }
+  }
 
   protected flush = (): void => {
     let pUpdateTimer
@@ -80,9 +80,6 @@ export abstract class AbstractElement {
     ;[ data, this.pUpdate ] = [ this.pUpdate, {} ]
     this.handleFlush(data)
     Object.assign(this.data, data)
-    this.pSchedule = once((): void => {
-      this.pUpdateTimer = setImmediate(this.flush)
-    })
   }
 
   /** @internal */
@@ -124,7 +121,10 @@ export abstract class Base
   /** @internal */
   private pParent?: ParentElement
   /** @internal */
-  // protected outdated = false
+  private pLastRender?: {
+    text: StringLike
+    maxWidth?: number
+  }
 
   public constructor (options?: BaseOptions) {
     super()
@@ -200,15 +200,26 @@ export abstract class Base
   }
 
   /** @internal
+   * Handle schedule
+   */
+  protected handleSchedule (): void {
+    super.handleSchedule()
+    this.markDirty()
+  }
+
+  public markDirty (): void {
+    this.pLastRender = undefined
+  }
+
+  /** @internal
    * Handle flush event
    */
   protected handleFlush (data: AbstractData): void {
     void (data)
     const { parent } = this
     if (parent) {
-      parent.notify()
+      parent.markDirty()
     }
-    // this.outdated = true
   }
 
   /** The wanted width of the element */
@@ -316,6 +327,15 @@ export abstract class Base
     if (!this.beforeRender(maxWidth) || maxWidth === 0) {
       return ''
     }
-    return this.rendered(castArray(this.handleRender(maxWidth)))
+    const { pLastRender } = this
+    if (pLastRender && pLastRender.maxWidth === maxWidth) {
+      return pLastRender.text
+    }
+    const text = this.rendered(castArray(this.handleRender(maxWidth)))
+    this.pLastRender = {
+      text,
+      maxWidth
+    }
+    return text
   }
 }

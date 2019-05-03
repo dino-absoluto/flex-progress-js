@@ -123,13 +123,13 @@ describe('Output as TTY', (): void => {
     const out = new TestOutput({ stream })
     out.flexGrow = 0
     out.append('ABC')
-    out.notify()
+    out.markDirty()
     out.enabled = false
     out.append('#')
-    out.notify()
+    out.markDirty()
     out.remove(out.children[1])
     out.enabled = true
-    out.notify()
+    out.markDirty()
     await p
     expect(stripANSI(stream.data)).toBe(
       'ABC')

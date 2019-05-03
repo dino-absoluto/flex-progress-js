@@ -184,14 +184,18 @@ export class Spinner extends Base {
     return (this.theme as SpinnerThemeSized).width
   }
 
+  protected beforeRender (maxWidth?: number): boolean {
+    if (this.autoTicking && this.parent) {
+      this.parent.nextFrame(this.pHandleSync)
+    }
+    return super.beforeRender(maxWidth)
+  }
+
   protected handleRender (maxWidth?: number): string {
-    const { frame, frameOffset, parent } = this
+    const { frame, frameOffset } = this
     const theme = this.theme as SpinnerThemeSized
     if (maxWidth != null && maxWidth < theme.width) {
       return ''
-    }
-    if (this.autoTicking && parent) {
-      parent.nextFrame(this.pHandleSync)
     }
     return theme.frames[(frame + frameOffset) % theme.frames.length]
   }

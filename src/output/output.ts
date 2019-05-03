@@ -190,9 +190,12 @@ export class Output extends Group {
     super.enabled = value
   }
 
-  public notify (): void {
+  public markDirty (): void {
     this.pIsOutdated = true
-    this.pScheduleFrame()
+    if (this.pScheduleFrame) {
+      this.pScheduleFrame()
+    }
+    super.markDirty()
   }
 
   /**
@@ -233,10 +236,10 @@ export class Output extends Group {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
       this.pNextFrameCBs = new Set()
+      this.pScheduleFrame = once(this.pProcessFrame)
       for (const cb of pNextFrameCBs) {
         cb(frame)
       }
-      this.pScheduleFrame = once(this.pProcessFrame)
       /* Frame has to be updated after callbacks */
       if (this.pIsOutdated) {
         this.update()
