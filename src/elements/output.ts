@@ -232,10 +232,11 @@ export class Output extends Group {
     setTimeout((): void => {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
-      for (const cb of pNextFrameCBs) {
+      const callbacks = Array.from(pNextFrameCBs)
+      pNextFrameCBs.clear()
+      for (const cb of callbacks) {
         cb(frame)
       }
-      pNextFrameCBs.clear()
       this.pScheduleFrame = once(this.pProcessFrame)
       /* Frame has to be updated after callbacks */
       if (this.pIsOutdated) {
@@ -263,7 +264,6 @@ export class Output extends Group {
 
   /** @internal */
   protected redraw (): void {
-    this.renderedCount++
     const { pTarget, pLastText } = this
     pTarget.update(pLastText)
   }
