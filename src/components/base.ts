@@ -290,10 +290,10 @@ export abstract class Base
   protected rendered (texts: StringLike[]): StringLike {
     const { postProcess } = this
     if (postProcess) {
-      texts = castArray(postProcess(...texts.map((i): string => i.toString())))
-        .map((text, index) => {
-          return new DataString(text, texts[index].length)
-        })
+      const length = texts.reduce((acc, s) => acc + s.length, 0)
+      const text = castArray(postProcess(...texts.map((i): string => i.toString())))
+        .join()
+      texts = [ new DataString(text, length) ]
     }
     const first = texts[0]
     if (first != null) {
