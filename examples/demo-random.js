@@ -19,7 +19,7 @@
 /* imports */
 // import * as FlexBar from '..'
 const FlexBar = require('..')
-const chalk = require('chalk')
+const c = require('kleur')
 const delay = require('lodash/delay')
 const round = require('lodash/round')
 const flip = require('lodash/flip')
@@ -39,34 +39,34 @@ const bar1 = new FlexBar.Bar({
   postProcess:
     overArgs(
       (...i /*: string[] */)/*: string */ => i.join('')
-      , chalk.green, chalk.yellow, chalk.gray)
+      , c.green, c.yellow, c.gray)
 })
 const bar2 = new FlexBar.Bar({
   width: 20,
   postProcess:
     overArgs(
       flip((...i /*: string[] */)/*: string */ => i.join(''))
-      , chalk.green, chalk.yellow, chalk.gray)
+      , c.green, c.yellow, c.gray)
 })
 const message = new FlexBar.Text({
   flex: 1,
   text,
-  postProcess: chalk.green
+  postProcess: c.green
 })
-const spin1 = new FlexBar.Spinner({ postProcess: chalk.yellow })
+const spin1 = new FlexBar.Spinner({ postProcess: c.yellow })
 
 out.append(
   new FlexBar.HideCursor()
   , 2
   , spin1
-  , new FlexBar.Spinner({ postProcess: chalk.red })
-  , new FlexBar.Spinner({ postProcess: chalk.cyan })
+  , new FlexBar.Spinner({ postProcess: c.red })
+  , new FlexBar.Spinner({ postProcess: c.cyan })
   , 1, message, 1
-  , new FlexBar.Spinner({ postProcess: chalk.cyan })
-  , new FlexBar.Spinner({ postProcess: chalk.red })
-  , new FlexBar.Spinner({ postProcess: chalk.yellow })
+  , new FlexBar.Spinner({ postProcess: c.cyan })
+  , new FlexBar.Spinner({ postProcess: c.red })
+  , new FlexBar.Spinner({ postProcess: c.yellow })
   , 1, '[', bar1, ']', 1
-  , new FlexBar.Spinner({ postProcess: chalk.magenta })
+  , new FlexBar.Spinner({ postProcess: c.magenta })
   , 1, '⸨', bar2, '⸩'
 )
 
@@ -104,9 +104,9 @@ delay(()/*: void */ => {
   out.clear()
   const elapsed = out.elapsed
   console.log(
-    chalk.white('FPS'),
-    chalk.green(round(out.renderedCount * 1000 / elapsed, 1).toString()),
-    chalk.gray('|'),
-    chalk.white('Elapsed'),
-    chalk.green(elapsed.toString()))
+    c.white('FPS'),
+    c.green(round(out.renderedCount * 1000 / elapsed, 1).toString()),
+    c.gray('|'),
+    c.white('Elapsed'),
+    c.green(elapsed.toString()))
 }, 10000)
