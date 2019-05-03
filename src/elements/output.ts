@@ -232,9 +232,8 @@ export class Output extends Group {
     setTimeout((): void => {
       const { pNextFrameCBs } = this
       const frame = Math.round(this.elapsed / SYNCING_INTERVAL)
-      const callbacks = Array.from(pNextFrameCBs)
-      pNextFrameCBs.clear()
-      for (const cb of callbacks) {
+      this.pNextFrameCBs = new Set()
+      for (const cb of pNextFrameCBs) {
         cb(frame)
       }
       this.pScheduleFrame = once(this.pProcessFrame)
