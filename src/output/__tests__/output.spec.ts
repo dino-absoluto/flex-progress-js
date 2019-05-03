@@ -150,13 +150,15 @@ describe('Output as TTY', (): void => {
     out.nextFrame(() => {
       out.nextFrame(() => {
         out.log('log!')
+        out.group('group!')
         out.warn('warn!')
+        out.groupEnd()
         out.error('error!')
       })
     })
     await p
     expect(stripANSI(stream.data)).toBe(
-      '⠋log!\n⠋warn!\n⠋error!\n⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋'
+      '⠋log!\n⠋group!\n⠋  warn!\n⠋error!\n⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋'
     )
   })
 })

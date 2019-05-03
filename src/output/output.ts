@@ -273,6 +273,16 @@ export class Output extends Group {
     pTarget.update(pLastText)
   }
 
+  public group (...args: unknown[]): void {
+    this.clearLine()
+    this.console.group(...args)
+    this.redraw()
+  }
+
+  public groupEnd (): void {
+    this.console.groupEnd()
+  }
+
   public log (...args: unknown[]): void {
     this.clearLine()
     this.console.log(...args)
