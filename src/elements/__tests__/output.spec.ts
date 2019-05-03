@@ -134,6 +134,31 @@ describe('Output as TTY', (): void => {
     expect(stripANSI(stream.data)).toBe(
       'ABC')
   })
+  test('log', async (): Promise<void> => {
+    class Test1 extends TestOutput {
+      public eCounter = 0
+      public get elapsed (): number {
+        this.eCounter += SYNCING_INTERVAL
+        return this.eCounter
+      }
+    }
+    const stream = new TestStreamTTY()
+    const p = new Promise((resolve): void => void stream.on('finish', resolve))
+    const out = new Test1({ stream })
+    out.flexGrow = 0
+    out.append(new Spinner())
+    out.nextFrame(() => {
+      out.nextFrame(() => {
+        out.log('log!')
+        out.warn('warn!')
+        out.error('error!')
+      })
+    })
+    await p
+    expect(stripANSI(stream.data)).toBe(
+      '⠋log!\n⠋warn!\n⠋error!\n⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏⠋'
+    )
+  })
 })
 
 describe('Output as write-only', (): void => {
