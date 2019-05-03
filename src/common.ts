@@ -75,7 +75,7 @@ export interface Element {
   /**
    * Mark this element as changed.
    */
-  markDirty (): void
+  markDirty? (): void
 }
 
 /** @public
@@ -136,4 +136,5 @@ export interface ParentElement extends Element {
    * Remove all sub-elements.
    */
   clear (): void
+  markDirty (): void
 }
